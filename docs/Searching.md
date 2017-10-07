@@ -1,0 +1,917 @@
+=====================================================
+探索
+=====================================================
+..  Chapter 7:
+..  Searching
+
+..  This chapter does not introduce any new JavaScript-specific concepts. Instead, we will go through the solution to two problems, discussing some interesting algorithms and techniques along the way. If this does not sound interesting to you, it is safe to skip to the next chapter.
+
+この章では新しいJavaScript固有の概念を紹介しない。代わりに、2つの問題への解を見ていこう、面白いアルゴリズムとテクニックを論じる。もし、面白そうだと思えなかったら、飛ばして次の章に進んでもらっても構わない。
+
+.. |hr| raw:: html
+
+   <hr>
+
+|hr|
+
+..  Let me introduce our first problem. Take a look at this map. It shows Hiva Oa, a small tropical island in the Pacific Ocean.
+
+最初の問題を紹介しよう。この地図を見て欲しい。太平洋の熱帯の小さな島、ヒバオアだ。
+
+.. image :: /img/Hiva_Oa.png
+
+..  The grey lines are roads, and the numbers next to them are the lengths of these roads. Imagine we need a program that finds the shortest route between two points on Hiva Oa. How could we approach that? Think about this for a moment.
+
+灰色の線は道路、傍らの数値はこれらの道路の長さだ。ヒバオアの2つの地点の間の最も短いルートを見つけるプログラムが必要であると想像しよう。どのようにアプローチすれば良いだろうか？これについてしばらく考えてみよう。
+
+..  No really. Don't just steamroll on to the next paragraph. Try to seriously think of some ways you could do this, and consider the issues you would come up against. When reading a technical book, it is way too easy to just zoom over the text, nod solemnly, and promptly forget what you have read. If you make a sincere effort to solve a problem, it becomes your problem, and its solution will be more meaningful.
+
+いや本当に考えるのだ。次の段落に強引に進んではいけない。可能な手段について真面目に考え、問題に対してどう取り組むか考えるのだ。技術的な本を読むとき、テキストを俯瞰するのは簡単で、厳粛にうなづき、読んだことは忘れてしまう。もし問題を解くために誠実に努力すれば、それは\ *あなたの* \問題となり、その解もより意味のあるものとなるだろう。
+
+|hr|
+
+..  The first aspect of this problem is, again, representing our data. The information in the picture does not mean much to our computer. We could try writing a program that looks at the map and extracts the information in it... but that can get complicated. If we had twenty-thousand maps to interpret, this would be a good idea, in this case we will do the interpretation ourself and transcribe the map into a more computer-friendly format.
+
+この問題の最初の面は、繰り返すと、データをどう表現するかだ。図の情報はコンピューターにとってはあまり意味をなさない。この地図を見てその中の情報を展開するプログラムを書いてみよう...しかしそれは複雑になりかねない。もし20,000もの地図を翻訳しなければならないとしたらこれはいいアイデアになりうる、今回は我々自身で翻訳し、コンピューターにとって扱いやすい形式に書き起こそう。
+
+..  What does our program need to know? It has to be able to look up which locations are connected, and how long the roads between them are. The places and roads on the island form a graph, as mathematicians call it. There are many ways to store graphs. A simple possibility is to just store an array of road objects, each of which contains properties naming its two endpoints and its length...
+
+我々のプログラムは何を知る必要があるだろうか？それは接続されている場所を見つけられること、そしてそれらの間の道路の長さである。島の場所と道路を数学者がグラフと呼ぶの形にする。グラフを格納する方法はたくさんある。単純で可能性としては、2つの終端と長さをプロパティとして持つ道路オブジェクトの配列として格納するのだ...
+
+.. code-block:: javascript
+
+    var roads = [{point1: "Point Kiukiu", point2: "Hanaiapa", length: 19},
+                 {point1: "Point Kiukiu", point2: "Mt Feani", length: 15}
+                 /* and so on */];
+
+..  However, it turns out that the program, as it is working out a route, will very often need to get a list of all the roads that start at a certain location, like a person standing on a crossroads will look at a signpost and read "Hanaiapa: 19km, Mount Feani: 15km". It would be nice if this was easy (and quick) to do.
+
+しかしながら、プログラムはルート、交差点に立っている人が、"Hanaiapa: 19km, Mount Feani: 15km"という標識を見るように、ある決まった場所からスタートする全ての道路のリストをとても頻繁に手に入れる必要があることが判明している。
+
+..  With the representation given above, we have to sift through the whole list of roads, picking out the relevant ones, every time we want this signpost list. A better approach would be to store this list directly. For example, use an object that associates place-names with signpost lists:
+
+これを表現するのに、道路の全体のリストをふるいにかけ、毎回この標識のリストに関係ある場所をつまみ出す必要がある。よりよいアプローチはこのリストを直接格納することだろう。例えば、場所の名前に結びついている標識のリストを持つオブジェクトを使う。：
+
+.. code-block:: javascript
+
+    var roads = {"Point Kiukiu": [{to: "Hanaiapa", distance: 19},
+                                  {to: "Mt Feani", distance: 15},
+                                  {to: "Taaoa", distance: 15}],
+                 "Taaoa": [/* et cetera */]};
+
+..  When we have this object, getting the roads that leave from Point Kiukiu is just a matter of looking at roads["Point Kiukiu"].
+
+このオブジェクトを持っているとき、Point Kiu Kiuから移動する道路を得ることは、ちょうど\ ``roads["Point KiuKiu"]``\ を探すことになる。
+
+|hr|
+
+..  However, this new representation does contain duplicate information: The road between A and B is listed both under A and under B. The first representation was already a lot of work to type in, this one is even worse.
+
+しかしながら、この新しい表現は重複した情報を持っている：AとBの間の道路はAとBの両方にリストされることになる。最初の表現は既にタイプするのに多くの労力をかけているので、これでは余計悪い。
+
+..  Fortunately, we have at our command the computer's talent for repetitive work. We can specify the roads once, and have the correct data structure be generated by the computer. First, initialise an empty object called roads, and write a function makeRoad:
+
+幸運にも、命令を出してコンピューターの才能をこの反復的な仕事に充てることができる。個々の道路について、一度、コンピューターに正しいデータ構造を生成させるのだ。まず、\ ``road``\ という空のオブジェクトを初期化して、\ ``makeRoad``\ 関数を書こう。：
+
+.. code-block:: javascript
+
+    var roads = {};
+    function makeRoad(from, to, length) {
+      function addRoad(from, to) {
+        if (!(from in roads))
+          roads[from] = [];
+        roads[from].push({to: to, distance: length});
+      }
+      addRoad(from, to);
+      addRoad(to, from);
+    }
+
+..  Nice, huh? Notice how the inner function, addRoad, uses the same names (from, to) for its parameters as the outer function. These will not interfere: inside addRoad they refer to addRoad's parameters, and outside it they refer to makeRoad's parameters.
+
+よさそうじゃないか？内側の関数\ ``addRoad``\ はそのパラメータとして外側の関数を同じ名前(\ ``from``\ 、\ ``to``\ )を使っていることに注意。これは邪魔にならない：\ ``addRoad``\ の内側では\ ``addRoad``\ のパラメータが参照され、その外側では\ ``makeRoad``\ のパラメータが参照される。
+
+..  The if statement in addRoad makes sure that there is an array of destinations associated with the location named by from, if there isn't already one it puts in an empty array. This way, the next line can assume there is such an array and safely push the new road onto it.
+
+``addRoad``\ の中の\ ``if``\ 文は、目的地の配列に\ ``from``\ の場所が既に存在するか確認して、もし既に存在しているのでなければ空の配列を入れる。これで、次の行では配列があり、それに新しい道路を入れてもいいと仮定できる。
+
+..  Now the map information looks like this:
+
+今、地図の情報はこのようになっている。：
+
+.. code-block:: javascript
+
+    makeRoad("Point Kiukiu", "Hanaiapa", 19);
+    makeRoad("Point Kiukiu", "Mt Feani", 15);
+    makeRoad("Point Kiukiu", "Taaoa", 15);
+    // ...
+
+|hr|
+
+演習 7.1
+
+..  In the above description, the string "Point Kiukiu" still occurs three times in a row. We could make our description even more succinct by allowing multiple roads to be specified in one line.
+
+上記の記述において、\ ``"Point KiuKiu"``\ という文字列は3つの行を持っている。複数の道路を1行で指示できるように記述をもっと簡潔にできる。
+
+..  Write a function makeRoads that takes any uneven number of arguments. The first argument is always the starting point of the roads, and every pair of arguments after that gives an ending point and a distance.
+
+奇数の数の引数を取り、1つめは道路の常に開始地点、終了地点と距離を、その後の引数のペア毎に取る\ ``makeRoads``\ 関数を書け。
+
+..  Do not duplicate the functionality of makeRoad, but have makeRoads call makeRoad to do the actual road-making.
+
+``makeRoad``\ の機能と重複させず、しかし\ ``makeRoads``\ が\ ``makeRoad``\ を呼び出して実際の道路を作らせるように。
+
+..  [show solution]
+
+[解答を見る]
+
+.. code-block:: javascript
+
+    function makeRoads(start) {
+      for (var i = 1; i < arguments.length; i += 2)
+        makeRoad(start, arguments[i], arguments[i + 1]);
+    }
+
+..  This function uses one named parameter, start, and gets the other parameters from the arguments (quasi-) array. i starts at 1 because it has to skip this first parameter. i += 2 is short for i = i + 2, as you might recall.
+
+この関数は\ ``start``\ という1つの名前付きパラメーターを使い、\ ``arguments``\ の他のパラメーターは（疑似的な）配列である。\ ``i``\ が\ ``1``\ から始まるのはこの最初のパラメーターをスキップするためだ。あなたも思い出したように、\ ``i += 2``\ は\ ``i = i + 2``\ を短縮したものだ。
+
+.. code-block:: javascript
+
+    var roads = {};
+    makeRoads("Point Kiukiu", "Hanaiapa", 19,
+              "Mt Feani", 15, "Taaoa", 15);
+    makeRoads("Airport", "Hanaiapa", 6, "Mt Feani", 5,
+              "Atuona", 4, "Mt Ootua", 11);
+    makeRoads("Mt Temetiu", "Mt Feani", 8, "Taaoa", 4);
+    makeRoads("Atuona", "Taaoa", 3, "Hanakee pearl lodge", 1);
+    makeRoads("Cemetery", "Hanakee pearl lodge", 6, "Mt Ootua", 5);
+    makeRoads("Hanapaoa", "Mt Ootua", 3);
+    makeRoads("Puamua", "Mt Ootua", 13, "Point Teohotepapapa", 14);
+
+    show(roads["Airport"]);
+
+|hr|
+
+..  We managed to considerably shorten our description of the road-information by defining some convenient operations. You could say we expressed the information more succinctly by expanding our vocabulary. Defining a 'little language' like this is often a very powerful technique ― when, at any time, you find yourself writing repetitive or redundant code, stop and try to come up with a vocabulary that makes it shorter and denser.
+
+便利な操作を定義することで、道路情報の記述を考えられるだけ首尾良く短くできた。我々のボキャブラリーを展開してもっと短く情報を表現できるというかもしれない。このような'小さい言語'を定義することはしばしばとてもパワフルなテクニックであるが、場合によっては、繰り返しに、または冗長なコードを書くことになりかねないから、これを短く緊密にするためにボキャブラリーを思いつかないか試すのはやめておこう。
+
+..  Redundant code is not only a bore to write, it is also error-prone, people pay less attention when doing something that doesn't require them to think. On top of that, repetitive code is hard to change, because structure that is repeated a hundred times has to be changed a hundred times when it turns out to be incorrect or suboptimal.
+
+冗長なコードは書くのに退屈するだけではない、エラーの原因にもなり、人々は考える必要のないことに捕われて注意力を奪われる。その上、繰り返しのコードは変更しにくい。なぜなら、その構造が100度も繰り返されたら、誤っているか次善のものと判明したときに変更も100度繰り返さなければならないからだ。
+
+|hr|
+
+..  If you ran all the pieces of code above, you should now have a variable named roads that contains all the roads on the island. When we need the roads starting from a certain place, we could just do roads[place]. But then, when someone makes a typo in a place name, which is not unlikely with these names, he will get undefined instead of the array he expects, and strange errors will follow. Instead, we will use a function that retrieves the road arrays, and yells at us when we give it an unknown place name:
+
+もし上のコードの全ての部品が動いたら、そのときには島の全ての道路を含んでいる\ ``roads``\ という変数がある。決まった場所から開始する道路が必要になったとき、\ ``roads[place]``\ とすることができる。しかし、それから誰かが場所の名前を誤ったとき、好ましくないことにこれらの名前は存在せず、期待した配列の代わりに\ ``undefined``\ を得ることになり、おかしなエラーが続いて起こる。代わりに、道路の配列を取り出し、未知の場所を与えられたときには叫ぶような関数を使うようにしよう。：
+
+.. code-block:: javascript
+
+    function roadsFrom(place) {
+      var found = roads[place];
+      if (found == undefined)
+        throw new Error("No place named '" + place + "' found.");
+      else
+        return found;
+    }
+
+    show(roadsFrom("Puamua"));
+
+|hr|
+
+..  Here is a first stab at a path-finding algorithm, the gambler's method:
+
+これは経路検索アルゴリズムの最初のスタブで、ギャンブラーのメソッドを使っている。：
+
+.. code-block:: javascript
+
+    function gamblerPath(from, to) {
+      function randomInteger(below) {
+        return Math.floor(Math.random() * below);
+      }
+      function randomDirection(from) {
+        var options = roadsFrom(from);
+        return options[randomInteger(options.length)].to;
+      }
+
+      var path = [];
+      while (true) {
+        path.push(from);
+        if (from == to)
+          break;
+        from = randomDirection(from);
+      }
+      return path;
+    }
+
+    show(gamblerPath("Hanaiapa", "Mt Feani"));
+
+..  At every split in the road, the gambler rolls his dice to decide which road he shall take. If the dice sends him back the way he came, so be it. Sooner or later, he will arrive at his destination, since all places on the island are connected by roads.
+
+道路の全ての分岐で、ギャンブラーはサイコロを振って進む道を決める。もしサイコロが彼の来た道を選んでも、そうする。島の道路は全て繋がっているから、速かれ遅かれ、彼は目的地にたどり着く。
+
+..  The most confusing line is probably the one containing Math.random. This function returns a pseudo-random1 number between 0 and 1. Try calling it a few times from the console, it will (most likely) give you a different number every time. The function randomInteger multiplies this number by the argument it is given, and rounds the result down with Math.floor. Thus, for example, randomInteger(3) will produce the number 0, 1, or 2.
+
+もっとも混乱するのはおそらく\ ``Math.random``\ を含む行だろう。この関数は0から1までの疑似乱数\ [#f1]_\ の数値を返す。試しにコンソールから2,3度呼び出してみれば、（ほとんど場合は）毎回異なる値を返すだろう。\ ``randomInteger``\ 関数はこの数値に与えられた引数の値をかけて、\ ``Math.floor``\ で切り捨てた値を返す。それゆえ、例えば、\ ``randomInteger(3)``\ は\ ``0``\ 、\ ``1``\ 、\ ``2``\ のいずれかの数値を作る。
+
+|hr|
+
+..  The gambler's method is the way to go for those who abhor structure and planning, who desperately search for adventure. We set out to write a program that could find the shortest route between places though, so something else will be needed.
+
+ギャンブラーメソッドは構造と計画を嫌う者、冒険を探すのに夢中な者の手段だ。我々に必要なのは、そのようなものではないから、場所の間の最も\ *短い*\ ルートを見つけ出せるプログラムを書くことに着手しよう。
+
+..  A very straightforward approach to solving such a problem is called 'generate and test'. It goes like this:
+
+このような問題を解決するとてもまっすぐなアプローチは'生成とテスト'と呼ばれる。このようになる。：
+
+..  Generate all possible routes.
+..  In this set, find the shortest one that actually connects the start point to the end point.
+
+#. 可能な全てのルートを生成する。
+#. この集合について、実際に開始地点から終了地点に至る全ての接続から最も短いものを探す。
+
+..  Step two is not hard. Step one is a little problematic. If you allow routes with circles in them, there is an infinite amount of routes. Of course, routes with circles in them are unlikely to be the shortest route to anywhere, and routes that do not start at the start point do not have to be considered either. For a small graph like Hiva Oa, it should be possible to generate all non-cyclic (circle-free) routes starting from a certain point.
+
+ステップ2は難しくない。ステップ1は少々問題だ。もしこれらが周回するのを許せば、無限の長さのルートになるだろう。もちろん、周回するルートはどこに行くにしても最短のものにはなりえないので、スタート地点からスタートしないルートはそれ以上考慮する必要がない。ヒバオアのような小さいグラフについては、決まった場所からの全ての周回しない（サイクルフリー）ルートを生成することは可能だろう。
+
+|hr|
+
+..  But first, we will need some new tools. The first is a function named member, which is used to determine whether an element is found within an array. The route will be kept as an array of names, and when arriving at a new place, the algorithm calls member to check whether we have been at that place already. It could look like this:
+
+しかし1つめについては、新しいツールが必要だ。1つは\ ``member``\ という関数で、要素が配列の中に見つかったかどうかを判定する。ルートは名前の配列として保持され、そして新しい場所にたどり着いたときは、アルゴリズムは\ ``member``\ を呼び出してその場所が既に存在するかを判定する。このようなものになる。：
+
+.. code-block:: javascript
+
+    function member(array, value) {
+      var found = false;
+      forEach(array, function(element) {
+        if (element === value)
+          found = true;
+      });
+      return found;
+    }
+
+    print(member([6, 7, "Bordeaux"], 7));
+
+..  However, this will go over the whole array, even if the value is found immediately at the first position. What wastefulness. When using a for loop, you can use the break statement to jump out of it, but in a forEach construct this will not work, because the body of the loop is a function, and break statements do not jump out of functions. One solution could be to adjust forEach to recognise a certain kind of exceptions as signalling a break.
+
+しかしながら、もし値が最初の位置に直接見つかったとしても、これは配列全体に渡って探すだろう。これは無駄だ。\ ``for``\ ループを使うときは\ ``break``\ 文を使うことでで飛び出すことができたが、しかし、\ ``forEach``\ の構造の中ではこれは動かない、なぜならループの中の本体は関数であり、\ ``break``\ 文では関数から抜け出せないからである。1つの解決としてはbreakの信号を例外のあらかじめ決めておいた一種として扱うよう、\ ``forEach``\ 関数を変更することだ。
+
+.. code-block:: javascript
+
+    var Break = {toString: function() {return "Break";}};
+
+    function forEach(array, action) {
+      try {
+        for (var i = 0; i < array.length; i++)
+          action(array[i]);
+      }
+      catch (exception) {
+        if (exception != Break)
+          throw exception;
+      }
+    }
+
+..  Now, if the action function throws Break, forEach will absorb the exception and stop looping. The object stored in the variable Break is used purely as a thing to compare with. The only reason I gave it a toString property is that this might be useful to figure out what kind of strange value you are dealing with if you somehow end up with a Break exception outside of a forEach.
+
+今、もし\ ``action``\ 関数が\ ``Break``\ を投げたら、\ ``forEach``\ が例外を吸収してループを止めるだろう。このオブジェクトは、純粋に比較のために使われる変数\ ``Break``\ を格納する。これに\ ``toString``\ プロパティを与えた理由は、これにより、\ ``Break``\ を\ ``forEach``\ の外に何らかの理由で投げ上げたとき、おかしな値を表示できた方が便利になるからだ。
+
+|hr|
+
+..  Having a way to break out of forEach loops can be very useful, but in the case of the member function the result is still rather ugly, because you need to specifically store the result and later return it. We could add yet another kind of exception, Return, which can be given a value property, and have forEach return this value when such an exception is thrown, but this would be terribly ad-hoc and messy. What we really need is a whole new higher-order function, called any (or sometimes some). It looks like this:
+
+``forEach``\ ループから抜け出せる手段を持つことはとても便利だが、この場合の\ ``member``\ 関数は結果としてまだ醜いものであり、なぜならそれは固有の結果を格納して後でそれを返す必要があるからだ。もう一つの種類の例外\ ``Return``\ を加えて、ふさわしい\ ``value``\ を与えられたら、例外を投げて、この値を\ ``forEach``\ が返すようにすることもできる。しかし、これは恐ろしくその場しのぎで乱雑だ。本当に必要なのは全く新しい高階関数で、\ ``any``\ （もしくは、時々は\ ``some``\ と）と呼ばれる。このようなものだ。：
+
+.. code-block:: javascript
+
+    function any(test, array) {
+      for (var i = 0; i < array.length; i++) {
+        var found = test(array[i]);
+        if (found)
+          return found;
+      }
+      return false;
+    }
+
+    function member(array, value) {
+      return any(partial(op["==="], value), array);
+    }
+
+    print(member(["Fear", "Loathing"], "Denial"));
+
+..  any goes over the elements in an array, from left to right, and applies the test function to them. The first time this returns a true-ish value, it returns that value. If no true-ish value is found, false is returned. Calling any(test, array) is more or less equivalent to doing test(array[0]) || test(array[1]) || ... etcetera.
+
+``any``\ は配列の要素に渡って、左から右へ、テスト関数を適用していく。テスト関数がこれは真になるような値を返した1回目は、\ ``any``\ はその値を返す。もし真になるような値が見つからなければ、\ ``false``\ が返される。\ ``any(test, array)``\ を呼ぶことで、多かれ少なかれ、\ ``test(array[0]) || test(array[1]) || ... etcetera.``\ と同じようななことが行われる。
+
+|hr|
+
+..  Just like && is the companion of ||, any has a companion called every:
+
+``&&``\ が\ ``||``\ の仲間であるように、\ ``any``\ は\ ``every``\ と呼ばれる仲間を持つ：
+
+.. code-block:: javascript
+
+    function every(test, array) {
+      for (var i = 0; i < array.length; i++) {
+        var found = test(array[i]);
+        if (!found)
+          return found;
+      }
+      return true;
+    }
+
+    show(every(partial(op["!="], 0), [1, 2, -1]));
+
+|hr|
+
+..  Another function we will need is flatten. This function takes an array of arrays, and puts the elements of the arrays together in one big array.
+
+必要なもう一つの関数は\ ``flatten``\ だ。この関数は配列の配列を受け取って、それらの配列の要素を1つの大きな配列にまとめる。
+
+.. code-block:: javascript
+
+      function flatten(arrays) {
+        var result = [];
+        forEach(arrays, function (array) {
+          forEach(array, function (element){result.push(element);});
+        });
+        return result;
+      }
+
+..  The same could have been done using the concat method and some kind of reduce, but this would be less efficient. Just like repeatedly concatenating strings together is slower than putting them into an array and then calling join, repeatedly concatenating arrays produces a lot of unnecessary intermediary array values.
+
+同じことは\ ``concat``\ メソッドと\ ``reduce``\ を使ってやることもできた、しかしこれは効率がが悪い。文字列の連結の繰り返しが、それらを配列に入れた上で\ ``join``\ するより遅いのと似たように、配列の連結を繰り返し行うことは、不必要に多くの中間配列の値を作ることになる。
+
+|hr|
+
+演習 7.2
+
+..  Before starting to generate routes, we need one more higher-order function. This one is called filter. Like map, it takes a function and an array as arguments, and produces a new array, but instead of putting the results of calling the function in the new array, it produces an array with only those values from the old array for which the given function returns a true-like value. Write this function.
+
+ルートを作り始める前に、もう一つ高階関数が必要だ。これは\ ``filter``\ と呼ばれる。\ ``map``\ と似て、関数と配列を引数として取り、新しい配列を作るが、しかし呼ばれた関数の結果を新しい配列に入れる代わりに、古い配列に与えられた関数を適用した結果が真であるような値の場合にだけ、その値を新しい配列に入れる。この関数を書け。
+
+..  [show solution]
+
+[解答を見る]
+
+.. code-block:: javascript
+
+    function filter(test, array) {
+      var result = [];
+      forEach(array, function (element) {
+        if (test(element))
+          result.push(element);
+      });
+      return result;
+    }
+
+    show(filter(partial(op[">"], 5), [0, 4, 8, 12]));
+
+..  (If the result of that application of filter surprises you, remember that the argument given to partial is used as the first argument of the function, so it ends up to the left of the >.)
+
+（もし\ ``filter``\ を適用した結果に驚いたら、\ ``partial``\ に与えられた引数の最初のものが関数であり、その残りが>に与えられることを思い出そう。）
+
+|hr|
+
+..  Imagine what an algorithm to generate routes would look like ― it starts at the starting location, and starts to generate a route for every road leaving there. At the end of each of these roads it continues to generate more routes. It doesn't run along one road, it branches out. Because of this, recursion is a natural way to model it.
+
+ルートを生成するこのようなアルゴリズムを想像する―スタート地点から開始して、そこから移動する全ての道路についてのルートを生成する。これらの道路毎の終点についたら、その先のルートを生成し続ける。1つの道路に沿ってではなく、分岐する。このため、再帰がこれをモデル化する自然な手段である。
+
+.. code-block:: javascript
+
+    function possibleRoutes(from, to) {
+      function findRoutes(route) {
+        function notVisited(road) {
+          return !member(route.places, road.to);
+        }
+        function continueRoute(road) {
+          return findRoutes({places: route.places.concat([road.to]),
+                             length: route.length + road.distance});
+        }
+
+        var end = route.places[route.places.length - 1];
+        if (end == to)
+          return [route];
+        else
+          return flatten(map(continueRoute, filter(notVisited,
+                                                   roadsFrom(end))));
+      }
+      return findRoutes({places: [from], length: 0});
+    }
+
+    show(possibleRoutes("Point Teohotepapapa", "Point Kiukiu").length);
+    show(possibleRoutes("Hanapaoa", "Mt Ootua"));
+
+..  The function returns an array of route objects, each of which contains an array of places that the route passes, and a length. findRoutes recursively continues a route, returning an array with every possible extension of that route. When the end of a route is the place where we want to go, it just returns that route, since continuing past that place would be pointless. If it is another place, we must go on. The flatten/map/filter line is probably the hardest to read. This is what it says: 'Take all the roads going from the current location, discard the ones that go to places that this route has already visited. Continue each of these roads, which will give an array of finished routes for each of them, then put all these routes into a single big array that we return.'
+
+関数は、それぞれがルートが通過する場所と、その長さの配列を含むrouteオブジェクトの配列を返す。\ ``findRoute``\ は可能は全てのルートの展開の配列を返すことを再帰的に繰り返す。行こうとしていたルートの終点に到着したとき、それがただ通過してきたルートを返すだけでは意味がない。もしそこが別の場所であれば、行く必要がある。\ ``flatten/map/filter``\ の行はおそらく最も読みにくい場所だろう。これは'今の場所から全ての道路を取るが、既に行ったことのある場所は除く。これらの道路毎に、終わったルートの配列を与え、これらのルートを大きな単一の配列にして返す。'と言っている。
+
+..  That line does a lot. This is why good abstractions help: They allow you to say complicated things without typing screenfulls of code.
+
+その行は多くのことをやっている。これが抽象化の良いところだ。：これらにより複雑なことを画面一杯のコード無しでできるようになる。
+
+..  Doesn't this recurse forever, seeing how it keeps calling itself (via continueRoute)? No, at some point, all outgoing roads will go to places that a route has already passed, and the result of filter will be an empty array. Mapping over an empty array produces an empty array, and flattening that still gives an empty array. So calling findRoutes on a dead end produces an empty array, meaning 'there are no ways to continue this route'.
+
+これは永遠には再帰しない、自分自身がどのように呼ばれたか（\ ``continueRoute``\ から？とか）記憶していているのだろうか？いや、いくつかの点で異なり、既に通った場所に出ていく全ての道路では\ ``filter``\ の結果として空の配列が返る。空の配列を\ ``map``\ した結果は空の配列となり、\ ``flatten``\ に空の配列を与えた場合にもそうなる。行き止まりで\ ``findRoute``\ を呼び出せば空の配列が作られ、それは'これ以上、このルートには続く道がない'という意味になる。
+
+..  Notice that places are appended to routes by using concat, not push. The concat method creates a new array, while push modifies the existing array. Because the function might branch off several routes from a single partial route, we must not modify the array that represents the original route, because it must be used several times.
+
+``push``\ ではなく\ ``concat``\ で場所がルートに追加されていることに注意。\ ``concat``\ メソッドは新しい配列を作り、\ ``push``\ は既存の配列を変更する。なぜなら、この関数は単一の部分的なルートからいくつかのルートに枝分かれし、何回も使われるため、元のルートを表現する配列を変更してはならないのである、
+
+|hr|
+
+演習 7.3
+
+..  Now that we have all possible routes, let us try to find the shortest one. Write a function shortestRoute that, like possibleRoutes, takes the names of a starting and ending location as arguments. It returns a single route object, of the type that possibleRoutes produces.
+
+今我々が持っている全ての可能なルートから一番短いものを探そう。\ ``possibleRoute``\ と同様に、開始地点と終了地点の名前を引数に取る、\ ``shortestRoute``\ 関数を書け。\ ``possibleRoute``\ が作るものと同様の型で単一のrouteオブジェクトを返すこと。
+
+..  [show solution]
+
+[解答を見る]
+
+.. code-block:: javascript
+
+    function shortestRoute(from, to) {
+      var currentShortest = null;
+      forEach(possibleRoutes(from, to), function(route) {
+        if (!currentShortest || currentShortest.length > route.length)
+          currentShortest = route;
+      });
+      return currentShortest;
+    }
+
+..  The tricky thing in 'minimising' or 'maximising' algorithms is to not screw up when given an empty array. In this case, we happen to know that there is at least one road between every two places, so we could just ignore it. But that would be a bit lame. What if the road from Puamua to Mount Ootua, which is steep and muddy, is washed away by a rainstorm? It would be a shame if this caused our function to break as well, so it takes care to return null when no routes are found.
+
+'最小化'や'最大化'のアルゴリズムのトリッキーな点は空の配列が与えられたときに台無しになるところだ。この場合、全ての2地点間の道路を知っていたので、それをただ無視することができた。しかし、これは少々不十分である。もしPuamuaからMount Ootuaへの道が険しく、豪雨で洗われたために泥だらけになっていたら？もし、これで我々の関数をぶちこわしになるとしたら恥ずかしいので、道が見つからなかった場合は\ ``null``\ が返るようにしよう。
+
+..  Then, the very functional, abstract-everything-we-can approach:
+
+それから、とても関数的な、できる限りなんでも抽象化するアプローチ：
+
+.. code-block:: javascript
+
+    function minimise(func, array) {
+      var minScore = null;
+      var found = null;
+      forEach(array, function(element) {
+        var score = func(element);
+        if (minScore == null || score < minScore) {
+          minScore = score;
+          found = element;
+        }
+      });
+      return found;
+    }
+
+    function getProperty(propName) {
+      return function(object) {
+        return object[propName];
+      };
+    }
+
+    function shortestRoute(from, to) {
+      return minimise(getProperty("length"), possibleRoutes(from, to));
+    }
+
+..  Unfortunately, it is three times longer than the other version. In programs where you need to minimise several things it might be a good idea to write the generic algorithm like this, so you can re-use it. In most cases the first version is probably good enough.
+
+残念なことに、これは実行時間が他のバージョンより3倍ほど長い。プログラムの中で、いくつかのものの最小を求める必要があれば、このような一般的なアルゴリズムを書いて、それを再利用するのがいいアイデアだ。多くの場合においては最初のバージョンでおそらく十分だ。
+
+..  Note the getProperty function though, it is often useful when doing functional programming with objects.
+
+``getProperty``\ 関数に注意。これはオブジェクトの関数的プログラミングにおいてしばしば便利だ。
+
+|hr|
+
+..  Let us see what route our algorithm comes up with between Point Kiukiu and Point Teohotepapapa...
+
+Point kikiuからPoint Teohotepapapaまでのルートをこのアルゴリズムで見てみよう...
+
+.. code-block:: javascript
+
+    show(shortestRoute("Point Kiukiu", "Point Teohotepapapa").places);
+
+|hr|
+
+..  On a small island like Hiva Oa, it is not too much work to generate all possible routes. If you try to do that on a reasonably detailed map of, say, Belgium, it is going to take an absurdly long time, not to mention an absurd amount of memory. Still, you have probably seen those online route-planners. These give you a more or less optimal route through a gigantic maze of roads in just a few seconds. How do they do it?
+
+ヒバオアのような小さな島では、全ての可能なルートを生成するのは大きすぎる仕事ではない。言わばベルギーみたいな、もっと合理的なレベルで詳細な地図に対してこのようなことをやるのであれば、馬鹿げたほどの長い時間と、大量のメモリが必要になるだろう。まだ、それらのオンラインルート計画をおそらく見るだろう。これらは巨大な迷路から多少なりとも望ましいルートを2,3秒で教えてくれる。どうやってやっているのだろうか？
+
+..  If you are paying attention, you may have noticed that it is not necessary to generate all routes all the way to the end. If we start comparing routes while we are building them, we can avoid building this big set of routes, and, as soon as we have found a single route to our destination, we can stop extending routes that are already longer than that route.
+
+もし注意していれば、終点に至る全ての道を生成する必要は必ずしもないということに気づいたかもしれない。もしルートの構築時に比較を始めていれば、ルートの巨大なセットを構築することを回避でき、そして目的地への単一のルートをすぐに見つけることができ、既に見つけたものより長いルートの展開をやめることができただろう。
+
+|hr|
+
+.. To try this out, we will use a 20 by 20 grid as our map:
+
+これを見てほしい。地図に20×20のマスがある。：
+
+..  image:: /img/height.png
+
+..  What you see here is an elevation map of a mountain landscape. The yellow spots are the peaks, and the blue spots the valleys. The area is divided into squares with a size of a hundred meters. We have at our disposal a function heightAt, which can give us the height, in meters, of any square on that map, where squares are represented by objects with x and y properties.
+
+今見ているのは山の地形の高度図である。黄色い点が頂上、青い点が谷。この領域が100m大の四角に分割されている。我々には、xとyプロパティで示された地図の任意の地点の高さをメートルで返してくれる\ ``heightAt``\ 関数を与えられている。
+
+.. code-block:: javascript
+
+    print(heightAt({x: 0, y: 0}));
+    print(heightAt({x: 11, y: 18}));
+
+..  We want to cross this landscape, on foot, from the top left to the bottom right. A grid can be approached like a graph. Every square is a node, which is connected to the squares around it.
+
+この地形を徒歩で横切って、左上から右下に行きたい。マスはグラフのように扱える。全ての四角はノードであり、周囲の四角に接続されている。
+
+..  We do not like wasting energy, so we would prefer to take the easiest route possible. Going uphill is heavier than going downhill, and going downhill is heavier than going level2. This function calculates the amount of 'weighted meters', between two adjacent squares, which represents how tired you get from walking (or climbing) between them. Going uphill is counted as twice as heavy as going downhill.
+
+エネルギーを浪費したくないので、なるべく簡単な道を行きたい。登り坂を行くのは下り坂を行くより辛い。下り坂を行くのは平坦な道を行くより辛い。この関数は、隣り合った2つの四角の間を歩く（または登る）ことでどれだけ疲れるかを表現した、'重み付けされたメートル'を計算する。上り坂を行くのは下り坂を行くより2倍の重さがあると数える。
+
+.. code-block:: javascript
+
+    function weightedDistance(pointA, pointB) {
+      var heightDifference = heightAt(pointB) - heightAt(pointA);
+      var climbFactor = (heightDifference < 0 ? 1 : 2);
+      var flatDistance = (pointA.x == pointB.x || pointA.y == pointB.y ? 100 : 141);
+      return flatDistance + climbFactor * Math.abs(heightDifference);
+    }
+
+..  Note the flatDistance calculation. If the two points are on the same row or column, they are right next to each other, and the distance between them is a hundred meters. Otherwise, they are assumed to be diagonally adjacent, and the diagonal distance between two squares of this size is a hundred times the square root of two, which is approximately 141. One is not allowed to call this function for squares that are further than one step apart. (It could double-check this... but it is too lazy.)
+
+``flatDistance``\ の計算に注意。もし2つの地点が同じ行か列にあれば、それらは実際に互いの隣にあって、その間の距離は100mである。そうでなければ、それらが対角線上で接していると仮定し、その2地点間の対角線の距離は2の平方根に100をかけた長さ、およそ\ ``141``\ である。この関数を1ステップより遠く離れた四角同士の計算に使ってはならない。（ダブルチェックが必要になり...面倒すぎる。）
+
+|hr|
+
+..  Points on the map are represented by objects containing x and y properties. These three functions are useful when working with such objects:
+
+地図上の地点は\ ``x``\ と\ ``y``\ プロパティを持つオブジェクトによる表現される。そのオブジェクトを使うときに、これら3つの関数があれば便利だろう。：
+
+.. code-block:: javascript
+
+    function point(x, y) {
+      return {x: x, y: y};
+    }
+
+    function addPoints(a, b) {
+      return point(a.x + b.x, a.y + b.y);
+    }
+
+    function samePoint(a, b) {
+      return a.x == b.x && a.y == b.y;
+    }
+
+    show(samePoint(addPoints(point(10, 10), point(4, -2)),
+                   point(14, 8)));
+
+|hr|
+
+演習 7.4
+
+..  If we are going to find routes through this map, we will again need a function to create 'signposts', lists of directions that can be taken from a given point. Write a function possibleDirections, which takes a point object as argument and returns an array of nearby points. We can only move to adjacent points, both straight and diagonally, so squares have a maximum of eight neighbours. Take care not to return squares that lie outside of the map. For all we know the edge of the map might be the edge of the world.
+
+もしこの地図を横切るルートを見つけるとき、与えられた地点から取れる方向のリストという'標識'を作る関数が再度必要になる。pointオブジェクトを引数として取り、近くの地点の配列を返す\ ``possibleDirection``\ 関数を書け。我々は、まっすぐ、あるいは対角線上の隣接した地点しか移動できず、四角は最大8つの隣の四角を持つものとする。地図の外の四角を返すことのないように注意。地図の端は世界の端とみなす。
+
+..  [show solution]
+
+[解答を見る]
+
+.. code-block:: javascript
+
+    function possibleDirections(from) {
+      var mapSize = 20;
+      function insideMap(point) {
+        return point.x >= 0 && point.x < mapSize &&
+               point.y >= 0 && point.y < mapSize;
+      }
+
+      var directions = [point(-1, 0), point(1, 0), point(0, -1),
+                        point(0, 1), point(-1, -1), point(-1, 1),
+                        point(1, 1), point(1, -1)];
+      return filter(insideMap, map(partial(addPoints, from),
+                                   directions));
+    }
+
+    show(possibleDirections(point(0, 0)));
+
+..  I created a variable mapSize, for the sole purpose of not having to write 20 two times. If, at some other time, we want to use this same function for another map, it would be clumsy if the code was full of 20s, which all have to be changed. We could even go as far as making the mapSize an argument to possibleDirections, so we can use the function for different maps without changing it. I judged that that was not necessary in this case though, such things can always be changed when the need arises.
+
+``mapSize``\ 変数を作り、その唯一の目的は同じことを\ ``20``\ 回書く必要をなくすことである。もし、他の時に、別の地図について同じ関数を使うことになったら、コードのあちこちが\ ``20``\ で満たされ、それら全てを変更しなければならないというのは馬鹿馬鹿しい。別の地図に対してもこの関数を変更しなくても良いように、\ ``mapSize``\ を\ ``possibleDirection``\ の引数として与えるだろう。この場合は、実際にそういうことが起こってから変えればいい、今回は必要ないと判断した。
+
+..  Then why didn't I also add a variable to hold the 0, which also occurs two times? I assumed that maps always start at 0, so this one is unlikely to ever change, and using a variable for it only adds noise.
+
+それから、なぜ\ ``0``\ を持つ変数も作らなかったかといえば、それが2回も発生するか？ということにある。私は地図は\ ``0``\ からスタートすると仮定していて、これが今後残念ながら変更になることがあるとしても、そのたに1つの変数を使うのはただノイズを増やすことでしかない。
+
+|hr|
+
+..  To find a route on this map without having our browser cut off the program because it takes too long to finish, we have to stop our amateurish attempts and implement a serious algorithm. A lot of work has gone into problems like this in the past, and many solutions have been designed (some brilliant, others useless). A very popular and efficient one is called A* (pronounced A-star). We will spend the rest of the chapter implementing an A* route-finding function for our map.
+
+ブラウザにそれを渡すことなしに、この地図からルートを見つけるのはプログラムから省略する、なぜならそこまで終わらせるのは長くかかりすぎるからである。我々は素人っぽい試みをやめて真剣なアルゴリズムを実装しよう。過去において、このような問題に多くの作業がつぎ込まれ、多くの解決策（あるものは輝かしく、他は無益だった）が設計された。とても人気があり効果的なのはA*（A-starと発音する）である。この章の残りを、この地図のA*ルート探索関数の実装に費やそう。
+
+..  Before I get to the algorithm itself, let me tell you a bit more about the problem it solves. The trouble with searching routes through graphs is that, in big graphs, there are an awful lot of them. Our Hiva Oa path-finder showed that, when the graph is small, all we needed to do was to make sure our paths didn't revisit points they had already passed. On our new map, this is not enough anymore.
+
+アルゴリズムそれ自身を得る前に、解決すべき問題についてもう少し話そう。グラフを使ってルートを探索することに伴うトラブルは、大きなグラフは、とても恐ろしいほどの数のグラフになるということにある。ヒバオアの道路探索では、グラフは小さく、我々に必要だったのは、既に通過した地点を再度訪れることを確実に避けることにあった。新しい地図では、これではもう十分であるとは言えない。
+
+..  The fundamental problem is that there is too much room for going in the wrong direction. Unless we somehow manage to steer our exploration of paths towards the goal, a choice we make for continuing a given path is more likely to go in the wrong direction than in the right direction. If you keep generating paths like that, you end up with an enormous amount of paths, and even if one of them accidentally reaches the end point, you do not know whether that is the shortest path.
+
+根本的な問題は、間違った方向に行く可能性が多すぎるということだ。ゴールに向かっての道の探検の舵取りは何らかの管理なしには、正しい道より間違った道を進み続けることを我々に選択させることになるだろう。もし、そのような道を生成し続け、莫大な道をたどって、その中の1つが偶然に終点についたとしても、それが最短の道かどうかは分らない。
+
+..  So what you want to do is explore directions that are likely to get you to the end point first. On a grid like our map, you can get a rough estimate of how good a path is by checking how long it is and how close its end is to the end point. By adding path length and an estimate of the distance it still has to go, you can get a rough idea of which paths are promising. If you extend promising paths first, you are less likely to waste time on useless ones.
+
+ここで欲しいものは、探検する方向が、まず、あなたを終点に近づけているかだ。この地図のようなマス目では、どのくらいの長さかとその終点が目的地にどれだけ近いかによって、どのくらい良い道かを荒く見積もることができる。道の長さとまだ残っている長さの見積もりを加算することによって、それらの道が有望かどうかのおおまかなアイデアを得られる。もし有望な道を最初に拡張すれば、使えない道で無駄にする時間は少なくなるだろう。
+
+|hr|
+
+..  But that still is not enough. If our map was of a perfectly flat plane, the path that looked promising would almost always be the best one, and we could use the above method to walk right to our goal. But we have valleys and hillsides blocking our paths, so it is hard to tell in advance which direction will be the most efficient path. Because of this, we still end up having to explore way too many paths.
+
+しかしそれでもまだ十分ではない。もし地図が完全に平坦な平面なら、有望そうに見える道はほとんど常に一番いい道で、その道の通りにゴールへ歩いて行けば良い。しかし、谷や尾根が我々の道を阻んでおり、それで最も効率的な道の方向に進むのが難しくなっている。このために、まだ多くの道を探検しなければならない。
+
+..  To correct this, we can make clever use of the fact that we are constantly exploring the most promising path first. Once we have determined that path A is the best way to get to point X, we can remember that. When, later on, path B also gets to point X, we know that it is not the best route, so we do not have to explore it further. This can prevent our program from building a lot of pointless paths.
+
+これを正すには、最も有望な道を常に探検するということをうまくやることだ。一度X地点までの一番いい道がAであると分ったら、そのことを記憶しておける。その後で、道BもまたX地点に行くと分ったときは、それは一番いい道ではないと分るし、それ以上探検する必要はなくなる。
+
+|hr|
+
+..  The algorithm, then, goes something like this...
+
+そのアルゴリズムは、それから、このようになるだろう...
+
+..  There are two pieces of data to keep track of. The first one is called the open list, it contains the partial routes that must still be explored. Each route has a score, which is calculated by adding its length to its estimated distance from the goal. This estimate must always be optimistic, it should never overestimate the distance. The second is a set of nodes that we have seen, together with the shortest partial route that got us there. This one we will call the reached list. We start by adding a route that contains only the starting node to the open list, and recording it in the reached list.
+
+データの2つの部品を持っておく。1つめはオープン・リストと呼ばれ、まだ探検しなければならない部分的なルートが入っている。ルート毎に得点を持ち、それはその長さとゴールからの距離を加算して計算する。この距離は常に楽観的なもので、距離を過大評価しないようにする。2つめは既に見たノードのセットで、すでに見つけた最短の部分的なルートが一緒に入っている。これをリーチド・リストと呼ぼう。我々は開始地点のノードだけが入っているルートをオープン・リストに加えるところから始めて、それをリーチド・リストに記録するのだ。
+
+..  Then, as long as there are any nodes in the open list, we take out the one that has the lowest (best) score, and find the ways in which it can be continued (by calling possibleDirections). For each of the nodes this returns, we create a new route by appending it to our original route, and adjusting the length of the route using weightedDistance. The endpoint of each of these new routes is then looked up in the reached list.
+
+それから、オープン・リストにノードがある間、その一つについて最も低い（良い）点数のものを取り、続けられる限り（\ ``possibleDirection``\ をコールして）道を探す。これが返すノード毎に、元のルートにこれらを加えた新しいルートを作り、そしてルートの長さを\ ``weightDistance``\ を使って修正する。これらの新しいルートそれぞれの終点をリーチド・リストの中から探す。
+
+..  If the node is not in the reached list yet, it means we have not seen it before, and we add the new route to the open list and record it in the reached list. If we had seen it before, we compare the score of the new route to the score of the route in the reached list. If the new route is shorter, we replace the existing route with the new one. Otherwise, we discard the new route, since we have already seen a better way to get to that point.
+
+もしそのノードがリーチド・リストの中にまだなければ、それは前に到達していないという意味になるから、新しいルートをオープン・リストに加えて、リーチド・リストに記録する。もし、前に\ *到達していたら*\ 、新しいルートの得点とリーチド・リストの中のルートの得点を比較し、もし新しいルートが短ければ、既にあるルートを新しいルートに置き換える。そうでなければ、今の地点に至るより良い道が既にあるということなので、新しいルートは破棄する。
+
+..  We continue doing this until the route we fetch from the open list ends at the goal node, in which case we have found our route, or until the open list is empty, in which case we have found out that there is no route. In our case the map contains no unsurmountable obstacles, so there is always a route.
+
+我々はこれをオープン・リストから取り出したルートがゴールのノードに到達するまで繰り返し、その場合我々はルートを見つけたことになる。またはオープン・リストが空になるまで繰り返し、その場合はルートが見つからなかったということになる。我々の地図には越えられない障害は含まれていないから、常にルートはある。
+
+..  How do we know that the first full route that we get from the open list is also the shortest one? This is a result of the fact that we only look at a route when it has the lowest score. The score of a route is its actual length plus an optimistic estimate of the remaining length. This means that if a route has the lowest score in the open list, it is always the best route to its current endpoint ― it is impossible for another route to later find a better way to that point, because if it were better, its score would have been lower.
+
+どうすれば、オープン・リストから得た最初の全ルートをが最短のものでもあると知ることができるだろうか？これは、このルートが最低の得点を持っているという事実の結果でしかない。ルートの得点は実際の長さプラス残りの長さの\ *楽観的な*\ 見積もりだ。これは、もしルートがオープン・リストの中で、もっとも低い得点を持つなら、それが常に現在の終点への一番良いルートである--この地点にたどり着くもっと良い道を、後から他のルートに見つけることは不可能であり、なぜなら、もしそれがもっと良い道であるなら、その得点の方が低くなっているはずだからである。
+
+|hr|
+
+..  Try not to get frustrated when the fine points of why this works are still eluding you. When thinking about algorithms like this, having seen 'something like it' before helps a lot, it gives you a point of reference to compare the approach to. Beginning programmers have to do without such a point of reference, which makes it rather easy to get lost. Just realise that this is advanced stuff, globally read over the rest of the chapter, and come back to it later when you feel like a challenge.
+
+この作業がまだとらえどころがないということで、イライラしないように。このようなアルゴリズムについて考えるときは、'そのようなもの'として見ることが、アプローチの比較をする上で見るべきポイントをあなたに与え、大いに助けになる。初心者プログラマーはこのようなポイントを見ることなしに作るから、簡単に見失うのである。ただこれが進んだやりかたであるとだけ理解し、章の残り全体を読んで、後で挑戦してみたくなったら、戻ってくるといい。
+
+|hr|
+
+..  I am afraid that, for one aspect of the algorithm, I'm going to have to invoke magic again. The open list needs to be able to hold a large amount of routes, and to quickly find the route with the lowest score among them. Storing them in a normal array, and searching through this array every time, is way too slow, so I give you a data structure called a binary heap. You create them with new, just like Date objects, giving them a function that is used to 'score' its elements as argument. The resulting object has the methods push and pop, just like an array, but pop always gives you the element with the lowest score, instead of the one that was pushed last.
+
+心配なのは、アルゴリズムの1つの面で、魔法を発動しなければならなそうなことだ。オープン・リストは多くのルートを持つことができなければならないし、その中から最低の得点のルートを素早く見つけなければならない。通常の配列に格納して、毎回この配列を検索するのでは遅すぎる。バイナリー・ヒープというデータ構造を教えよう。それは、\ ``new``\ によって、\ ``Date``\ オブジェクトと同じやりかたで作り、引数で与えられた要素を'採点'する関数を与える必要がある。結果のオブジェクトは配列のように\ ``push``\ と\ ``pop``\ メソッドを持つが、しかし\ ``pop``\ は、最後に\ ``push``\ された要素の代わりに、常に最低のスコアをもつ要素を取り出すのだ。
+
+.. code-block:: javascript
+
+    function identity(x) {
+      return x;
+    }
+
+    var heap = new BinaryHeap(identity);
+    forEach([2, 4, 5, 1, 6, 3], function(number) {
+      heap.push(number);
+    });
+    while (heap.size() > 0)
+      show(heap.pop());
+
+..  Appendix 2 discusses the implementation of this data structure, which is quite interesting. After you have read chapter 8, you might want to take a look at it.
+
+:doc:`Appendix 2</Binary Heaps>`\ でこのデータ構造の実に興味深い実装について論じている。\ :doc:`8章</Object-oriented Programming>`\ を読み終わった後に、それを見たくなるかもしれない。
+
+|hr|
+
+..  The need to squeeze out as much efficiency as we can has another effect. The Hiva Oa algorithm used arrays of locations to store routes, and copied them with the concat method when it extended them. This time, we can not afford to copy arrays, since we will be exploring lots and lots of routes. Instead, we use a 'chain' of objects to store a route. Every object in the chain has some properties, such as a point on the map, and the length of the route so far, and it also has a property that points at the previous object in the chain. Something like this:
+
+できる限りの効率を絞り出す必要には他の効果もある。ヒバオアのアルゴリズムはルートを格納するために場所の配列を持っていて、これらは拡張するときに\ ``concat``\ メソッドでコピーされた。今回、探検すべきルートが多すぎるため、我々には配列をコピーする余裕はない。代わりに、ルートを格納するためにオブジェクトの鎖を使う。鎖の中の全てのオブジェクトは地図上のポイント、ルートの長さのようなプロパティを持ち、また鎖の中の直前のポイントのプロパティも持つ。このようなものだ。：
+
+.. image :: /img/objectchain.png
+
+..  Where the cyan circles are the relevant objects, and the lines represent properties ― the end with the dot points at the value of the property. Object A is the start of a route here. Object B is used to build a new route, which continues from A. It has a property, which we will call from, pointing at the route it is based on. When we need to reconstruct a route later, we can follow these properties to find all the points that the route passed. Note that object B is part of two routes, one that ends in D and one that ends in E. When there are a lot of routes, this can save us much storage space ― every new route only needs one new object for itself, the rest is shared with other routes that started the same way.
+
+シアンの円の場所は関係のあるオブジェクト、そして線はプロパティを表現している ― 点になっている終端はプロパティの値を指す。オブジェクト\ ``A``\ はルートの開始地点である。オブジェクト\ ``B``\ は、\ ``A``\ からの続きである新しいルートを作る。それは呼び出すと、そのルートの開始地点を示す、\ ``from``\ プロパティを持つ。後でルートを再構築することが必要になったとき、これらのプロパティで既に通ったルートの全ての地点をたどることができる。オブジェクト\ ``B``\ が2つのルートの部分になっていることに注意。1つは\ ``D``\ 、もう1つは\ ``E``\ で終わっている。多くのルートがあったときにこれが記憶装置の容量を節約してくれる ― 全ての新しいルートはそれ自身の1つのオブジェクトしか必要とせず、残りはスタート地点から同じ経路を通っている他のルートと共有している。
+
+|hr|
+
+演習 7.5
+
+..  Write a function estimatedDistance that gives an optimistic estimate of the distance between two points. It does not have to look at the height data, but can assume a flat map. Remember that we are only travelling straight and diagonally, and that we are counting the diagonal distance between two squares as 141.
+
+2つの地点間の距離の楽観的な見積もりを出す\ ``estimateDistance``\ 関数を書け。高度のデータを見る必要はないが、しかし平坦な地図であると仮定できること。まっすぐ、あるいは対角線上にしか進むことができないこと、そして対角線上の2つの四角の距離は\ ``141``\ として数えることを念頭に置く。
+
+..  [show solution]
+
+[解答を見る]
+
+.. code-block:: javascript
+
+    function estimatedDistance(pointA, pointB) {
+      var dx = Math.abs(pointA.x - pointB.x),
+          dy = Math.abs(pointA.y - pointB.y);
+      if (dx > dy)
+        return (dx - dy) * 100 + dy * 141;
+      else
+        return (dy - dx) * 100 + dx * 141;
+    }
+
+..  The strange formulae are used to decompose the path into a straight and a diagonal part. If you have a path like this...
+
+変な数式は道をまっすぐな部分と斜めに進む部分に分解するためのものだ。もし、このような道があるとして...
+
+.. image :: /img/diagonalpath.png
+
+..  ... the path is 8 squares wide and 4 high, so you get 8 - 4 = 4 straight moves, and 4 diagonal ones.
+
+…道は横方向に四角\ ``8``\ つ分、縦方向に\ ``4``\ つ分あり、\ ``8 - 4 = 4``\ だけまっすぐ、\ ``4``\ だけ斜めに進む。
+
+..  If you wrote a function that just computes the straight 'Pythagorean' distance between the points, that would also work. What we need is an optimistic estimate, and assuming you can go straight to the goal is certainly optimistic. However, the closer the estimate is to the real distance, the less useless paths our program has to try out.
+
+もし、ただポイント間のまっすぐなピタゴラスの距離を計算する関数を書いたら、それも動くだろう。必要なのは楽観的な見積もりで、まっすぐゴールに向かうことができると考えるのも確かに楽観的だ。しかしながら、より本当の距離に近い見積もりは、プログラムが意味のない道を試すことを減らすだろう。
+
+|hr|
+
+演習 7.6
+
+..  We will use a binary heap for the open list. What would be a good data structure for the reached list? This one will be used to look up routes, given a pair of x, y coordinates. Preferably in a way that is fast. Write three functions, makeReachedList, storeReached, and findReached. The first one creates your data structure, the second one, given a reached list, a point, and a route, stores a route in it, and the last one, given a reached list and point, retrieves a route or returns undefined to indicate that no route was found for that point.
+
+オープン・リストにバイナリ・ヒープを使う。リーチド・リストに良いデータ構造は何だろうか。これは与えられた\ ``x``\ 、\ ``y``\ 座標のペアからルートを探すのに使う。なるべく早い方法で。\ ``makeReachedList``\ 、\ ``storeReached``\ 、\ ``findReacedList``\ の3つの関数を書け。1つめはデータ構造をつくるもの、2つめは与えられたリーチド・リストに地点とルートを格納するもの、3つめは与えられたリーチド・リストと地点からルートを取り出すか、もしその地点へのルートが見つからない場合にはそのことを示すために\ ``undefined``\ を返す。
+
+..  [show solution]
+
+[解答を見る]
+
+..  One reasonable idea would be to use an object with objects in it. One of the coordinates in the points, say x, is used as a property name for the outer object, and the other, y, for the inner object. This does require some bookkeeping to handle the fact that, sometimes, the inner object we are looking for is not there (yet).
+
+1つの合理的なアイデアは、中にオブジェクトを格納するオブジェクトを使うことだ。1つの地点の座標、言わば\ ``x``\ は外側のオブジェクトのプロパティの名前として使われ、他方、\ ``y``\ は内側のオブジェクトである。これは、ときどき、探している内側のオブジェクトが（まだ）そこにないという事実を扱うために記録を必要とする。
+
+.. code-block:: javascript
+
+    function makeReachedList() {
+      return {};
+    }
+
+    function storeReached(list, point, route) {
+      var inner = list[point.x];
+      if (inner == undefined) {
+        inner = {};
+        list[point.x] = inner;
+      }
+      inner[point.y] = route;
+    }
+
+    function findReached(list, point) {
+      var inner = list[point.x];
+      if (inner == undefined)
+        return undefined;
+      else
+        return inner[point.y];
+    }
+
+..  Another possibility is to merge the x and y of the point into a single property name, and use that to store routes in a single object.
+
+他の可能性は地点の\ ``x``\ と\ ``y``\ を1つのプロパティ名に合併し、それをルートを格納する単一のオブジェクトの名前に使うことだ。
+
+.. code-block:: javascript
+
+    function pointID(point) {
+      return point.x + "-" + point.y;
+    }
+
+    function makeReachedList() {
+      return {};
+    }
+
+    function storeReached(list, point, route) {
+      list[pointID(point)] = route;
+    }
+
+    function findReached(list, point) {
+      return list[pointID(point)];
+    }
+
+|hr|
+
+..  Defining a type of data structure by providing a set of functions to create and manipulate such structures is a useful technique. It makes it possible to 'isolate' the code that makes use of the structure from the details of the structure itself. Note that, no matter which of the above two implementations is used, code that needs a reached list works in exactly the same way. It doesn't care what kind of objects are used, as long as it gets the results it expected.
+
+データ構造を作り、操作する関数のセットを提供することによって、データ構造の型を定義するのは便利なテクニックだ。それはデータ構造それ自体の詳細からデータ構造を使うコードの'分離'を可能にする。上記2つの実装のどちらを使っても、リーチド・リストを必要とするコードは全く同じように動くことに注意。使われているオブジェクトの種類に気を遣うことなく、期待する結果を手に入れることができる。
+
+..  This will be discussed in much more detail in chapter 8, where we will learn to make object types like BinaryHeap, which are created using new and have methods to manipulate them.
+
+このことについて\ :doc:`8章</Object-oriented Programming>`\ でもっと詳しく論じ、そこで\ ``BinaryHeap``\ のように、\ ``new``\ によって作られ、メソッドを持つオブジェクト型の作り方を学ぶ。
+
+|hr|
+
+..  Here we finally have the actual path-finding function:
+
+実際の経路探索関数は最終的にはこうなる。：
+
+.. code-block:: javascript
+
+    function findRoute(from, to) {
+      var open = new BinaryHeap(routeScore);
+      var reached = makeReachedList();
+
+      function routeScore(route) {
+        if (route.score == undefined)
+          route.score = estimatedDistance(route.point, to) +
+                        route.length;
+        return route.score;
+      }
+      function addOpenRoute(route) {
+        open.push(route);
+        storeReached(reached, route.point, route);
+      }
+      addOpenRoute({point: from, length: 0});
+
+      while (open.size() > 0) {
+        var route = open.pop();
+        if (samePoint(route.point, to))
+          return route;
+
+        forEach(possibleDirections(route.point), function(direction) {
+          var known = findReached(reached, direction);
+          var newLength = route.length +
+                          weightedDistance(route.point, direction);
+          if (!known || known.length > newLength){
+            if (known)
+              open.remove(known);        
+            addOpenRoute({point: direction,
+                          from: route,
+                          length: newLength});
+          }
+        });
+      }
+      return null;
+    }
+
+..  First, it creates the data structures it needs, one open list and one reached list. routeScore is the scoring function given to the binary heap. Note how it stores its result in the route object, to prevent having to re-calculate it multiple times.
+
+まず、必要なデータ構造、1つはオープン・リスト、1つはリーチド・リストを作る。\ ``routeScore``\ は与えられたバイナリー・ヒープの得点をつける関数だ。何度も再計算するのを防ぐためにrouteオブジェクトにその結果を格納していることに注意しよう。
+
+..  addOpenRoute is a convenience function that adds a new route to both the open list and the reached list. It is immediately used to add the start of the route. Note that route objects always have the properties point, which holds the point at the end of the route, and length, which holds the current length of the route. Routes which are more than one square long also have a from property, which points at their predecessors.
+
+``addOpenRoute``\ は新しいルートをオープン・リストとリーチド・リストの両方に追加する便利な関数だ。ルートの開始地点を明示的に加えるのに遣われる。routeオブジェクトは常に、ルートの終わりを持つ\ ``point``\ 、ルートの現在の長さを持つ\ ``length``\ プロパティを持つ。四角1つ分以上の長さを持つルートは、その直前の地点を示す\ ``from``\ プロパティも持つ。
+
+..  The while loop, as was described in the algorithm, keeps taking the lowest-scoring route from the open list and checks whether this gets us to the goal point. If it does not, we must continue by expanding it. This is what the forEach takes care of. It looks up this new point in the reached list. If it is not found there, or the node found has a longer length that the new route, a new route object is created and added to the open list and reached list, and the existing route (if any) is removed from the open list.
+
+アルゴリズムの中に記述された\ ``while``\ ループは、オープン・リストから最低の点数のルートを取り続け、そしてゴール地点にたどり着いたかチェックする。もしそうでなければ、その展開を続ける。それは\ ``forEach``\ で行われる。この新しい地点をリーチド・リストから探す。もしそこになければ、あるいは見つけたノードの持つルートの長さが新しいルートの長さより長ければ、新しいrouteオブジェクトが作られオープン・リストとリーチド・リストに加えられ、（もしあれば）既存のルートがオープン・リストから取り除かれる。
+
+..  What if the route in known is not on the open list? It has to be, because routes are only removed from the open list when they have been found to be the most optimal route to their endpoint. If we try to remove a value from a binary heap that is not on it, it will throw an exception, so if my reasoning is wrong, we will probably see an exception when running the function.
+
+もし\ ``known``\ の中のルートがオープン・リストにない、とはどういうことか？ルートがオープン・リストから取り除かれるのは、その終点への最も楽観的なルートが見つかった時でなければならない。もしそうでないのにバイナリー・ヒープから値を取り除こうとしたら例外が投げられるので、私の理論が間違っていれば、おそらく関数の実行中に例外を見ることになるだろう。
+
+..  When code gets complex enough to make you doubt certain things about it, it is a good idea to add some checks that raise exceptions when something goes wrong. That way, you know that there are no weird things happening 'silently', and when you break something, you immediately see what you broke.
+
+コードが確かにそうなっているか疑わしくなるほど複雑になったとき、何か間違っているときに例外を起こすチェックを加えるのはいいアイデアだ。そうすれば、何か奇怪なことが'静かに'起こっているかどうか知ることができ、何かを壊したとき、何を壊したか明示的に見ることができる。
+
+|hr|
+
+..  Note that this algorithm does not use recursion, but still manages to explore all those branches. The open list more or less takes over the role that the function call stack played in the recursive solution to the Hiva Oa problem ― it keeps track of the paths that still have to be explored. Every recursive algorithm can be rewritten in a non-recursive way by using a data structure to store the 'things that must still be done'.
+
+このアルゴリズムが再帰を使っていないことに注意、しかしそれでも全ての分岐を探検することができる。オープン・リストが、ヒバオア問題の再帰の解決の中で関数呼び出しのスタックが果たしているのと同じような役割を担って ― 探検しなければならない道を記録し続けている。全ての再帰アルゴリズムは、'まだやらなければないこと'を格納するデータ構造を使うことにより、再帰しない方法で書くことが可能だ。
+
+|hr|
+
+..  Well, let us try our path-finder:
+
+よし、この経路探索を試してみよう：
+
+.. code-block:: javascript
+
+    var route = findRoute(point(0, 0), point(19, 19));
+
+..  If you ran all the code above, and did not introduce any errors, that call, though it might take a few seconds to run, should give us a route object. This object is rather hard to read. That can be helped by using the showRoute function which, if your console is big enough, will show a route on a map.
+
+もし上記のコード全てを実行して、何のエラーもでなかったら、実行するのに2,3秒ほどかかり、1つのrouteオブジェクトを返すだろう。このオブジェクトはまだ読みにくい。もしコンソールが十分大きいなら、地図上で1つのルートを見せてくれる、\ ``showRoute``\ 関数がその助けになるだろう。
+
+.. code-block:: javascript
+
+    showRoute(route);
+
+..  You can also pass multiple routes to showRoute, which can be useful when you are, for example, trying to plan a scenic route, which must include the beautiful viewpoint at 11, 17.
+
+その方が便利なら、複数のルートを\ ``showRoute``\ に渡すこともできる。例えば、\ ``11,17``\ の美しい景観を含む景色のいいルートを試そう。
+
+.. code-block:: javascript
+
+    showRoute(findRoute(point(0, 0), point(11, 17)),
+              findRoute(point(11, 17), point(19, 19)));
+
+|hr|
+
+..  Variations on the theme of searching an optimal route through a graph can be applied to many problems, many of which are not at all related to finding a physical path. For example, a program that needs to solve a puzzle of fitting a number of blocks into a limited space could do this by exploring the various 'paths' it gets by trying to put a certain block in a certain place. The paths that ends up with insufficient room for the last blocks are dead ends, and the path that manages to fit in all blocks is the solution.
+
+グラフ通じての楽観的なルート探索のテーマのバリエーションは多くの問題に適用することができ、その多くは物理的な経路に関連したものだけに留まらない。例えば、複数のブロックを限られたスペースに詰め込むパズルを解くプログラムが必要になったときは、決まった場所に決まったブロックを入れようとすることを'経路'のバリエーションとして探索することができる。最後のブロックを入れる場所がなければ経路は行き止まり、全てのブロックがはまった経路がパズルの解答になる。
+
+
+..  Computers are deterministic machines: They always react in the same way to the input they receive, so they can not produce truly random values. Therefore, we have to make do with series of numbers that look random, but are in fact the result of some complicated deterministic computation.
+
+.. [#f1] コンピュータは決定論的な機械である：常に受けた入力に同じように反応し、真の意味でランダムな値を作り出すことはできない。だから、ランダムであるかのように見える一連の数値を作らせて、それを行うのだが、実際にはそれはある複雑な決定論的な計算の結果である。
+
