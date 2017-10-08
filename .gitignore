@@ -1,6 +1,3 @@
-.buildinfo
-/*.html
-objects.inv
-searchindex.js
-_site/
-.sass-cache/
+_site
+.sass-cache
+.jekyll-metadata

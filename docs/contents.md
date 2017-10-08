@@ -1,27 +1,28 @@
+---
+layout: post
+title: Contents
+---
 Eloquent JavaScript
 ===================
 
 Contents
 --------
 
-.. toctree::
-   :numbered:
+   1. [Introduction](Introduction.html)
+   2. Basic JavaScript
+   3. Functions
+   4. Data structures
+   5. Error Handling
+   6. Functional Programming
+   7. Searching
+   8. Object-oriented Programming
+   9. Modularity
+   10. Regular Expressions
+   11. Web programming A crash course
+   12. The Document-Object Model
+   13. Browser Events
+   14. HTTP requests
 
-   Introduction
-   Basic JavaScript
-   Functions
-   Data structures
-   Error Handling
-   Functional Programming
-   Searching
-   Object-oriented Programming
-   Modularity
-   Regular Expressions
-   Web programming A crash course
-   The Document-Object Model
-   Browser Events
-   HTTP requests
-    
 Appendix
 --------
 
