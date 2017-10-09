@@ -13,6 +13,7 @@ by Marijn Haverbeke
 
 これはMarijn Haverbeke氏による [Eloquent JavaScript](http://eloquentjavascript.net/) を ![森]({{ site.url }}/assets/img/email.png "email") が自分の勉強のために翻訳したものです。元文書のライセンスは(CC BY 3.0)です。
 
+![本]({{ site.url }}/assets/img/ejs.png "ejs")
 [本を手に入れる](http://www.amazon.com/gp/product/1593272820?ie=UTF8&tag=marijhaver-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=1593272820)
 
 **流暢なJavaScript（原題：Eloquent JavaScript）** はJavaScript言語およびプログラミング全般への手引きとなります。
@@ -27,7 +28,7 @@ by Marijn Haverbeke
 
 電子媒体のものは以下のフォーマットが利用可能：
 
-* [HTML](/contents)
+* [HTML](/contents.html)
 * HTML, zipped
 * HTML, single page (not interactive)
 
