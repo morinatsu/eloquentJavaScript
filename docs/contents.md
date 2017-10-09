@@ -8,9 +8,9 @@ Eloquent JavaScript
 Contents
 --------
 
-   1. [Introduction](Introduction.html)
-   2. Basic JavaScript
-   3. Functions
+   1. [導入](Introduction.html)
+   2. [基本のJavaScript](Basic JavaScript.html)
+   3. [関数](Functions)
    4. Data structures
    5. Error Handling
    6. Functional Programming
