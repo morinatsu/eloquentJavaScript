@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>3. 関数</title>
+  <meta name="description" content="Japanese translateion of &#39;Eloquent JavaScript&#39;">
+
+  <link rel="stylesheet" href="/eloquentJavaScript/assets/main.css">
+  <link rel="canonical" href="https://morinatsu.github.com/eloquentJavaScript/Functions.html">
+  <link rel="alternate" type="application/rss+xml" title="Eloquent JavaScript(ja)" href="/eloquentJavaScript/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/eloquentJavaScript/">Eloquent JavaScript(ja)</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Basic%20JavaScript.html">2. 基本のJavaScript</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Functions.html">3. 関数</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Introduction.html">1. 導入</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/about/">About</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/contents.html">Contents</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/">Eloquent JavaScript - Top</a>
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="関数">関数</h1>
+
+<p>プログラムはしばしば異なる場所で同じ事をすることを必要とする。必要な全ての文を毎回繰り返すのは退屈で失敗しがちだ。これらを1カ所にまとめておけて、必要なときにプログラムから呼び出せればもっと良いだろう。このために関数が発明された：これによりプログラムがひつようとするたびにコードを呼び出せるようになる。スクリーンに文字列を出力するのには少々の文しか必要としないが、しかし<code class="highlighter-rouge">print</code>関数があることで、我々は<code class="highlighter-rouge">print("Aleph")</code>と書くだけでよくなり、そのようにしている。</p>
+
+<p>関数を単なるコードの塊と見るのは正しくない。必要なら、これらは純粋な関数、アルゴリズム、回り道、抽象、判断、加群、継続そしてデータ構築その他といった役割を果たす。関数を効果的に使えるようになるにはプログラミングのまじめな種類の技術が必要となる。この章はこの課題への導入を提供し、<a href="/eloquentJavaScript/Functional%20Programming.html">6.関数型プログラミング</a>でより深いことを論じよう。</p>
+
+<hr />
+
+<p>純粋な関数、あなたが人生のどこかで学んでいると期待して数学的クラスの関数から始めよう。コサインや数の絶対値といったものは1つの引数を取る純粋な関数である。加算は2つの引数を取る純粋な関数だ。</p>
+
+<p>純粋な関数の定義は同じ引数が与えられたら常に同じ結果を返すことで、side effectを持たない。引数を取り、これらの引数を元に値を返し、それ以外の余計なことはしない。</p>
+
+<p>JavaScriptにおいて、加算は演算子であるが、しかしこれに似たものを関数にラップすることができる。（無意味に見えるが、これは様々な状況で実に便利なのだ）:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">add</code>はこの関数の名前である。<code class="highlighter-rouge">a</code>と<code class="highlighter-rouge">b</code>は2つの引数の名前である。<code class="highlighter-rouge">return a + b;</code>はこの関数の実体である。</p>
+
+<p><code class="highlighter-rouge">function</code>キーワードは新しい関数の作成で常に使われる。その後に変数名が続いたとき、この名前のもとに結果の関数が格納される。この名前の次には引数名のリストが続き、それから最後に関数の実体が続く。<code class="highlighter-rouge">while</code>ループや<code class="highlighter-rouge">if</code>文のものと異なり、関数の実体の周りの中括弧は必須である[^1]。<br />
+  [^1] 技術的には、これは必要でない。しかし私はJavaScriptの設計者は関数本体が常に括弧を持つようにすれば物事がクリアになったと考える。</p>
+
+<p><code class="highlighter-rouge">return</code>キーワードには、式が続き、関数の戻り値を決める。制御が<code class="highlighter-rouge">return</code>文に来たら、現在の関数から抜け出して関数を呼び出したコードに値が返される。<code class="highlighter-rouge">return</code>文に式が無ければ関数は<code class="highlighter-rouge">undefined</code>を返す。</p>
+
+<p>本体にはもちろん1つ以上の文を含めることができる。これは累乗を計算する関数である（正の整数の指数による）:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">power</span><span class="p">(</span><span class="nx">base</span><span class="p">,</span> <span class="nx">exponent</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">count</span> <span class="o">&lt;</span> <span class="nx">exponent</span><span class="p">;</span> <span class="nx">count</span><span class="o">++</span><span class="p">)</span>
+    <span class="nx">result</span> <span class="o">*=</span> <span class="nx">base</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">power</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p><a href="/eloquentJavaScript/Basic%20JavaScript.html#Ex2-2">演習2.2</a>を解いていれば、累乗の計算のためのこのテクニックは見慣れているだろう。</p>
+
+<p>変数（<code class="highlighter-rouge">result</code>）を作り更新するのはside effectである。純粋な関数にはside effectはないと言わなかっただろうか？</p>
+
+<p>関数の中で作られた変数は関数の中でしか存在しない。これは幸運なことに、プログラマーがプログラム全体を通じて必要なだけの全ての変数に違う名前を設定する必要は無い。<code class="highlighter-rouge">result</code>は<code class="highlighter-rouge">power</code>の中にしか存在しないので、この変更は関数から戻ってくるまでのものとなり、それを呼び出すコードの見通しにはside effectはない。</p>
+
+<hr />
+
+<p><a href="#Ex3-1">演習 3.1</a></p>
+
+<p>引数として与えられた数値の絶対値を返す、<code class="highlighter-rouge">absolute</code>関数を書け。負の数の絶対値は同じ数値を正の数にしたもので、正の数（または0）の絶対値はその数そのものである。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">absolute</span><span class="p">(</span><span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">number</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="nx">number</span><span class="p">;</span>
+  <span class="k">else</span>
+    <span class="k">return</span> <span class="nx">number</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">absolute</span><span class="p">(</span><span class="o">-</span><span class="mi">144</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>純粋な関数には2つのとてもいい特徴がある。考えるのに簡単で、再利用しやすいことだ。</p>
+
+<p>関数が純粋なものなら、それを呼び出すときはそれ自身だけを見ればいい。正しく動いていないようであれば、コンソールから直接呼び出してテストすることができ、背景に依存しないために単純である [^2] 。テストを自動的に行うのも簡単だ―個々の関数をテストするプログラムを書くのだ。純粋で無い関数は全ての要素によって異なる値を返すかも知れず、テストするのは難しくしうるside effectを持つ。<br />
+  [^2] 技術的には、純粋な関数は外部の変数の値を使うことができない。これらの値は変更されるかもしれず、それにより関数が同じ引数に対して異なる値を返すことになる。実用上は、プログラマーはある変数を’コンスタント’–それらは変更されないと期待される–と考えることができ、コンスタントしか使わない関数は純粋であると考える。関数の値を含む変数がしばしばコンスタント変数のいい例である。</p>
+
+<p>純粋な関数は自己充足的であるため、純粋でないものより、便利で広い範囲の状況において適切だ。例として<code class="highlighter-rouge">show</code>を取り上げる。この関数の便利なところはプリント出力するスクリーンが特別な場所にあることによる。もしこのような場所になければ、この関数は不便だ。<code class="highlighter-rouge">format</code>という似たような関数のことを想像しよう、値を引数として取り、この値を返す表現する文字列を返す。この関数はより多くの状況で<code class="highlighter-rouge">show</code>より便利だ。</p>
+
+<p>もちろん、<code class="highlighter-rouge">format</code>は<code class="highlighter-rouge">show</code>と同じ問題を解決するものではなく、純粋でない関数は問題を解くためにside effectを必要とする。多くの場合において、純粋でない関数はその必要に正確だ。そうでない場合には、問題は純粋な関数によって解かれ、純粋でないものはより便利で効果的な場合に使われるだろう。</p>
+
+<p>だから、純粋な関数で表現することが簡単であるときは、そのやり方で書こう。しかし純粋でない関数を汚いもののように思わないこと。</p>
+
+<hr />
+
+<p>side effectのある関数は<code class="highlighter-rouge">return</code>文を含まなくてもよい。もし、<code class="highlighter-rouge">return</code>文に出会わなければ、関数は<code class="highlighter-rouge">undefined</code>を返す。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">yell</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="nx">message</span> <span class="o">+</span> <span class="s2">"!!"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">yell</span><span class="p">(</span><span class="s2">"Yow"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>関数の引数の名前はその中の変数と同じように使える。関数の引数の値はそれが呼び出されたときの値を参照し、関数の中で作られた通常の変数と同様に、関数の外には存在しない。トップレベルの環境の他に、より小さな、ローカルな環境が関数呼び出しによって作られる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">alertIsPrint</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">alert</span> <span class="o">=</span> <span class="nx">print</span><span class="p">;</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">alertIsPrint</span><span class="p">(</span><span class="s2">"Troglodites"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>このローカルな環境の中の変数は関数の中のコードでしか見えない。もしこの関数が他の関数から呼び出されたら、新しく呼び出された関数は最初の関数の中の変数を見ない。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">variable</span> <span class="o">=</span> <span class="s2">"top-level"</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">printVariable</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"inside printVariable, the variable holds '"</span> <span class="o">+</span>
+        <span class="nx">variable</span> <span class="o">+</span> <span class="s2">"'."</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">test</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">variable</span> <span class="o">=</span> <span class="s2">"local"</span><span class="p">;</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"inside test, the variable holds '"</span> <span class="o">+</span> <span class="nx">variable</span> <span class="o">+</span> <span class="s2">"'."</span><span class="p">);</span>
+  <span class="nx">printVariable</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="nx">test</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>しかしながら、これは巧妙だがとても便利な現象であり、関数が他の関数の<strong>中で</strong>定義された時、そのローカルな環境はトップレベルのものの代わりに、それを取り巻くローカルな環境がもとになっている。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">variable</span> <span class="o">=</span> <span class="s2">"top-level"</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">parentFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">variable</span> <span class="o">=</span> <span class="s2">"local"</span><span class="p">;</span>
+  <span class="kd">function</span> <span class="nx">childFunction</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">print</span><span class="p">(</span><span class="nx">variable</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nx">childFunction</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="nx">parentFunction</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>これがもたらすのは、関数の中で見える変数はプログラムテキストの中で関数が書かれている場所によって決まるということだ。関数の定義の’上’で定義された全ての変数は見ることができ、これは関数の実体の中に入れられたものと、トップレベルのものと両方を意味する。この変数の参照へのアプローチを語彙的なスコーピングと呼ばれる。</p>
+
+<hr />
+
+<p>他のプログラミング言語の経験がある人々はブロックの中のコード（中括弧の中）もまた新しくローカルな環境を作ることを期待するかもしれない。JavaScriptでは異なる。関数のみが新しいスコープを作る。このような自由なブロックを使うことは許されている…。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">something</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">something</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"Inside: "</span> <span class="o">+</span> <span class="nx">something</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">print</span><span class="p">(</span><span class="s2">"Outside: "</span> <span class="o">+</span> <span class="nx">something</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>…しかしブロックの中の<code class="highlighter-rouge">something</code>はブロックの外側のものと同じものを参照している。実際、このようなブロックは許されてはいるが、まったく使い途がない。多くの人々はJavaScriptの設計上の些細な失敗だと同意しており、ECMAScript Harmonyではブロックの中での変数定義を行う手段が追加される。（<code class="highlighter-rouge">let</code>キーワード）</p>
+
+<hr />
+
+<p>これはあなたを驚かせるかもしれない:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">variable</span> <span class="o">=</span> <span class="s2">"top-level"</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">parentFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">variable</span> <span class="o">=</span> <span class="s2">"local"</span><span class="p">;</span>
+  <span class="kd">function</span> <span class="nx">childFunction</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">print</span><span class="p">(</span><span class="nx">variable</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">childFunction</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">child</span> <span class="o">=</span> <span class="nx">parentFunction</span><span class="p">();</span>
+<span class="nx">child</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">paretntFunction</code>はその内部の関数を<strong>返し</strong>、下のコードがこの関数を呼び出す。<code class="highlighter-rouge">parentFunction</code>はここでは既に実行が終了しているにもかかわらず、<code class="highlighter-rouge">variable</code>が<code class="highlighter-rouge">"local"</code>の値を持っているローカル環境は未だ存在し、そして<code class="highlighter-rouge">childFunction</code>はそれを使うことができる。この現象はクロージャと呼ばれる。</p>
+
+<hr />
+
+<p>プログラムのその部分を早く見るのがそれによって簡単になることを差し置いても、変数がプログラムテキストの形を見ることで、レキシカルスコーピングもまた関数の’同期’を許す。囲まれた関数の中の変数を使うことにより、内側の関数も異なる働きをする。少しだけ異なる同様な関数が必要なとき、引数に2を足す関数と5を足す関数が必要な時を想像しよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">makeAddFunction</span><span class="p">(</span><span class="nx">amount</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">number</span> <span class="o">+</span> <span class="nx">amount</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">add</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">addTwo</span> <span class="o">=</span> <span class="nx">makeAddFunction</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">addFive</span> <span class="o">=</span> <span class="nx">makeAddFunction</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">addTwo</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="nx">addFive</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>異なる関数が同じ名前の変数をこんがらがることなしに含むことができるときという事実の上では、スコーピングのルールもまた実行の問題なしに呼び出されうる関数を許す。<strong>それ自身</strong>を呼び出す関数は再帰と呼ばれる。再帰は面白い定義を許す。<code class="highlighter-rouge">power</code>の以下の実装を見てみよう。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">power</span><span class="p">(</span><span class="nx">base</span><span class="p">,</span> <span class="nx">exponent</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">exponent</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">else</span>
+    <span class="k">return</span> <span class="nx">base</span> <span class="o">*</span> <span class="nx">power</span><span class="p">(</span><span class="nx">base</span><span class="p">,</span> <span class="nx">exponent</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>これはむしろ数学者による定義の解説に近く、私にとっては今までのものよりとてもよく見える。ループを整理し、しかし<code class="highlighter-rouge">while</code>、<code class="highlighter-rouge">for</code>はなく、ローカルなside effectがあるようにも見えない。自分自身を呼び出すことで、この関数は同じ効果を作り出す。</p>
+
+<p>1つ重要な問題がある：多くのブラウザで、この2つめのバージョンは最初のものより10倍近く遅い。JavaScriptでは、単純なループを走らせる方が、関数を何度も呼び出すよりとても安価なのだ。</p>
+
+<hr />
+
+<p>スピード対エレガンスさのジレンマはとても面白いものの一つだ。forと再帰の判断に留まらない。多くの状況で、エレガントであること、直感的であること、そして時には短い解決が、入り組んだしかし速い解決に置き換えられうる。</p>
+
+<p><code class="highlighter-rouge">power</code>関数の場合はエレガントでないバージョンもまだとても単純で読みやすいものであった。再帰のバージョンでこれを入れ替えるのはセンスが良いとは言えない。しばしば、にもかかわらず、プログラムをまっすぐなものにするために、プログラムに複雑さをもたらす効率性をあきらめることは魅力的な選択になる。</p>
+
+<p>多くのプログラマーによって繰り返され、完全に同意されてきた基本的なルールは、プログラムが遅すぎると証明されるまで効率のことは気にすべきでないということだ。その時、遅すぎると分った部分についてだけ、エレガンスさを効率性に置き換え始めれば良いのだ。</p>
+
+<p>もちろん、上記のルールはパフォーマンスのことを全く無視して良いということを意味していない。多くの場合において、<code class="highlighter-rouge">power</code>関数のようには、’エレガントな’アプローチによっては十分な単純さが得られない。他の場合、経験のあるプログラマーは単純なアプローチは十分に速くならないと考えることもある。</p>
+
+<p>このような大きな話をする理由は、驚くほど多くのプログラマーが細かいところにおいてもファンタジックに効率性にフォーカスしていることにある。その結果は大きく、複雑で、しばしば正しさに欠けるプログラムであり、よりまっすぐで等価値のものよりも書くのに長くかかり、かつしばしばほんの少ししか速くなっていない。</p>
+
+<hr />
+
+<p>しかし再帰の話に戻ろう。再帰の概念はスタックというものに密接に関係している。関数が呼ばれたとき、制御は関数の実体に移る。実体が帰ってきたとき、関数を呼んだところから再開する。実体が実行されているとき、コンピューターはその関数が呼ばれたときの背景を記憶していなければならない、後でどこから続きを行うべきか知らなければならない。この背景を格納する場所がスタックである。</p>
+
+<p>これがスタックと呼ばれるものが、見てきたように、関数の実体が関数を再度呼び出したときに実際にやっていることだ。関数が呼ばれる度に、別の背景が格納される。背景の積み重ねとしてこれを見ることができる。関数が呼ばれる度に、この重なりの一番上に現在の背景が投げ込まれる。関数から戻ったとき、重なりの一番上から背景が取られて再開が始まる。</p>
+
+<p>このスタックを格納するためにコンピューターのメモリ上のスペースを必要とする。スタックは大きくなりすぎたとき、コンピュータは”スタックのスペースが尽きた”とか”再帰しすぎ”のようなメッセージとともにギブアップするだろう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">chicken</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">egg</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">egg</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">chicken</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">chicken</span><span class="p">()</span> <span class="o">+</span> <span class="s2">" came first."</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>壊れたプログラムを書くとても面白い方法をこのデモンストレーションに付け加えてあり、この例では関数が直接自分自身を再帰的に呼び出すのではない。もしある関数が1つめの関数を再び呼ぶ他の関数を（直接にせよ間接にせよ）呼び出すようにしたら、それもまた再帰である。</p>
+
+<hr />
+
+<p>再帰は常にループのより効率的でない代替であるというわけではない。幾つかの問題はループより再帰の方が簡単に解決できる。よくあるのは探索や幾つかに別れる’枝’を処理する必要のある問題であり、枝のそれぞれがまたさらに枝分かれしているというものである。</p>
+
+<p>このようなパズルを考えてみよう：1という数から始めて5を足すか3をかけることを繰り返せば、無限に新しい値が作られ続ける。数値が与えられたときに、その数値を作るのにどのような順番で足し算とかけ算が行われたのか探してみる関数はどう書けば良いだろうか。</p>
+
+<p>例えば、13という数は最初に1に3をかけ、5を2回足す。15という数には到達不可能である。</p>
+
+<p>これが解答である:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">findSequence</span><span class="p">(</span><span class="nx">goal</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">find</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">history</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">start</span> <span class="o">==</span> <span class="nx">goal</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">history</span><span class="p">;</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">start</span> <span class="o">&gt;</span> <span class="nx">goal</span><span class="p">)</span>
+      <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="k">else</span>
+      <span class="k">return</span> <span class="nx">find</span><span class="p">(</span><span class="nx">start</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">"("</span> <span class="o">+</span> <span class="nx">history</span> <span class="o">+</span> <span class="s2">" + 5)"</span><span class="p">)</span> <span class="o">||</span>
+             <span class="nx">find</span><span class="p">(</span><span class="nx">start</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"("</span> <span class="o">+</span> <span class="nx">history</span> <span class="o">+</span> <span class="s2">" * 3)"</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">find</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"1"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">print</span><span class="p">(</span><span class="nx">findSequence</span><span class="p">(</span><span class="mi">24</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>もっとも短い演算を探す必要はなく、任意のものが見つかれば十分であることに注意。</p>
+
+<p><code class="highlighter-rouge">find</code>関数の中で、自分自身を2つのことなるやり方で呼び出し、5の加算と3のかけ算の両方の探索を行っている。もし数値が見つかれば、<code class="highlighter-rouge">history</code>の文字列を返し、それにはこの数値を選るまでに行った全ての演算が記録されている。現在の値が<code class="highlighter-rouge">goal</code>より大きいかのチェックも行われており、それは与えた数に至らない枝である場合に探索を打ち切るためにある。</p>
+
+<p>この例における<code class="highlighter-rouge">||</code>演算子の用法は’<code class="highlighter-rouge">start</code>に5を加算する解決を探して返し、もしそれに失敗したら、<code class="highlighter-rouge">start</code>に3を積算する解決を探してそれを返す’である。このように、より自然言葉のように書くこともできる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code>    <span class="k">else</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">found</span> <span class="o">=</span> <span class="nx">find</span><span class="p">(</span><span class="nx">start</span> <span class="o">+</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">"("</span> <span class="o">+</span> <span class="nx">history</span> <span class="o">+</span> <span class="s2">" + 5)"</span><span class="p">);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">found</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span>
+        <span class="nx">found</span> <span class="o">=</span> <span class="nx">find</span><span class="p">(</span><span class="nx">start</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">history</span> <span class="o">+</span> <span class="s2">" * 3"</span><span class="p">);</span>
+      <span class="k">return</span> <span class="nx">found</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>関数定義がプログラムの残りの部分にあるにも係わらず、これらは同じタイムラインにはない:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">print</span><span class="p">(</span><span class="s2">"The future says: "</span><span class="p">,</span> <span class="nx">future</span><span class="p">());</span>
+
+<span class="kd">function</span> <span class="nx">future</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s2">"We STILL have no flying cars."</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>何が起こっているかというと、コンピューターが関数定義を探し、結びついた関数を格納するのは、プログラムの残りの部分の実行を開始する<strong>前に</strong>行われる。関数が他の関数の中で定義されているときも同じようなことが起こる。外側の関数が呼び出されたとき、最初に起こるのは全ての内側の関数が新しい環境の中に付け加えられることである。</p>
+
+<hr />
+
+<p>関数の値を定義する別の方法は、他の値を作るときの方法にもっと似ている。<code class="highlighter-rouge">function</code>キーワードが式が必要な場所で使われたとき、それは関数の値を作り出す一つの式として扱われる。この方法で作られた関数は名前が与えられていなくてもよい（与えても良い）。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">add</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">add</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">add</code>の定義の後のセミコロンに注意。通常の関数定義では必要ないが、この文は<code class="highlighter-rouge">var add = 22;</code>と同様の全体構造を持ち、セミコロンを必要とする。</p>
+
+<p>この種類の関数値は名前を持たないため、無名関数と呼ばれる。先ほどの<code class="highlighter-rouge">makeAddFunction</code>のように関数名を与えても使い途がないこともある。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">makeAddFunction</span><span class="p">(</span><span class="nx">amount</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">number</span> <span class="o">+</span> <span class="nx">amount</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>最初のバージョンの<code class="highlighter-rouge">makeAddFunction</code>で<code class="highlighter-rouge">add</code>と名付けられた関数は一度しか参照されておらず、その名前はなんの目的も果たしていなかった。だから、その関数値を直接返すこともできた。</p>
+
+<hr />
+
+<p><a href="#Ex3-2">演習 3.2</a></p>
+
+<p>1つの引数を取り、その引数より大きいことをテストする関数を返す<code class="highlighter-rouge">greaterThan</code>関数を書け。返された関数が1つ数値の引数として呼び出されたとき、それは真偽値を返す：与えられた数値がそのテスト関数が作られたときに使われた数値より大きければ<code class="highlighter-rouge">true</code>を、そうでなければ<code class="highlighter-rouge">false</code>を返す。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">greaterThan</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">y</span> <span class="o">&gt;</span> <span class="nx">x</span><span class="p">;</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">greaterThanTen</span> <span class="o">=</span> <span class="nx">greaterThan</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">greaterThanTen</span><span class="p">(</span><span class="mi">9</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>下記を試してみよう。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">alert</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">,</span> <span class="s2">"Good Evening"</span><span class="p">,</span> <span class="s2">"How do you do?"</span><span class="p">,</span> <span class="s2">"Goodbye"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">alert</code>関数は公式には1つだけの引数を取る。このように呼び出されたとき、コンピュータは全く文句を言わずに、しかし他の引数をただ無視する。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>見たとおり、少なすぎる引数を与えることもできる。引数が与えられなかったとき、関数の中でその値は<code class="highlighter-rouge">undefined</code>となる。</p>
+
+<p>次の章では、関数の実体が渡された引数のリストをどのように得るのか正確に見てみよう。これは多くの数の引数を受け取ることのできる関数を作るときに便利だ。<code class="highlighter-rouge">print</code>はこのようにも使える:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">print</span><span class="p">(</span><span class="s2">"R"</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"D"</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>もちろん、<code class="highlighter-rouge">alert</code>のように、間違って期待されていたものと異なる誤った数の引数が関数に渡されるというよろしくない面もあるが、それについては語らない。</p>
+
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eloquent JavaScript(ja)</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Eloquent JavaScript(ja)
+            
+            </li>
+            
+            <li><a href="mailto:morinatsu@gmail.com">morinatsu@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/morinatsu"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">morinatsu</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/morinatsu"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">morinatsu</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Japanese translateion of &#39;Eloquent JavaScript&#39;</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>2. 基本のJavaScript</title>
+  <meta name="description" content="Japanese translateion of &#39;Eloquent JavaScript&#39;">
+
+  <link rel="stylesheet" href="/eloquentJavaScript/assets/main.css">
+  <link rel="canonical" href="https://morinatsu.github.com/eloquentJavaScript/Basic%20JavaScript.html">
+  <link rel="alternate" type="application/rss+xml" title="Eloquent JavaScript(ja)" href="/eloquentJavaScript/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/eloquentJavaScript/">Eloquent JavaScript(ja)</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Basic%20JavaScript.html">2. 基本のJavaScript</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Functions.html">3. 関数</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Introduction.html">1. 導入</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/about/">About</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/contents.html">Contents</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/">Eloquent JavaScript - Top</a>
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="基本のjavascript-値変数および制御の流れ">基本のJavaScript: 値、変数、および制御の流れ</h1>
+
+<p>コンピューターの世界の中にはただデータしか存在しない。データでないものは存在しない。全てのデータは本質的にはただのビット [^1] の連続であり、そうして本来的に等しく、全てのデータはそれ自身の役割を演じている。JavaScriptのシステムでは多くのデータは値と呼ばれるものにきちんと分割されている。全ての値は型を持ち、それはそれが演じる役割を現わしている。基本的な型は6つある：数値、文字列、真偽値、オブジェクト、関数そして未定義の値である。<br />
+  [^1] ビットとは2種類の値を持つもので、通常<code class="highlighter-rouge">0</code>と<code class="highlighter-rouge">1</code>とで表される。コンピュータの中では、電圧の高低、信号の強弱といったような形をとり、CDの面においては反射の善し悪しという形を取る。</p>
+
+<p>値を作るには、それにただ名前を与えるだけでよい。これはとても便利だ。値のためにその構成要素を集めたり、何かを支払ったりする必要はなく、名前を呼んで口笛を吹くだけで手に入れることができる。もちろん、空中から生じるのではない。全ての値はどこかに格納されている必要があり、もし巨大な数の値を使用することを望むならコンピューターのメモリからはみ出ることになる。幸運にも、これは全てを同時に必要とした場合の問題である。値を使わなくなったら、それは分散し、わずかなビットを残して消える。これらのビットは新しい値を生成するために再利用される。</p>
+
+<hr />
+
+<p>数値(number)型の値は、あなたの想像通り、数値の値だ。数値が普通に書かれるとおりに書かれる:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="mi">144</span>
+</code></pre>
+</div>
+<p>コンソールにこれを入力すると、同じものが出力ウインドウにプリントされる。打ち込んだテキストは数値の値になり、コンソールはこの数値を取ってスクリーンに書き込む。このような場合、むしろこれは無意味な演習であり、我々はすぐに、あまり直裁的でない方法で値を作るだろうが、作られたものをコンソールで試してみるには便利である。</p>
+
+<p>144をビットで表現するとこうなる [^2] :<br />
+  [^2] ここで、もし<code class="highlighter-rouge">10010000</code>であることを期待していたのであれば、いい読みである。が、そのまま読み続けよう。JavaScriptの数はただの整数として格納されるのではないのだ。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="mi">0100000001100010000000000000000000000000000000000000000000000000</span>
+</code></pre>
+</div>
+
+<p>上記の数値は64ビットである。JavaScriptの数値は常にそうなる。これには重要な影響がある：異なる数を表現するのに限度があるということだ。3桁の10進数では、0から999までの数しか書けず、それは10^3 = 1000の異なる数値となる。64桁の2進数では、2^64の異なる数を書くことができ、これは多くの、10^19（1の後に0が19個）より大きい。</p>
+
+<p>10^19以下の自然数が全てJavaScriptで扱えるわけではない。負の数値というものもあり、その符号を格納するためにビットの1つが使われる。自然数でない数値も表現しなければならないというより大きな問題もある。このために、11ビットが数値の中のピリオドの位置を格納するために使われる。</p>
+
+<p>残る52ビット [^3] 、2^52より小さい自然数、10^15を超えたところ、これがJavaScriptが安全に扱える数値である。多くの場合、我々が使う数値はこれより小さく、ビットを全て使い切ることを考える必要はない。これは良いことだ。物事をなすためにひどく多くのビットを<strong>必要とした</strong>としても、個々のビットに対して何かすることはない。全ての可能性としても、大きなものを扱うのに好都合だ。<br />
+  [^3] 本当だ。53であるのは1ビットを未使用にしているからだ。詳細が気になるなら’IEEE 754’フォーマットを検索しよう。</p>
+
+<p>小数を書くにはドットを使う。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="mf">9.81</span>
+</code></pre>
+</div>
+
+<p>とても大きいまたはとても小さい数には、<code class="highlighter-rouge">e</code>に続けて指数となる数値を加えることで’指数表現’を使うこともできる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="mf">2.998e8</span>
+</code></pre>
+</div>
+
+<p>これは2.998 * 10^8 = 299800000である。</p>
+
+<p>自然数（整数とも呼ばれる）の計算は52ビットまで正確に行えることが保証されている。不運にも、小数の計算は全般的には異なる。π（円周率）のような数は10進数で正確に表現することができず、多くの数は64ビットだけで格納しようとすると若干正確さが失われる。これは残念なことだが、とても特別な状況でしか実用上の問題とはならない。正確な値ではなく近似値を使うことで小数を扱うことができるようになるということが重要だ。</p>
+
+<hr />
+
+<p>数値の主な使い途は計算だ。足し算やかけ算のような計算操作は2つの数値の値から新しい数値を作る。JavaScriptではこのようになる:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="mi">100</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">11</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">+</code>と<code class="highlighter-rouge">*</code>記号は演算子と呼ばれる。一つめは足し算、2つめはかけ算だ。2つの値の間に演算子を入れれば、それらの値に適用され、新しい値が作られる。</p>
+
+<p>この例は’4と100を足して、その結果に11をかける’か、あるいはかけ算が足し算より先だろうか？お察しの通り、数学でのように、かけ算が最初である。しかし、追加の括弧で挟むことでこれを変更することができる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="mi">100</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="mi">11</span>
+</code></pre>
+</div>
+
+<p>引き算には<code class="highlighter-rouge">-</code>演算子があり、そして割り算は<code class="highlighter-rouge">/</code>でできる。括弧無しで演算子が現われたとき、演算子の優先順位に従ってそれが適用される。最初の例ではかけ算が足し算より高い優先順位を持っていることが分った。割り算とかけ算は常に引き算や足し算より優先される。互いに同じ優先順位の演算子が複数あるとき(<code class="highlighter-rouge">1 - 1 + 1</code>)は左から右に適用される。</p>
+
+<p>どんな値ができるか計算し、それから実行してあなたの計算が正しかったか確認してみてほしい。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="mi">115</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">+</span> <span class="mi">88</span> <span class="o">/</span> <span class="mi">2</span>
+</code></pre>
+</div>
+
+<p>優先順位のルールがあなたの考えたものと違っていたと嘆かなくてもいい。疑わしいときは括弧を追加するだけだ。</p>
+
+<p>もう一つ数学的な演算子があり、それはおそらくあなたがよく知らないものだ。<code class="highlighter-rouge">%</code>記号はmodulo計算をするときに使われる。<code class="highlighter-rouge">X</code>modulo<code class="highlighter-rouge">Y</code>は<code class="highlighter-rouge">X</code>を<code class="highlighter-rouge">Y</code>で割ったときの余りである。例えば<code class="highlighter-rouge">314 % 100</code>は<code class="highlighter-rouge">14</code> 、そして<code class="highlighter-rouge">10 % 3</code> は<code class="highlighter-rouge">1</code>、<code class="highlighter-rouge">144 % 12</code>は<code class="highlighter-rouge">0</code>だ。moduloはかけ算や割り算と同じ優先順位を持つ。</p>
+
+<hr />
+
+<p>次のデータ型は文字列(string)だ。その名前から想像される使い途は数値のそれより明白だとは言えないが、これもまたとても基本的な役割である。文字列はテキストを表現するのに使われ、その名前はおそらく、それが文字の束を繋いだものだという事実から来ている。文字列は引用符でその内容を囲んで書かれる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="s2">"Patch my boat with chewing gum."</span>
+</code></pre>
+</div>
+
+<p>二重引用符の間はほとんど何でも良く、JavaScriptはそれを外して文字列の値を作る。しかし、トリッキーな文字が若干ある。引用符の中に引用符をどう入れるか想像するのは難しいだろう。新しい行、エンターキーを押したときのもの、あれを引用符の中に入れつつ、文字列は単一行のままにすることはできないのだろうか。</p>
+
+<p>そのような文字を文字列に入れるには、以下のトリックを使う：引用されたテキストの中にバックスラッシュ(‘<code class="highlighter-rouge">\</code>‘)があれば、それは続くキャラクターが特別な意味を持つことを示す。バックスラッシュに続く引用符は文字列の終わりではなく、その一部となる。バックスラッシュの次に’<code class="highlighter-rouge">n</code>‘があれば、それは新しい行と解釈される。同様に、バックスラッシュの次の’<code class="highlighter-rouge">t</code>‘は4文字文のタブ [^4] を意味する。:<br />
+  [#f4] 文字列の値をコンソールにタイプする時、引用符とバックスラッシュをタイプして戻るように注意しよう。特殊文字を明示的に表すため、\ <code class="highlighter-rouge">print ('a\nb')</code>\ とすることもできる。―なぜこれが動くのか、後で説明しよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="s2">"This is the first line\nAnd this is the second"</span>
+</code></pre>
+</div>
+
+<p>バックスラッシュを文字列の中で特殊なコードではなく、ただバックスラッシュとしたい状況ももちろんあるだろう。もし2つのバックスラッシュが互いに重なれば、互いの右を折りたたみ、文字列としての結果には一つだけが残る。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="s2">"A newline character is written like \"\\n\"."</span>
+</code></pre>
+</div>
+
+<p>文字列は割り算したり、かけ算したり、引き算したりできない。<code class="highlighter-rouge">+</code>演算子だけは使うことが<strong>できる</strong>。加算ではなく、連結になる。2つの文字列を互いに結びつける。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="s2">"con"</span> <span class="o">+</span> <span class="s2">"cat"</span> <span class="o">+</span> <span class="s2">"e"</span> <span class="o">+</span> <span class="s2">"nate"</span>
+</code></pre>
+</div>
+
+<p>文字列を操作する方法はもっとあるが、それは後ほど。</p>
+
+<hr />
+
+<p>全ての演算子が記号というわけではなく、単語として書かれるものもある。例えば、<code class="highlighter-rouge">typeof</code>演算子、これは値の持つ型の名前を文字列の値を作る。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">typeof</span> <span class="mf">4.5</span>
+</code></pre>
+</div>
+
+<p>我々が見てきた他の演算子は2つの値を演算するが、<code class="highlighter-rouge">typeof</code>は1つだけだ。2つの値を使う演算子は2項演算子と呼ばれ、1つのものは単項演算子と呼ばれる。マイナス演算子は二項演算子としても単項演算子としても使われる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="o">-</span> <span class="p">(</span><span class="mi">10</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>それから真偽値(boolean)型の値。これは2つしかない:<code class="highlighter-rouge">true</code>と<code class="highlighter-rouge">false</code>だ。<code class="highlighter-rouge">true</code>の値の作りかたの1つはこう。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="mi">3</span> <span class="o">&gt;</span> <span class="mi">2</span>
+</code></pre>
+</div>
+
+<p>そして<code class="highlighter-rouge">false</code>はこのように。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="mi">3</span> <span class="o">&lt;</span> <span class="mi">2</span>
+</code></pre>
+</div>
+
+<p>あなたが<code class="highlighter-rouge">&gt;</code>と<code class="highlighter-rouge">&lt;</code>の記号を既に知っていることを期待している。これはそれぞれ’より大きい’と’より小さい’という意味だ。これらは二項演算子で、その結果は式を適用した結果の真偽値を持つ。</p>
+
+<p>文字列も同様に比較できる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="s2">"Aardvark"</span> <span class="o">&lt;</span> <span class="s2">"Zoroaster"</span>
+</code></pre>
+</div>
+
+<p>文字列はアルファベット順の大小で比較される。大小…大文字は常に小文字より小さく、<code class="highlighter-rouge">"Z" &lt; "a"</code>（大文字のZは小文字のaより小さい）は<code class="highlighter-rouge">true</code>となり、アルファベットでない文字（’<code class="highlighter-rouge">!</code>’, ‘<code class="highlighter-rouge">@</code>’, etc）も順番に含まれる。この比較は実際にはユニコード標準をベースに行われる。この標準は必要とされた全ての文字に仮想の数値を割り当て、ギリシャ文字、アラビア文字、日本語、タミル文字などなど全ての文字が含まれる。このように数値を持つのはコンピュータに文字列を格納するのには実際的で―それらを数値のリストのように扱うことができる。文字列を比較するとき、JavaScriptは文字列の中の文字の数値を左から右へと比較するだけである。</p>
+
+<p>他に同様の演算子<code class="highlighter-rouge">&gt;=</code>（’大なりイコール’）、<code class="highlighter-rouge">&lt;=</code>（’小なりイコール’）、<code class="highlighter-rouge">==</code>（’等しい’）、そして<code class="highlighter-rouge">!=</code>（’等しくない’）がある。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="s2">"Itchy"</span> <span class="o">!=</span> <span class="s2">"Scratchy"</span>
+</code></pre>
+</div>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="mi">5</span><span class="nx">e2</span> <span class="o">==</span> <span class="mi">500</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>真偽値それ自体に適用することもできる便利なものもある。JavaScriptは3つの論理演算子をサポートしている：<strong>論理積(and)</strong> 、<strong>論理和(or)</strong> 、そして<strong>否定(not)</strong>。これらは真偽の’判断’に使うことができる。</p>
+
+<p><code class="highlighter-rouge">&amp;&amp;</code>演算子は<strong>論理積</strong>を示す。これは二項演算子で、両方の値がともに<code class="highlighter-rouge">true</code>のときだけ<code class="highlighter-rouge">true</code>となる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kc">true</span> <span class="o">&amp;&amp;</span> <span class="kc">false</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">||</code>は<strong>論理和</strong>で、与えられた値のどちらかが<code class="highlighter-rouge">true</code>であれば<code class="highlighter-rouge">true</code>となる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kc">true</span> <span class="o">||</span> <span class="kc">false</span>
+</code></pre>
+</div>
+
+<p>否定は<code class="highlighter-rouge">!</code>、感嘆符として書かれ、与えられた値を反転させる単項演算子であり、<code class="highlighter-rouge">!true</code>は<code class="highlighter-rouge">false</code>、そして<code class="highlighter-rouge">!false</code>は<code class="highlighter-rouge">true</code>となる。</p>
+
+<hr />
+
+<p><a href="#Ex2-1">演習 2.1</a></p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="p">((</span><span class="mi">4</span> <span class="o">&gt;=</span> <span class="mi">6</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="s2">"grass"</span> <span class="o">!=</span> <span class="s2">"green"</span><span class="p">))</span> <span class="o">&amp;&amp;</span>
+    <span class="o">!</span><span class="p">(((</span><span class="mi">12</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">144</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="kc">true</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>これは真であろうか？読みやすくするため、不要な括弧も書いてある。下の単純な版も同じ意味だ。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="mi">4</span> <span class="o">&gt;=</span> <span class="mi">6</span> <span class="o">||</span> <span class="s2">"grass"</span> <span class="o">!=</span> <span class="s2">"green"</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+   <span class="o">!</span><span class="p">(</span><span class="mi">12</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">144</span> <span class="o">&amp;&amp;</span> <span class="kc">true</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>[解答を見る]</p>
+
+<p>これは真である。このように1つ1つ確かめることができる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="p">(</span><span class="kc">false</span> <span class="o">||</span> <span class="kc">true</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="p">(</span><span class="kc">false</span> <span class="o">&amp;&amp;</span> <span class="kc">true</span><span class="p">)</span>
+<span class="kc">true</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="kc">false</span>
+<span class="kc">true</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">"grass" != "green"</code>であるということに気づいてくれることを期待する。grass（草）はgreen（緑色）かもしれないが、それは緑色と等しいということではない。</p>
+
+<p>常に括弧が必要というわけではない。実践では、我々がこれまで見てきた演算子、<code class="highlighter-rouge">||</code>は<code class="highlighter-rouge">&amp;&amp;</code>より低い優先順位を持ち、それから比較演算子（<code class="highlighter-rouge">&gt;</code>、<code class="highlighter-rouge">==</code>、他）はその後に残るといった知識は普通のこととなる。どのようなやり方を選ぼうと、単純なケースでは可能な限り括弧を少なくすることが必要だ。</p>
+
+<hr />
+
+<p>全ての例で電卓のように言語を使うことができるだろう。値を設定し演算子を適用して新たな値を作る。このような値の作成は全てのJavaScriptの本質の1つであるが、ただ1つに留まるものでもない。値を作成するコードは式と呼ばれる。全ての値はそれが（<code class="highlighter-rouge">22</code>や<code class="highlighter-rouge">"psycoanalysis"</code>のように）直接書かれたものであっても1つの式である。括弧で囲われた1つの式もまた1つの式であり、2つの式に適用された2項演算子、1つの式に適用された単項演算子もまた1つの式である。</p>
+
+<p>式を作る方法はもう2,3あるが、それは時が来たら見せよう。</p>
+
+<p>式より大きな単位もある。それは文と呼ばれる、プログラムは文のリストとして作られる。多くの文はセミコロン(<code class="highlighter-rouge">;</code>)で終了する。最も単純な文は式の後にセミコロンを付けたものである。こんなものもプログラムだ。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="mi">1</span><span class="p">;</span>
+<span class="o">!</span><span class="kc">false</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<p>これは使い途のないプログラムだ。式ができるのは値を作ることだけだが、文は世界になにがしかの変化をもたらす。スクリーンに何かをプリントし―世界を変えた分だけカウントが変わる―またはプログラムの内部的な状態が文の後に影響を受けて変わるかもしれない。この変化は’side effect’と呼ばれる。例の文は<code class="highlighter-rouge">1</code>および<code class="highlighter-rouge">true</code>という値を作り、それをビットのバケツ [^5] の中に投げ込む。これは世界に何の印象も残さないので、side effectではない。<br />
+  [^5] ビットのバケツはおそらく古いビットが溜まっている場所になっている。あるシステムでは、プログラマは手作業でそれを空にしなければならなかった。幸運にも、JavaScriptは全自動でビットをリサイクルするシステムを備えている。</p>
+
+<hr />
+
+<p>プログラムが内部的な状態を持つとはどういうことだろうか？何かを覚えているのだろうか？我々は古い値から新しい値の作り方を見てきたが、それは古い値に何の変化も与えず、新しい値はその場で使われるかそのまま消えるかのどちらかであった。新しい値を捉え捕まえておくために、JavaScriptは変数と呼ばれるものを提供する。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">caught</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">5</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<p>変数は常に名前を持ち、それがその保持する値を示す。上記の文は<code class="highlighter-rouge">caught</code>という変数を作り、それを<code class="highlighter-rouge">5</code>かける<code class="highlighter-rouge">5</code>のかけ算によってできた数を保持しておくことに使う。</p>
+
+<p>上記のプログラムの実行後、<code class="highlighter-rouge">caught</code>という語をコンソールにタイプし、<code class="highlighter-rouge">25</code>という値を取り出すことができる。変数の名前はその値を取り出すのに使われる。<code class="highlighter-rouge">caught + 1</code>もまた動作する。変数の名前は1つの式として使うことができ、それをより大きな式の一部とすることができる。</p>
+
+<p><code class="highlighter-rouge">var</code>という語は新しい変数を作るのに使われる。<code class="highlighter-rouge">var</code>の後、変数の名前が続く。変数名がほとんど全ての語を使えるが、中に空白を含めてはいけない。数字は中に入れても良く、<code class="highlighter-rouge">catch22</code>は正しい名前だが、数字を名前の最初に持ってくることはできない。’<code class="highlighter-rouge">$</code>‘と’<code class="highlighter-rouge">_</code>‘という文字は名前に使用できるので、<code class="highlighter-rouge">$_$</code>も正しい変数名である。</p>
+
+<p>しばしばあるケースだが、もし新しい変数に値を入れたければ、<code class="highlighter-rouge">=</code>演算子を使うことで式の値を変数に与えることができる。</p>
+
+<p>変数が値を示すとき、それは、それらの結びつきが永遠のものであるということを意味しない。いつでも、<code class="highlighter-rouge">=</code>演算子を使って既にある値を取り去って新しいものに差し替えることができる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">caught</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">4</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>変数に箱よりむしろタコの触手のようなイメージを持つかもしれない。それらは値を<code class="highlighter-rouge">容れる</code>のではなく、<code class="highlighter-rouge">捕まえる</code>のだ–2つの変数は同じ値を指すことができる。プログラムが保持する値はただアクセスできるだけだ。もし何かを覚えておく必要があるとき、新しい値を保持する触手を育て、あるいは既にある触手に再度捕まえさせる：ルイージに貸してる金を覚えておくには、こんなことができる…。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">luigiDebt</span> <span class="o">=</span> <span class="mi">140</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<p>その後、ルイージがいくらか支払ってくる度に、変数に新しい数値を与えていくことによって負債を減らしていく。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">luigiDebt</span> <span class="o">=</span> <span class="nx">luigiDebt</span> <span class="o">-</span> <span class="mi">35</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<p>一度に与えられた変数のコレクションとそれらの変数を環境と呼ぶ。プログラムがスタートしたとき、その環境は空ではない。幾つかの標準変数が常に含まれている。ブラウザがページをロードするとき、新しい環境が作りこれらの標準変数に触れる。そのページのプログラムにより作られ更新された変数はブラウザが新しいページに行くまで生き残る。</p>
+
+<hr />
+
+<p>標準環境により’関数’型の多くの変数が提供される。関数は1つの値に包まれたプログラムの一片である。全般的に、便利な何らかのプログラムの一片は、その関数を含む値という形で使われる。ブラウザ環境では、<code class="highlighter-rouge">alert</code>変数が短いメッセージをダイアログウインドウに表示する関数を保持している。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">alert</span><span class="p">(</span><span class="s2">"Also, your hair is on fire."</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>関数の中のコードを実行することは呼び出しあるいは適用と呼ばれる。それを示すには括弧を使う。括弧の後に続く全ての式が関数の値を作るときに使われる。括弧の中の文字列がこの関数に与えられたら、それはダイアログウインドウの中に表示するテキストとして使われる。関数に与えられる値はパラメーターまたは引数と呼ばれる。<code class="highlighter-rouge">alert</code>が必要とするは1つだが、他の関数は異なる数だけ必要とすることもある。</p>
+
+<hr />
+
+<p>ダイアログウインドウを表示するのはside effectである。多くの関数が便利なのはそれらの作るside effectによる。値を作るための関数というのも可能であり、この場合は便利なside effectを持つ必要はない。例えば、<code class="highlighter-rouge">Math.max</code>関数というものがあり、これは2つの値のうち大きい方を返す。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">alert</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>関数が値を作るとき、それを返却するという。なぜならJavaScriptでは作られた値は常に式だからであり、関数呼び出しはより大きな式の一部として使われうるからである。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">alert</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p><a href="/Functions.html">3. 関数</a>であなた自身の関数を書く方法を議論する。</p>
+
+<hr />
+
+<p>先の例で見たように、<code class="highlighter-rouge">alert</code>は式の結果を表示するのに便利だ。クリックして小さなウインドウは消してしまい、これからは<code class="highlighter-rouge">print</code>という同じような関数を使うことにしよう。これはウィンドウをポップアップさせず、コンソールの出力エリアに値を書き出す。<code class="highlighter-rouge">print</code>は標準JavaScript関数ではないので、ブラウザはそれを提供しないが、本書ではページの中で使えるようにしてあるので、これらのページの中で使用することはできる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">print</span><span class="p">(</span><span class="s2">"N"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>これらのページで提供している同様の関数で、<code class="highlighter-rouge">show</code>というものもある。<code class="highlighter-rouge">print</code>はその引数を平坦なテキストとして表示するが、<code class="highlighter-rouge">show</code>はプログラムの中と同じやりかたで表示しようとし、値の型に関するより詳しい情報を与えてくれる。例えば、引用符の中の文字列型の値を<code class="highlighter-rouge">show</code>に与える。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="s2">"N"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>ブラウザから提供される標準環境はウインドウをポップアップするもう2,3の関数を提供する。ユーザーに確認をとるためにOK/Cancelを<code class="highlighter-rouge">confirm</code>を使って質問することができる。これは真偽値を返却し、’OK’が押されたら<code class="highlighter-rouge">true</code>、’Cancel’が押された<code class="highlighter-rouge">false</code>となる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="nx">confirm</span><span class="p">(</span><span class="s2">"Shall we, then?"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">prompt</code>は’open’な質問をするときに使える。最初の引数が質問で、2つめがユーザーがそこから始めるテキストである。1行のテキストがウインドウにタイプされたら、関数はこれを文字列として返す。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="nx">prompt</span><span class="p">(</span><span class="s2">"Tell us everything you know."</span><span class="p">,</span> <span class="s2">"..."</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>環境のほとんど全ての変数に新しい値を与えることも可能だ。これはとても便利だが、危険でもある。もし<code class="highlighter-rouge">8</code>という値を<code class="highlighter-rouge">print</code>に与えたら、それ以降何もプリントすることができなくなる。幸運なことに、コンソールには’Reset’という大きなボタンがあり、それで環境を元の状態にリセットすることができる。</p>
+
+<hr />
+
+<p>1行のプログラムはあまり面白くない。より多くの文をプログラムに入れたら、それらの文は、お察しの通り上から下まで一気に実行される。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">theNumber</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">prompt</span><span class="p">(</span><span class="s2">"Pick a number"</span><span class="p">,</span> <span class="s2">""</span><span class="p">));</span>
+<span class="nx">print</span><span class="p">(</span><span class="s2">"Your number is the square root of "</span> <span class="o">+</span>
+  <span class="p">(</span><span class="nx">theNumber</span> <span class="o">*</span> <span class="nx">theNumber</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">Number</code>関数は値を数値に変換し、それは<code class="highlighter-rouge">prompt</code>の結果が文字列であるために必要となる。<code class="highlighter-rouge">String</code>や<code class="highlighter-rouge">Boolean</code>といった同様の関数がありそれらはそれぞれの型に値を変換する。</p>
+
+<hr />
+
+<p>0から12までの偶数をプリントするプログラムを考える。1つのやり方としてはこのように書ける。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">print</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="mi">12</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>これは動くが、プログラムを書くためのアイデアとして<strong>よい仕事とは言えない</strong>。もし1000以下の偶数全てが必要となったとき、上のやりかたではとても動かない。コードを自動的に繰り返してくれる方法が必要だ。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">currentNumber</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="nx">currentNumber</span> <span class="o">&lt;=</span> <span class="mi">12</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="nx">currentNumber</span><span class="p">);</span>
+  <span class="nx">currentNumber</span> <span class="o">=</span> <span class="nx">currentNumber</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>おそらく<code class="highlighter-rouge">while</code>を<a href="/Introduction.html">1.導入</a>の章で見ているだろう。<code class="highlighter-rouge">while</code>という語から始まる文はループを作る。ループは文の順列を実行し続け、複数回その文を繰り返す。この場合、<code class="highlighter-rouge">while</code>に続く括弧の中の式（括弧はここになければならない）、これはループがそのままループし続けるか終了するかの判定に使われる。この式が作る真偽値が<code class="highlighter-rouge">true</code>である間、ループの中のコードが繰り返され、<code class="highlighter-rouge">false</code>になったらすぐに、プログラムはループの下に行き通常のようにに実行を続ける。</p>
+
+<p><code class="highlighter-rouge">currentNumber</code>変数は変数によってプログラムの進行を追うことができることを見せてくれる。ループが繰り返される度に、<code class="highlighter-rouge">2</code>つずつ加算され、繰り返しの最初で、ループを続けるかどうかの判断のために<code class="highlighter-rouge">12</code>という数値と比較される。</p>
+
+<p><code class="highlighter-rouge">while</code>の3つめの部分は他の文である。これはループの本体であり、複数回繰り返される1つないし複数の動作である。もし数をプリントする必要がなければ、プログラムはこのようになっていた。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">currentNumber</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="nx">currentNumber</span> <span class="o">&lt;=</span> <span class="mi">12</span><span class="p">)</span>
+  <span class="nx">currentNumber</span> <span class="o">=</span> <span class="nx">currentNumber</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<p>ここでは、<code class="highlighter-rouge">currentNumber = currentNumber + 2;</code>がループの本体の形を取る文である。我々は数をプリントしなければならないので、ループの文は1行より多くなった。中括弧（<code class="highlighter-rouge"><span class="p">{</span></code>と<code class="highlighter-rouge">}</code>）がブロックの中に文のグループを入れるために使われる。ブロックの外側の世界にとっては、ブロックは単一の行として数えられる。先ほどの例では、ループに<code class="highlighter-rouge">print</code>の呼び出しと<code class="highlighter-rouge">currentNumber</code>の更新の両方を含めるためにこれが使われた。</p>
+
+<p><a href="#Ex2-2">演習 2.2</a></p>
+
+<p>このテクニックを使って、<code class="highlighter-rouge">2^10</code>（2の10乗）を計算するプログラムを書け。当然、<code class="highlighter-rouge">2 * 2 * ...</code>みたいな安っぽいトリックを使って書いてはいけない。</p>
+
+<p>もしこれでトラブルにあったら、偶数の例を見てみること。プログラムは複数回動作を繰り返さなければならない。カウンター変数が<code class="highlighter-rouge">while</code>のループとともに使われていた。カウンターをプリントする代わりに、このプログラムは何かを2倍しなければならない。この何かは結果を作り上げるのに使う別の変数になるだろう。</p>
+
+<p>まだうまく動かなくても嘆かなくていい。もしこの章がカバーするテクニックを完璧に理解できていれば、難しいのはそれを個々のプログラムに適用することだけだ。コードの読み書きは感覚を育てる助けになり、解答を学習して、次の演習に挑もう。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="nx">counter</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">result</span> <span class="o">=</span> <span class="nx">result</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="nx">counter</span> <span class="o">=</span> <span class="nx">counter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">counter</code>は<code class="highlighter-rouge">1</code>から始まり<code class="highlighter-rouge">&lt;= 10</code>とチェックされるが、しかし、後に述べる理由により、0から始めるよりいいアイデアである。</p>
+
+<p>当然、あなた自身の解答が私の示すものと全く同じである必要はない。それが動くなら。そしてもし全然違っていれば、わたしの解答も確実に理解すること。</p>
+
+<hr />
+
+<p><a href="#Ex2-3">演習 2.3</a></p>
+
+<p>ちょっとだけ変更して、先ほどの演習の解答から三角形を書くプログラムを作ろう。私が言う’三角形を書く’というのは、ぱっと見三角形に見えるものをプリントアウトするという意味だ。</p>
+
+<p>10行プリントアウトする。1行めでは’<code class="highlighter-rouge">#</code>‘文字が1つ。2行目では2つ。そのように。</p>
+
+<p>どうしたらX個の’<code class="highlighter-rouge">#</code>‘を文字列として得られるだろうか？1つめの手では毎回文字列を作るために’inner loop’―ループの中のループ必要とする。もっと簡単な手はループの前回の繰り返しで使った値を再利用し、それに1つ文字をくっつけるというものだ。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="s2">""</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="nx">counter</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">line</span> <span class="o">=</span> <span class="nx">line</span> <span class="o">+</span> <span class="s2">"#"</span><span class="p">;</span>
+  <span class="nx">print</span><span class="p">(</span><span class="nx">line</span><span class="p">);</span>
+  <span class="nx">counter</span> <span class="o">=</span> <span class="nx">counter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>私が幾つかの文の前につけた空白に気づいただろう。これらは必要なものではない：コンピュータはそれらがなくてもプログラムを受け付ける。実際、プログラムの行毎の改行もオプショナルなものだ。もしそういうのが好みなら全てを単一の長い行に書くこともできた。ブロックの中のインデントの役割はコードの構造を読み手にとって明らかにすることだ。新しいブロックは他の中のブロックで始めることができるため、どこでブロックが始まるのか複雑なコードの中では読み取りにくくなるかもしれないのだ。行がインデントされていれば、プログラムのみかけがそのなかのブロックの形と同様になる。私はブロックを始める度に2つ空白を空けるのが好みだが、違う人もいる。</p>
+
+<p>Opera以外のブラウザでは、プログラムをタイプするコンソールのフィールドには自動的に空白が追加されるだろう。最初は戸惑うかもしれないが、たくさんコードを書く時には大きな時間短縮になる。タブキーを押すと今カーソルがある場所から再度インデントするだろう。</p>
+
+<p>いくつかの場合において、JavaScriptは文の終わりのセミコロンの省略を許す。他の場合は、何かおかしな事が起こる。安全に省略できるというルールは複雑で奇異である。本書では、私はセミコロンを付け忘れたくないし、あなた自身のプログラムにおいてもそうすべきと強くおすすめする。</p>
+
+<hr />
+
+<p><code class="highlighter-rouge">while</code>を使うにあたり同じようなパターンを見てきた。1つめは’counter’変数が作られるということだ。この変数はループの進行を追跡する。<code class="highlighter-rouge">while</code>自身に、通常は何らかの境界にまだ届いてないかのチェックが含まれている。それから、ループの本体の終わりで、カウンターが更新される。</p>
+
+<p>多くのループがこのパターンになる。この理由で、JavaScriptや同様の言語はもっと短一括的な書き方も提供している。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">number</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">number</span> <span class="o">&lt;=</span> <span class="mi">12</span><span class="p">;</span> <span class="nx">number</span> <span class="o">=</span> <span class="nx">number</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+  <span class="nx">show</span><span class="p">(</span><span class="nx">number</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>このプログラムは正確にさきほどの偶数をプリントするサンプルと同じである。違いはループの状態に関する全ての文が今や1行になっていることだけだ。<code class="highlighter-rouge">for</code>の後の括弧には2つのセミコロンが含まれる。1つめのセミコロンの前の部分はループの<code class="highlighter-rouge">初期化</code>が、通常は変数を定義することで行われる。2つめの部分はループを継続すべきかどうかの条件を<strong>チェック</strong>する式である。最後の部分はループの状態を<strong>更新</strong>する。多くの場合これで<code class="highlighter-rouge">while</code>構造が短くクリアになる。</p>
+
+<hr />
+
+<p>私は幾つかの変数名で大文字を使ってきた。変数名には空白を入れられないからである―コンピュータはそれらを2つに別れた変数として読むかもしれない―複数の語からなる名前の作り方については多かれ少なかれ次のように限定され選択となるだろう：<code class="highlighter-rouge">fuzzylittleturtle</code>、<code class="highlighter-rouge">fuzzy_little_turtle</code>、<code class="highlighter-rouge">FuzzyLittleTurtle</code>、または<code class="highlighter-rouge">fuzzyLittleTurtle</code>。最初のものは読みにくい。個人的に、私はアンダースコアを付けたものが好きだ、タイプするにはちょっと困るけど。しかしながら、標準JavaScript関数では、そして多くのJavaScriptプログラマーが最後のものに従っている。このようにするのは難しくない、大勢に従って1つめより後の語の先頭の文字を大文字にするだけだ。</p>
+
+<p>わずかなケースでは、例えば<code class="highlighter-rouge">Number</code>関数のような、変数名の最初の文字もまた大文字にされている。これはこの関数がコンストラクタであることを示す。コンストラクタとは<a href="/eloquentJavaScript/Object-oriented Programming.html">8.オブジェクト志向プログラミング</a>において明らかにする。今は、協調性を欠くことで失敗しないことが重要だ。</p>
+
+<p>特別な意味を持つ名前も注記しよう、<code class="highlighter-rouge">var</code>、<code class="highlighter-rouge">while</code>そして<code class="highlighter-rouge">for</code>のようなものは変数名として使ってはいけない。これらはキーワードと呼ばれる。JavaScriptの将来のバージョンで’予約語’とされている幾つかの語もある。これらは公式に変数名として使うことが許されていないが、幾つかのブラウザでは許されてしまっている。全体のリストは長い:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kr">abstract</span> <span class="kr">boolean</span> <span class="k">break</span> <span class="kr">byte</span> <span class="k">case</span> <span class="k">catch</span> <span class="kr">char</span> <span class="kr">class</span> <span class="kr">const</span> <span class="k">continue</span>
+<span class="kr">debugger</span> <span class="k">default</span> <span class="k">delete</span> <span class="k">do</span> <span class="kr">double</span> <span class="k">else</span> <span class="kr">enum</span> <span class="kr">export</span> <span class="kr">extends</span> <span class="kc">false</span>
+<span class="kr">final</span> <span class="k">finally</span> <span class="kr">float</span> <span class="k">for</span> <span class="kd">function</span> <span class="kr">goto</span> <span class="k">if</span> <span class="kr">implements</span> <span class="kr">import</span> <span class="k">in</span>
+<span class="k">instanceof</span> <span class="kr">int</span> <span class="kr">interface</span> <span class="kr">long</span> <span class="kr">native</span> <span class="k">new</span> <span class="kc">null</span> <span class="kr">package</span> <span class="kr">private</span>
+<span class="kr">protected</span> <span class="kr">public</span> <span class="k">return</span> <span class="kr">short</span> <span class="kr">static</span> <span class="kr">super</span> <span class="k">switch</span> <span class="kr">synchronized</span>
+<span class="k">this</span> <span class="k">throw</span> <span class="kr">throws</span> <span class="kr">transient</span> <span class="kc">true</span> <span class="k">try</span> <span class="k">typeof</span> <span class="kd">var</span> <span class="k">void</span> <span class="kr">volatile</span>
+<span class="k">while</span> <span class="kd">with</span>
+</code></pre>
+</div>
+
+<p>今覚えきれないと嘆くことはないが、これによって何かが期待通りに動かない問題が起こるかもしれないということは覚えておこう。私の経験では、<code class="highlighter-rouge">char</code>（1文字の文字列を格納する）と<code class="highlighter-rouge">class</code>がもっとも誤って使われがちな一般名だ。</p>
+
+<hr />
+
+<p><a href="#Ex2-4">演習 2.4</a></p>
+
+<p>先の2つの演習の解答を<code class="highlighter-rouge">while</code>の代わりに<code class="highlighter-rouge">for</code>を使って書き直せ。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">counter</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">counter</span> <span class="o">=</span> <span class="nx">counter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="nx">result</span> <span class="o">=</span> <span class="nx">result</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>’<code class="highlighter-rouge"><span class="p">{</span></code>‘から始まるブロックがなくても、上の行のループに含まれることを明示するため、ループの中の文に2つの空白のインデントを行うことを忘れずに。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="s2">""</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">counter</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">counter</span> <span class="o">=</span> <span class="nx">counter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">line</span> <span class="o">=</span> <span class="nx">line</span> <span class="o">+</span> <span class="s2">"#"</span><span class="p">;</span>
+  <span class="nx">print</span><span class="p">(</span><span class="nx">line</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>プログラムは変数の以前の値をもとに変数の値を更新することをしばしば必要とする。例えば<code class="highlighter-rouge">counter = counter + 1</code>のように。JavaScriptはこれの短縮形を提供する：<code class="highlighter-rouge">counter += 1</code>。他の多くの演算子でもこれは動き、例えば<code class="highlighter-rouge">result *= 2</code>は<code class="highlighter-rouge">result</code>の値を2倍にし、あるいは<code class="highlighter-rouge">counter -= 1</code>はカウントダウンである。</p>
+
+<p><code class="highlighter-rouge">counter += 1</code>と<code class="highlighter-rouge">counter -= 1</code>にはさらに短い書き方がある：<code class="highlighter-rouge">counter++</code>と<code class="highlighter-rouge">counter--</code></p>
+
+<hr />
+
+<p>ループはプログラムの制御フローに影響すると言われる。それは文が実行される順序を変更する。多くの場合では、フローの別の種類が便利だ：文のスキップである。</p>
+
+<p>20以下の数について、3と4の両方で割り切れるものを全て表示する。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">counter</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">;</span> <span class="nx">counter</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">counter</span> <span class="o">%</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">counter</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="nx">show</span><span class="p">(</span><span class="nx">counter</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>キーワード<code class="highlighter-rouge">if</code>はキーワード<code class="highlighter-rouge">while</code>とそんなに大きく違わない：与えられた条件（括弧の中の）をチェックし、その条件に従って後の文を実行する。しかしこれは1回だけ行われので、文が実行されるのは0回もしくは1回である。</p>
+
+<p>modulo(<code class="highlighter-rouge">%</code>)演算子のトリックが数値が他の数値で割り切れるかどうかテストする簡単な方法である。もし割り切れるなら、割り算の余りとしてmoduloは0を返す。</p>
+
+<p>20以下の全ての数を、しかし4で割り切れない数は括弧付きでプリントしたいなら、このように書くことができる:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">counter</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">;</span> <span class="nx">counter</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">counter</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="nx">print</span><span class="p">(</span><span class="nx">counter</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">counter</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s2">"("</span> <span class="o">+</span> <span class="nx">counter</span> <span class="o">+</span> <span class="s2">")"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>しかし今のプログラムは<code class="highlighter-rouge">counter</code>が<code class="highlighter-rouge">4</code>で割り切れるか否かの判定を2回行っている。<code class="highlighter-rouge">else</code>部を<code class="highlighter-rouge">if</code>文に追加することで同じ効果を得ることが可能だ。<code class="highlighter-rouge">else</code>文は<code class="highlighter-rouge">if</code>の条件がfalseであったときだけ実行される。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">counter</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">;</span> <span class="nx">counter</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">counter</span> <span class="o">%</span> <span class="mi">4</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="nx">print</span><span class="p">(</span><span class="nx">counter</span><span class="p">);</span>
+  <span class="k">else</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s2">"("</span> <span class="o">+</span> <span class="nx">counter</span> <span class="o">+</span> <span class="s2">")"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>このちょっとした例をもう少し発展させて、同じ数が15より大きければ星2つを、10より大きければ（しかし15より大きくなければ）星1つを、どちらでもなければ星はなしでプリントさせてみたいとする。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">counter</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">;</span> <span class="nx">counter</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">counter</span> <span class="o">&gt;</span> <span class="mi">15</span><span class="p">)</span>
+    <span class="nx">print</span><span class="p">(</span><span class="nx">counter</span> <span class="o">+</span> <span class="s2">"**"</span><span class="p">);</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">counter</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="nx">print</span><span class="p">(</span><span class="nx">counter</span> <span class="o">+</span> <span class="s2">"*"</span><span class="p">);</span>
+  <span class="k">else</span>
+    <span class="nx">print</span><span class="p">(</span><span class="nx">counter</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>これは<code class="highlighter-rouge">if</code>文は互いに連鎖できるということのデモンストレーションである。この場合、プログラムは<code class="highlighter-rouge">counter</code>が<code class="highlighter-rouge">15</code>より大きいかを最初に見る。もしそうであれば、星2つを印刷して他のテストはスキップする。もしそうでなければ、続けて<code class="highlighter-rouge">counter</code>が<code class="highlighter-rouge">10</code>より大きいかをチェックする。<code class="highlighter-rouge">counter</code>が<code class="highlighter-rouge">10</code>より大きくなければ最後の<code class="highlighter-rouge">print</code>文にたどり着く。</p>
+
+<p><a href="#Ex2-5">演習 2.5</a></p>
+
+<p><code class="highlighter-rouge">pronpt</code>を用いて、2 + 2がどんな値になるか、あなた自身に質問するプログラムを書け。もし答えが”4”であれば、<code class="highlighter-rouge">alert</code>で賞賛の言葉を。もし”3”か”5”であれば、”Almost!”を。他の場合は、何かそのような意味の言葉を表示させなさい。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">answer</span> <span class="o">=</span> <span class="nx">prompt</span><span class="p">(</span><span class="s2">"You! What is the value of 2 + 2?"</span><span class="p">,</span> <span class="s2">""</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">answer</span> <span class="o">==</span> <span class="s2">"4"</span><span class="p">)</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s2">"You must be a genius or something."</span><span class="p">);</span>
+<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">answer</span> <span class="o">==</span> <span class="s2">"3"</span> <span class="o">||</span> <span class="nx">answer</span> <span class="o">==</span> <span class="s2">"5"</span><span class="p">)</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s2">"Almost!"</span><span class="p">);</span>
+<span class="k">else</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s2">"You're an embarrassment."</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>ループはその終了に続く道を必ずしも進まないとき、<code class="highlighter-rouge">break</code>キーワードが便利である。直ちに現在のループから脱出し、その後から実行を続ける。このプログラムは20より大きくて7で割り切れる最初の数を求める。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">current</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span> <span class="p">;</span> <span class="nx">current</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">current</span> <span class="o">%</span> <span class="mi">7</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">current</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>この<code class="highlighter-rouge">for</code>構造ではループの終了チェックの部分を持たない。これは中の<code class="highlighter-rouge">break</code>文にその終了をゆだねているということを意味する。同じプログラムをより単純に書くこともできた…。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">current</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span> <span class="nx">current</span> <span class="o">%</span> <span class="mi">7</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">current</span><span class="o">++</span><span class="p">)</span>
+  <span class="p">;</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">current</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>この場合、ループの本体は空である。単独のセミコロンは空文を作るのに使われる。ここでは、ループの効果として変数<code class="highlighter-rouge">current</code>を加算する事だけを望んでいる。しかし私は最初のバージョンの<code class="highlighter-rouge">break</code>文を使った例の方が注意を引くので、望ましいと思う。</p>
+
+<hr />
+
+<p><a href="#Ex2-6">演習 2.6</a></p>
+
+<p>前の演習の解答にを<code class="highlighter-rouge">while</code>と<code class="highlighter-rouge">break</code>を加えて、正しい答えが得られるまで質問を繰り返すようにせよ。</p>
+
+<p><code class="highlighter-rouge">while(true)</code>について…それ自体では終了しないループを作るのに使える。<code class="highlighter-rouge">true</code>が<code class="highlighter-rouge">true</code>である限りループするというプログラムはちょっとバカバカしいが、しかし有用なトリックである。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">answer</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">answer</span> <span class="o">=</span> <span class="nx">prompt</span><span class="p">(</span><span class="s2">"You! What is the value of 2 + 2?"</span><span class="p">,</span> <span class="s2">""</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">answer</span> <span class="o">==</span> <span class="s2">"4"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">"You must be a genius or something."</span><span class="p">);</span>
+    <span class="k">break</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">answer</span> <span class="o">==</span> <span class="s2">"3"</span> <span class="o">||</span> <span class="nx">answer</span> <span class="o">==</span> <span class="s2">"5"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">"Almost!"</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">"You're an embarrassment."</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>最初の<code class="highlighter-rouge">if</code>の本体が2つの文を持つため、本体の周りに中括弧を付け足した。これは好みの問題だ。1つの<code class="highlighter-rouge">if/else</code>連鎖の中である本体がブロックでありかつ他が単一行であるとちょっとバランスが悪いように私には思えるのだが、しかしあなたはあなた自身の好みで決めて良い。</p>
+
+<p>もう一つの解答は、良さそうに見えるが、<code class="highlighter-rouge">break</code>を使ってない。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="k">while</span> <span class="p">(</span><span class="nx">value</span> <span class="o">!=</span> <span class="s2">"4"</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">value</span> <span class="o">=</span> <span class="nx">prompt</span><span class="p">(</span><span class="s2">"You! What is the value of 2 + 2?"</span><span class="p">,</span> <span class="s2">""</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">==</span> <span class="s2">"4"</span><span class="p">)</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">"You must be a genius or something."</span><span class="p">);</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">==</span> <span class="s2">"3"</span> <span class="o">||</span> <span class="nx">value</span> <span class="o">==</span> <span class="s2">"5"</span><span class="p">)</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">"Almost!"</span><span class="p">);</span>
+  <span class="k">else</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">"You're an embarrassment."</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>先の演習の解答の中に<code class="highlighter-rouge">var answer;</code>という文があった。これは<code class="highlighter-rouge">answer</code>という名の変数を作るが、しかしそれに値を与えていない。この変数の値を取り出したらどうなるだろうか？</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">mysteryVariable</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">mysteryVariable</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>タコにしてみれば、この変数は空気のようなもので、掴めるものは何もない。空である場所の値を聞いたとき、<code class="highlighter-rouge">undefined</code>という特別な値が得られる。<code class="highlighter-rouge">print</code>や<code class="highlighter-rouge">alert</code>のように、興味を引くような値を返さない関数もまた<code class="highlighter-rouge">undefined</code>という値を返す。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="nx">alert</span><span class="p">(</span><span class="s2">"I am a side effect."</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>同じような値として<code class="highlighter-rouge">null</code>というものがあり、これは’この変数は定義されているが、しかし値を持たない’という意味である。<code class="highlighter-rouge">undefined</code>と<code class="highlighter-rouge">null</code>の違いはもっとも学術的で、普通はあまり興味を引かない。実用的なプログラムでは、しばしば何かが’値を持っているか’をチェックするのに必要になる。これらの場合、<code class="highlighter-rouge">something == undefined</code>という式が使われ、それらが正確には同じ値ではないにも係わらず、<code class="highlighter-rouge">null == undefined</code>は<code class="highlighter-rouge">true</code>となる。</p>
+
+<hr />
+
+<p>別のトリッキーな問題を持ち込むもの…</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="kc">false</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">""</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"5"</span> <span class="o">==</span> <span class="mi">5</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>これらは全て<code class="highlighter-rouge">true</code>の値になる。型が異なる変数同士を比較したとき、JavaScriptは面倒で混乱したルールを使う。あまり精密な説明はしたくないが、多くの場合片方の値をもう片方の値の型に変換しようと試みられるのである。しかしながら、<code class="highlighter-rouge">null</code>や<code class="highlighter-rouge">undefined</code>があったとき、もし両方の値が<code class="highlighter-rouge">null</code>または<code class="highlighter-rouge">undefined</code>のときには<code class="highlighter-rouge">true</code>にしかならない。</p>
+
+<p>もし変数が<code class="highlighter-rouge">false</code>という値を参照しているかをテストしたいときは？文字列や数値を真偽値に変換するルールは<code class="highlighter-rouge">0</code>または空の文字列は<code class="highlighter-rouge">false</code>とし、他の値はすべて<code class="highlighter-rouge">true</code>とする、である。このため、変数が<code class="highlighter-rouge">0</code>か<code class="highlighter-rouge">""</code>であれば<code class="highlighter-rouge">変数 == false</code>という式もまた<code class="highlighter-rouge">true</code>である。これに似た場合、自動的な型変換を<strong>望まない</strong>場合、2つの拡張演算子がある：<code class="highlighter-rouge">===</code>および<code class="highlighter-rouge">!==</code>。1つめのものは値が他方と精密に等しいか、2つめは値が精密に等しくないかをテストする。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="kc">null</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="kc">false</span> <span class="o">===</span> <span class="mi">0</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">""</span> <span class="o">===</span> <span class="mi">0</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"5"</span> <span class="o">===</span> <span class="mi">5</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>これら全て<code class="highlighter-rouge">false</code>である。</p>
+
+<hr />
+
+<p><code class="highlighter-rouge">if</code>、<code class="highlighter-rouge">while</code>、<code class="highlighter-rouge">for</code>文の条件として与えられる値は真偽値でないかもしれない。これらはチェックの前に真偽値に自動的に型変換されるだろう。これは数値の<code class="highlighter-rouge">0</code>や空の文字列<code class="highlighter-rouge">""</code>、<code class="highlighter-rouge">null</code>、<code class="highlighter-rouge">undefined</code>そしてもちろん<code class="highlighter-rouge">false</code>が、全て<code class="highlighter-rouge">false</code>として扱われることを意味する。</p>
+
+<p>他の値が全て<code class="highlighter-rouge">true</code>として扱われることはこの場合、多くの状況で明示的な比較を省略することを可能にする。変数の内容がが文字列か<code class="highlighter-rouge">null</code>であると分っているとき、これをとても単純にチェックできる…。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">maybeNull</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="c1">// ... maybeNullに文字列を入れるかもしれない謎のコード</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">maybeNull</span><span class="p">)</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"maybeNull has a value"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>このケースで期待されるのは謎のコードが<code class="highlighter-rouge">maybeNull</code>に<code class="highlighter-rouge">""</code>の値を入れることである。空の文字列は<code class="highlighter-rouge">false</code>であるから、何もプリントされない。何を試すかによっているが、これは<strong>間違っているかもしれない</strong>。しばしば明示的に<code class="highlighter-rouge">=== null</code>または<code class="highlighter-rouge">=== false</code>を加える良いアイデアが微妙なミスを防ぐ。数値に対する<code class="highlighter-rouge">0</code>についても同様である。</p>
+
+<hr />
+
+<p>先の例の’謎のコード’と書かれた行がちょっと奇異に見えたかもしれない。プログラムに追加のテキストを入れられればしばしば便利だ。プログラムに人間の言葉で説明を加えることがもっとも一般的な使い途だ。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// The variable counter, which is about to be defined, is going</span>
+<span class="c1">// to start with a value of 0, which is zero.</span>
+<span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="c1">// Now, we are going to loop, hold on to your hat.</span>
+<span class="k">while</span> <span class="p">(</span><span class="nx">counter</span> <span class="o">&lt;</span> <span class="mi">100</span> <span class="cm">/* counter is less than one hundred */</span><span class="p">)</span>
+<span class="cm">/* Every time we loop, we INCREMENT the value of counter,
+   Seriously, we just add one to it. */</span>
+  <span class="nx">counter</span><span class="o">++</span><span class="p">;</span>
+<span class="c1">// And then, we are done.</span>
+</code></pre>
+</div>
+
+<p>この種類のテキストをコメントと呼ぶ。このようなルールである：’<code class="highlighter-rouge">/*</code>‘で始まり’<code class="highlighter-rouge">*/</code>‘が見つかるまでがコメントとなる。’<code class="highlighter-rouge">//</code>‘始まりは別の種類のコメントで、その行の終わりまで続く。</p>
+
+<p>見ての通り、単純なプログラムにたくさんのコメントを単純に付け加えてしまうと、大きく、醜く、面倒になってしまうことがある。</p>
+
+<hr />
+
+<p>他の状況でも自動的な型変換が起こることがある。もし文字列型でない値を文字型に付け加えたら、その値は前に連結された文字列に自動的に変換される。もし数値を文字列にかけ算したら、JavaScriptは文字列から数値を作り出そうとする。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="s2">"Apollo"</span> <span class="o">+</span> <span class="mi">5</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="kc">null</span> <span class="o">+</span> <span class="s2">"ify"</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"5"</span> <span class="o">*</span> <span class="mi">5</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"strawberry"</span> <span class="o">*</span> <span class="mi">5</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>最後の文は<code class="highlighter-rouge">NaN</code>という特別な値をプリントする。これは’not a number’であり、数値型の値（少々矛盾して聞こえるかもしれないが）である。この場合、<code class="highlighter-rouge">strawberry</code>は実際に数値でない。<code class="highlighter-rouge">NaN</code>からの全ての数学的な演算の結果は<code class="highlighter-rouge">NaN</code>になり、それがこの例のように<code class="highlighter-rouge">5</code>をかけたらそれも<code class="highlighter-rouge">NaN</code>なったことの理由である。また、これも迷わせるようだが、<code class="highlighter-rouge">NaN == NaN</code>は<code class="highlighter-rouge">false</code>と等しく、ある値が<code class="highlighter-rouge">NaN</code>であるかどうかをチェックするには<code class="highlighter-rouge">isNaN</code>関数を使う。<code class="highlighter-rouge">NaN</code>はもう一つの（そして最後の）変換したら<code class="highlighter-rouge">false</code>となる値である。</p>
+
+<p>これらの自動的な変換はとても便利なものであり得るが、しかしむしろ奇異と誤りももたらす。<code class="highlighter-rouge">+</code>と<code class="highlighter-rouge">*</code>はともに数学演算子であるにもかかわらず、例では全く異なった振る舞いをした。私自身のコードでは、<code class="highlighter-rouge">+</code>を文字列と文字列でない値の連結に数多く使っているが、<code class="highlighter-rouge">*</code>や他の数学演算子を文字列には使わないようにしている。数値から文字列への変換は常に可能でまっすぐだが、文字列から数値への変換はしばしばうまく動かない（例の最後の行のように）。文字列から数字への明示的な変換には<code class="highlighter-rouge">Number</code>関数を使うことができ、それにより<code class="highlighter-rouge">NaN</code>値が得られることによるリスクをクリアすることができる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="nb">Number</span><span class="p">(</span><span class="s2">"5"</span><span class="p">)</span> <span class="o">*</span> <span class="mi">5</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>先ほどの<code class="highlighter-rouge">&amp;&amp;</code>と<code class="highlighter-rouge">||</code>という真偽値の演算子の話で、私はそれらが真偽値を作ると主張した。これはちょっと単純化しすぎた話でもある。もしこれらを真偽値に適用したら、真偽値が返ってくる。しかし、他の種類の値に適用したら、これらの引数のどちらかが帰ってくる。</p>
+
+<p><code class="highlighter-rouge">||</code>は実際はこのようなものだ：左のものを最初として値を見る。これを真偽値に変換して<code class="highlighter-rouge">true</code>になったら左の値を返し、そうでなければ右の値を返す。引数を真偽値にしたときこれが正しいことをチェックしてみてほしい。なぜこんな動きになるのか？しかし実用的ではある。この例を考えてみて欲しい。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">input</span> <span class="o">=</span> <span class="nx">prompt</span><span class="p">(</span><span class="s2">"What is your name?"</span><span class="p">,</span> <span class="s2">"Kilgore Trout"</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="s2">"Well hello "</span> <span class="o">+</span> <span class="p">(</span><span class="nx">input</span> <span class="o">||</span> <span class="s2">"dear"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>ユーザーが’Cancel’を押すか、他の方法で名前を書かずに<code class="highlighter-rouge">prompt</code>のダイアログを閉じたら、変数の値は<code class="highlighter-rouge">null</code>もしくは<code class="highlighter-rouge">""</code>となる。どちらの場合も真偽値に変換された時には偽になる。<code class="highlighter-rouge">input || "dear"</code>という式はこの場合、’変数<code class="highlighter-rouge">input</code>の値か、もしくは<code class="highlighter-rouge">"dear"</code>という文字列’である。これは’代替’の値を提供する簡単な手だ。</p>
+
+<p><code class="highlighter-rouge">&amp;&amp;</code>は同様な、しかし別の働きをする。左側の値が真偽値に変換したときに<code class="highlighter-rouge">false</code>になる何らかの値であれば、その値を返し、そうなければ右の値を返すのである。</p>
+
+<p>これら2つの演算子の他の特徴は右側の式は必要になってからだけ評価されるということである。<code class="highlighter-rouge">true || X</code>の場合、<code class="highlighter-rouge">X</code>が何であるかにかかわらず、結果は<code class="highlighter-rouge">true</code>となり、そして<code class="highlighter-rouge">X</code>は評価されることがなく、もしそれにside effectがあってもそれは起きない。<code class="highlighter-rouge">false &amp;&amp; X</code>についても同様である。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kc">false</span> <span class="o">||</span> <span class="nx">alert</span><span class="p">(</span><span class="s2">"I'm happening!"</span><span class="p">);</span>
+<span class="kc">true</span> <span class="o">||</span> <span class="nx">alert</span><span class="p">(</span><span class="s2">"Not me."</span><span class="p">);</span>
+</code></pre>
+</div>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eloquent JavaScript(ja)</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Eloquent JavaScript(ja)
+            
+            </li>
+            
+            <li><a href="mailto:morinatsu@gmail.com">morinatsu@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/morinatsu"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">morinatsu</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/morinatsu"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">morinatsu</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Japanese translateion of &#39;Eloquent JavaScript&#39;</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
