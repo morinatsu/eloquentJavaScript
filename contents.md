@@ -8,9 +8,9 @@ Eloquent JavaScript
 Contents
 --------
 
-   1. [導入](Introduction.html)
-   2. [基本のJavaScript](Basic JavaScript.html)
-   3. [関数](Functions)
+   1. [導入]({{ "Introduction.html" | prepend:site.baseurl }})
+   2. [基本のJavaScript]({{ "Basic JavaScript.html" | prepend:site.baseurl }})
+   3. [関数]( {{ "Functions.html" | prepend:site.baseurl }})
    4. Data structures
    5. Error Handling
    6. Functional Programming
