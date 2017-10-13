@@ -28,7 +28,7 @@ by Marijn Haverbeke
 
 電子媒体のものは以下のフォーマットが利用可能：
 
-* [HTML]({{ "/contents.html" | prepend:siteurl }})
+* [HTML]({{ "/contents.html" | prepend:site.baseurl }})
 * HTML, zipped
 * HTML, single page (not interactive)
 
