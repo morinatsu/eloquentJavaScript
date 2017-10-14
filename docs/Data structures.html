@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>4. データ構造</title>
+  <meta name="description" content="Japanese translateion of &#39;Eloquent JavaScript&#39;">
+
+  <link rel="stylesheet" href="/eloquentJavaScript/assets/main.css">
+  <link rel="canonical" href="https://morinatsu.github.com/eloquentJavaScript/Data%20structures.html">
+  <link rel="alternate" type="application/rss+xml" title="Eloquent JavaScript(ja)" href="/eloquentJavaScript/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/eloquentJavaScript/">Eloquent JavaScript(ja)</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Basic%20JavaScript.html">2. 基本のJavaScript</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Data%20structures.html">4. データ構造</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Functions.html">3. 関数</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Introduction.html">1. 導入</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/about/">About</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/contents.html">Contents</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/">Eloquent JavaScript - Top</a>
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="データ構造-オブジェクトと配列">データ構造: オブジェクトと配列</h1>
+
+<p>この章では2, 3の単純な問題の解決に没頭する。その過程で、2つの新しいデータ型、配列とオブジェクトについて論じ、それらに関するテクニックを見ていく。</p>
+
+<p>次のような状況を考える：エミリーというおかしな叔母さん、彼女は50匹を超える猫（数えるのはあきらめている）と暮らしていると噂されており、定期的にあなたに自分自慢の電子メールを送り続けてくる。大抵このようなもの：</p>
+
+<p><strong>愛しい甥へ</strong></p>
+
+<p><strong>あなたがスカイダイビングをやっているとお母さんが言っていました。本当？お気を付けなさい、お若いかた！私の夫に何があったか覚えてる？2階から飛び降りただけなのに！</strong></p>
+
+<p><strong>とにかく、面白いことがあるの。ドレークさんというかっこいい殿方が上の階に越してきて、毎週彼の注意を引こうとしているのだけど、彼は猫が怖いみたいなの。でなければ猫アレルギーとか？今度あったら太っちょイゴールを肩に押しつけて何が起こるか見てみようと思っているの。</strong></p>
+
+<p><strong>前に話した詐欺の件は思ったより良いことになったわ。1回苦情を言っただけで、もう5回も’支払’が来てる。私の気分を悪くするために始めたのね。何かの法律に違反していることを証明できるという、あなたの意見は正しかったわ。</strong></p>
+
+<p><strong>(… etc …)</strong></p>
+
+<p><strong>たくさんの愛情を、エミリー叔母さんより</strong></p>
+
+<p><strong>died 27/04/2006: Black Leclère</strong></p>
+
+<p><strong>born 05/04/2006 (mother Lady Penelope): Red Lion, Doctor Hobbles the 3rd, Little Iroquois</strong></p>
+
+<p>老人の機嫌をとるために、彼女の猫の系譜を追跡して、誤って死んだ猫のことに触れるのを避けつつ、”追伸： Doctor Hobbles 2ndが今週土曜の誕生日を楽しめるといいですね！”、あるいは”Lasy Penelopeの調子はどうですか？彼女は5歳でしたよね？”といったことを返信に付け足すのはどうだろうか。あなたは叔母さんからの古い電子メールを大量に所有しており、幸運なことに叔母さんは常に彼女の猫の誕生と死をメールの末尾に正確に同じフォーマットで記している。</p>
+
+<p>これらのメールを全て手作業で処理する気にはならないだろう。幸運なことに、我々は例題を必要としているから、プログラムにこの仕事をさせてみよう。スタートとして、最後の電子メールの時点で生きている猫のリストを作るプログラムを書こう。</p>
+
+<p>質問する前、文通の始まった時点で、エミリー叔母さんは1匹の猫だけを飼っていた: Spotである。（その頃の彼女はまだ、むしろ平凡だった）</p>
+
+<hr />
+
+<p><img src="/eloquentJavaScript/assets/img/eyes.png" alt="猫の目" title="eyes" /></p>
+
+<hr />
+
+<p>プログラムをタイプし始める前に、普通は問題を解く筋道を立ててみるものだ。こういうプランだ。：</p>
+
+<ol>
+  <li>“Spot”だけが猫の名前の集合にあるところからスタートする。</li>
+  <li>アーカイブから全ての電子メールを取り出し、時系列順に並べる。</li>
+  <li>“born（誕生）”または”died（死亡）”から始まる段落を見る。</li>
+  <li>“born”から始まる段落に含まれる名前を集合に加える。</li>
+  <li>“died”から始まる段落に含まれる名前を集合から取り除く。</li>
+</ol>
+
+<p>段落から名前を取り出すところはこのようになるだろう：</p>
+
+<ol>
+  <li>段落からコロンを探す。</li>
+  <li>コロンの後ろの部分を取り上げる。</li>
+  <li>カンマを見てこの部分を分割して名前とする。</li>
+</ol>
+
+<p>エミリー叔母さんが、あなたの叔母さんがそうであるように、常に正確なフォーマットを使うと信じられなかったり、名前のスペルを間違ったりすることについては保留する必要があるかもしれない。</p>
+
+<hr />
+
+<p>最初に、プロパティについて語ろう。JavaScriptの多くの値は他の値との結びつきを持つ。この結びつきをプロパティと呼ぶ。全ての文字列は<code class="highlighter-rouge">length</code>（長さ）というプロパティを持ち、それは文字列の中の文字の数を示す数値である。</p>
+
+<p>プロパティは2つの方法でアクセスできる:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="s2">"purple haze"</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">text</span><span class="p">[</span><span class="s2">"length"</span><span class="p">]);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">text</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>2つめの方法は1つめの短縮形で、プロパティの名前が変数名として正しいときだけ動作する – 空白や記号を含んでいたり数字から始まっていたりしてはいけない。</p>
+
+<p><code class="highlighter-rouge">null</code>や<code class="highlighter-rouge">undefined</code>といった値にプロパティに持たせることはできない。そのような値からプロパティを読もうとしたらエラーになる。以下のコードを試し、そのような場合にブラウザがどんなメッセージを出すか見て欲しい。（ブラウザによっては、むしろ暗号めいたものになりうる）</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">nothing</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">nothing</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>文字列のプロパティは変更できない。見たとおりの、ちょうどの<code class="highlighter-rouge">length</code>であり、足したり取り去ったりすることは許されない。</p>
+
+<p>オブジェクト型の値では異なる。それらの主な役目は他の値を保持することだ。それらは、こうも言える、プロパティという形の触手のセットを持つものであると。自由に変更し、取り去ったり、新しいものを付け加えたりできる。</p>
+
+<p>オブジェクトはこのように書くことができる:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">cat</span> <span class="o">=</span> <span class="p">{</span><span class="na">colour</span><span class="p">:</span> <span class="s2">"grey"</span><span class="p">,</span> <span class="na">name</span><span class="p">:</span> <span class="s2">"Spot"</span><span class="p">,</span> <span class="na">size</span><span class="p">:</span> <span class="mi">46</span><span class="p">};</span>
+<span class="nx">cat</span><span class="p">.</span><span class="nx">size</span> <span class="o">=</span> <span class="mi">47</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">cat</span><span class="p">.</span><span class="nx">size</span><span class="p">);</span>
+<span class="k">delete</span> <span class="nx">cat</span><span class="p">.</span><span class="nx">size</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">cat</span><span class="p">.</span><span class="nx">size</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">cat</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>変数のように、それぞれのプロパティは文字列でラベル付けされることで結びつけることができる。最初の文は、<code class="highlighter-rouge">"colour"</code>プロパティに文字列<code class="highlighter-rouge">"grey"</code>を格納し、<code class="highlighter-rouge">"name"</code>プロパティに文字列<code class="highlighter-rouge">"Spot"</code>で結びつけられ、<code class="highlighter-rouge">"size"</code>プロパティで<code class="highlighter-rouge">46</code>という数字を参照する1つのオブジェクトを作る。2つめの文は<code class="highlighter-rouge">size</code>という名前のプロパティに、変数と同じやり方で新しい値を与えている。</p>
+
+<p><code class="highlighter-rouge">delete</code>キーワードはプロパティを切り捨てる。存在しないプロパティを読もうとすると<code class="highlighter-rouge">undefined</code>値が与えられる。</p>
+
+<p>もしまだ存在しないプロパティに、<code class="highlighter-rouge">=</code>演算子で設定を行えば、それはオブジェクトに追加される。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">empty</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="nx">empty</span><span class="p">.</span><span class="nx">notReally</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">empty</span><span class="p">.</span><span class="nx">notReally</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>オブジェクトを作るとき、プロパティに変数名として正しくない名前を付けるには引用符を付ける必要があり、大括弧を使ってアプローチする:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">thing</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"gabba gabba"</span><span class="p">:</span> <span class="s2">"hey"</span><span class="p">,</span> <span class="s2">"5"</span><span class="p">:</span> <span class="mi">10</span><span class="p">};</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">thing</span><span class="p">[</span><span class="s2">"5"</span><span class="p">]);</span>
+<span class="nx">thing</span><span class="p">[</span><span class="s2">"5"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">thing</span><span class="p">[</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]);</span>
+<span class="k">delete</span> <span class="nx">thing</span><span class="p">[</span><span class="s2">"gabba gabba"</span><span class="p">];</span>
+</code></pre>
+</div>
+
+<p>見ての通り、大括弧の中の部分は任意の式である。それはプロパティの名前が参照されるときに文字列に変換される。プロパティ名に変数を使うこともできる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">propertyName</span> <span class="o">=</span> <span class="s2">"length"</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="s2">"mainline"</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">text</span><span class="p">[</span><span class="nx">propertyName</span><span class="p">]);</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">in</code>演算子はオブジェクトがそのプロパティを確かに持っているかをテストする。これは真偽値を作る。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">chineseBox</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="nx">chineseBox</span><span class="p">.</span><span class="nx">content</span> <span class="o">=</span> <span class="nx">chineseBox</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"content"</span> <span class="k">in</span> <span class="nx">chineseBox</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"content"</span> <span class="k">in</span> <span class="nx">chineseBox</span><span class="p">.</span><span class="nx">content</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>オブジェクト値をコンソール上で見るとき、それらはプロパティを見るためにクリックすることができる。出力ウインドウは’inspect’ウインドウに代わる。右上の小さな’x’は出力ウインドウに戻るのに使え、左矢印は前回見たオブジェクトのプロパティに戻るのに使える。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="nx">chineseBox</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<h3 id="演習-41"><a name="Ex4-1">[演習 4.1]</a></h3>
+
+<p>猫の問題を解くにあたり、名前の’セット’(集合)について話そう。セットは同じ値を1つしか入れることのできないコレクションである。もし名前が文字列であれば、これを名前のセットを現わすオブジェクトとして使う方法を考えられないだろうか？</p>
+
+<p>このセットへの名前の追加のしかた、取り除きかた、名前がその中に入っていないかチェックする方法を示せ。</p>
+
+<p>[解答を見る]</p>
+
+<p>これはセットの内容を格納をオブジェクトのプロパティへのように行うことで可能になる。名前を任意の値としてプロパティに設定することにより名前を追加でき、このプロパティを削除することで名前を取り除ける。<code class="highlighter-rouge">in</code>演算子で名前がセットにあるかどうかチェックできる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">set</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"Spot"</span><span class="p">:</span> <span class="kc">true</span><span class="p">};</span>
+<span class="c1">// Add "White Fang" to the set</span>
+<span class="nx">set</span><span class="p">[</span><span class="s2">"White Fang"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="c1">// Remove "Spot"</span>
+<span class="k">delete</span> <span class="nx">set</span><span class="p">[</span><span class="s2">"Spot"</span><span class="p">];</span>
+<span class="c1">// See if "Asoka" is in the set</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"Asoka"</span> <span class="k">in</span> <span class="nx">set</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>オブジェクトの値は、見ての通り、変更することができる。<a href="/Basic JavaScript.html">2章</a>では値の型は全くかわらない、既に存在する値の型は変更不可能であると論じた。それらを連結したりそれらから新しい値を作ることはできるが、しかしここの文字列の値を見れば、その中のテキストは変更できない。オブジェクトでは、その一方で、値に含まれている内容をプロパティを変更することにより変えることができるのだ。</p>
+
+<p><code class="highlighter-rouge">120</code>と<code class="highlighter-rouge">120</code>という、2つの数値があるとき、全ての実用的な目的の上ではそれらは正確に同じ値であると考えられる。オブジェクトについては、同じオブジェクトへの2つの参照があるということと、同じプロパティを含む2つの異なるオブジェクトがあるということの間には違いがある。以下のコードについて考えよう:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">object1</span> <span class="o">=</span> <span class="p">{</span><span class="na">value</span><span class="p">:</span> <span class="mi">10</span><span class="p">};</span>
+<span class="kd">var</span> <span class="nx">object2</span> <span class="o">=</span> <span class="nx">object1</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">object3</span> <span class="o">=</span> <span class="p">{</span><span class="na">value</span><span class="p">:</span> <span class="mi">10</span><span class="p">};</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">object1</span> <span class="o">==</span> <span class="nx">object2</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">object1</span> <span class="o">==</span> <span class="nx">object3</span><span class="p">);</span>
+
+<span class="nx">object1</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">object2</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">object3</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">object1</code>は<code class="highlighter-rouge">object2</code>は<strong>同じ</strong>値を掴んでいる2つの変数である。実在のオブジェクトは1つしかなく、<code class="highlighter-rouge">object1</code>が変更されれば<code class="highlighter-rouge">object2</code>の値も変わる。<code class="highlighter-rouge">object3</code>という変数は別のオブジェクトを指しており、最初は<code class="highlighter-rouge">object1</code>と同じプロパティを含んでいるが、しかし別れた人生を生きる。</p>
+
+<p>JavaScriptの<code class="highlighter-rouge">==</code>演算子は、オブジェクトを比較するとき、もし与えられた両方の値が正確に同じ値のときだけ<code class="highlighter-rouge">true</code>を返す。同じ内容を持つ異なるオブジェクトを比較したら<code class="highlighter-rouge">false</code>となる。これはある状況では便利だが、他の状況では実用的でない。</p>
+
+<hr />
+
+<p>オブジェクトの値は多くの異なる役割を果たす。セットのようなものはそれらの1つでしかない。この章で若干の他の役割を見ていき、<a href="/Object-oriented Programming.html">8章</a>において別の重要なオブジェクトの用法を見よう。</p>
+
+<p>猫問題の計画において – 実際のところ、それを計画ではなく、アルゴリズムと呼ばれる、それは我々が語っているように思っているもの – このアルゴリズムの中で、アーカイブの中の全ての電子メールをどう扱うか話そう。このアーカイブは何に見えるだろうか？それをどこから持って来たものだろうか？</p>
+
+<p>2つめの質問は今はおいておこう。<a href="/HTTP requests.html">14章</a>でプログラムにデータを取り込む方法を話し、今は電子メールは魔法のようにただそこにあるとしておこう。コンピューターの中では魔法は本当に簡単だ。</p>
+
+<hr />
+
+<p>アーカイブを格納する方法はまだ興味深い疑問だ。それは多くの電子メールを含んでいる。1つの電子メールはまた文字列でもあるのは明らかであろう。アーカイブ全体は巨大な文字列に入れることができるが、しかしそれはひどく実用的でない。我々が望むのは分割された文字列のコレクションである。</p>
+
+<p>物のコレクションとしてオブジェクトを使う。このようなオブジェクトを作ることができる:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">mailArchive</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"the first e-mail"</span><span class="p">:</span> <span class="s2">"Dear nephew, ..."</span><span class="p">,</span>
+                   <span class="s2">"the second e-mail"</span><span class="p">:</span> <span class="s2">"..."</span>
+                   <span class="cm">/* and so on ... */</span><span class="p">};</span>
+</code></pre>
+</div>
+
+<p>しかしこれで電子メールを最初から最後まで見るのは困難だ ― プログラムはどうやってこれらのプロパティ名を推測するのか？より推測しやすいプロパティ名によってこれを解決できる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">mailArchive</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">"Dear nephew, ... (mail number 1)"</span><span class="p">,</span>
+                   <span class="mi">1</span><span class="p">:</span> <span class="s2">"(mail number 2)"</span><span class="p">,</span>
+                   <span class="mi">2</span><span class="p">:</span> <span class="s2">"(mail number 3)"</span><span class="p">};</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">current</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">current</span> <span class="k">in</span> <span class="nx">mailArchive</span><span class="p">;</span> <span class="nx">current</span><span class="o">++</span><span class="p">)</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"Processing e-mail #"</span><span class="p">,</span> <span class="nx">current</span><span class="p">,</span> <span class="s2">": "</span><span class="p">,</span> <span class="nx">mailArchive</span><span class="p">[</span><span class="nx">current</span><span class="p">]);</span>
+</code></pre>
+</div>
+
+<p>まさにこの用途に使うための特別な種類のオブジェクトがある。これらは配列と呼ばれ、便利なことに、配列に格納されている値の数を含む<code class="highlighter-rouge">length</code>プロパティのような、この種のコレクションを便利に使うための操作をいくつも提供している。</p>
+
+<p>新しい配列は大括弧（<code class="highlighter-rouge">[</code>と<code class="highlighter-rouge">]</code>）を使って作られる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">mailArchive</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"mail one"</span><span class="p">,</span> <span class="s2">"mail two"</span><span class="p">,</span> <span class="s2">"mail three"</span><span class="p">];</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">current</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">current</span> <span class="o">&lt;</span> <span class="nx">mailArchive</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">current</span><span class="o">++</span><span class="p">)</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"Processing e-mail #"</span><span class="p">,</span> <span class="nx">current</span><span class="p">,</span> <span class="s2">": "</span><span class="p">,</span> <span class="nx">mailArchive</span><span class="p">[</span><span class="nx">current</span><span class="p">]);</span>
+</code></pre>
+</div>
+
+<p>この例では、もう要素の番号を明示的に書く必要はなくなった。1つめのものは自動的に0番となり、2つめのものは1番、というようになる。</p>
+
+<p>なぜ0から始まるか？人間は1から数えがちだ。直感的でないように見えるが、コレクションの要素の番号を0から始めることはしばしばより実用的なのだ。今はただそのようにしておけば、あなたもだんだん気に入ってくるだろう。</p>
+
+<p>要素0から始めることはまた<code class="highlighter-rouge">x</code>要素があるコレクションにおいて、最後の要素の位置が<code class="highlighter-rouge">x - 1</code>になるということをも意味する。これが例の<code class="highlighter-rouge">for</code>ループで<code class="highlighter-rouge">current &lt; mailArchive.length</code>をチェックする理由である。<code class="highlighter-rouge">mailArchive.length</code>の位置にある要素はなく、<code class="highlighter-rouge">current</code>がこの値になり次第、ループが終了する。</p>
+
+<hr />
+
+<h3 id="演習-42"><a name="Ex4-2">[演習 4.2]</a></h3>
+
+<p>1つの引数を取り、0から与えられた数値までの全ての正の数値を含む配列を返す<code class="highlighter-rouge">range</code>関数を書け。</p>
+
+<p>空の配列を作るには単純に<code class="highlighter-rouge">[]</code>とタイプすればよい。オブジェクトへのプロパティを追加を思い出して、配列についてもそのように、<code class="highlighter-rouge">=</code>演算子で値を割り当てれば良い。<code class="highlighter-rouge">length</code>プロパティは要素の追加により自動的に更新される。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">range</span><span class="p">(</span><span class="nx">upto</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="nx">upto</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="nx">result</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">range</span><span class="p">(</span><span class="mi">4</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>今までやってきたように、ループの変数に<code class="highlighter-rouge">counter</code>や<code class="highlighter-rouge">current</code>と名前を付ける代わりに、ここでは単純に<code class="highlighter-rouge">i</code>とした。ループ変数に通常<code class="highlighter-rouge">i</code>、<code class="highlighter-rouge">j</code>または<code class="highlighter-rouge">k</code>といった単一の文字を使うのは、プログラマーの間に広く広まっている習慣だ。その起源の多くは面倒さにある：7文字よりは1文字タイプするのがいいし、<code class="highlighter-rouge">counter</code>とか<code class="highlighter-rouge">current</code>といった名前は明らかに全く変数の意味を表してない。</p>
+
+<p>もしプログラムが意味のない1文字の変数を使いすぎたら、信じられないほど混乱したものとなるだろう。私自身のプログラムでは、これを2, 3の一般的な場合にとどめようとしている。小さいループがこれらの場合の1つ。もし、ループが他のループを含んでいたら、そしてそれが<code class="highlighter-rouge">i</code>みたいな変数名でもあり、内側のループが外側のループで使っている変数を更新していたら、すべてが壊れるだろう。<code class="highlighter-rouge">j</code>を内側のループの中で使うことは可能だが、全般的に、ループの本体が大きいときは、意味が明確になる変数名を使うべきである。</p>
+
+<hr />
+
+<p>文字列と配列オブジェクトの両方とも、<code class="highlighter-rouge">length</code>プロパティに加えて、関数値を参照する幾つかのプロパティを持つ。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">doh</span> <span class="o">=</span> <span class="s2">"Doh"</span><span class="p">;</span>
+<span class="nx">print</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">doh</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">doh</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">());</span>
+</code></pre>
+</div>
+
+<p>全ての文字列は<code class="highlighter-rouge">toUpperCase</code>プロパティを持つ。呼ばれたら、全ての文字が大文字に変換された文字列のコピーを返す。<code class="highlighter-rouge">toLowerCase</code>というのもまたあって、推測通りのことをする。</p>
+
+<p>注意すべきは、<code class="highlighter-rouge">toUpperCase</code>は何の引数もなく呼ばれるにもかかわらず、関数は何らかの方法で文字列<code class="highlighter-rouge">"Doh"</code>にアクセスし、その値をプロパティとしていることだ。ここでどのようなことが起こっているかの正確なことは<a href="/Object-oriented Programming.html">8章</a>で記述しよう。</p>
+
+<p>“<code class="highlighter-rouge">toUpperCase</code>は文字列オブジェクトのメソッドである”というように、関数を含むプロパティは一般的にメソッドと呼ばれる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">mack</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="nx">mack</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s2">"Mack"</span><span class="p">);</span>
+<span class="nx">mack</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s2">"the"</span><span class="p">);</span>
+<span class="nx">mack</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s2">"Knife"</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">mack</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">" "</span><span class="p">));</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">mack</span><span class="p">.</span><span class="nx">pop</span><span class="p">());</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">mack</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">push</code>メソッドは配列と結びついており、配列に値を付け加えるのに使われる。先ほどの演習ので使った<code class="highlighter-rouge">result[i] = i</code>の代わりになる。それから<code class="highlighter-rouge">pop</code>というものがあり、これは<code class="highlighter-rouge">push</code>の反対である：配列から最後の値を取り出して返す。<code class="highlighter-rouge">join</code>は文字列の配列から1つの大きな文字列を組み立てる。与えられたパラメータは配列の値の間に挿入される。</p>
+
+<hr />
+
+<p>猫の話に戻る。配列が電子メールのアーカイブを格納する良い手立てであることは分かった。このページでは、<code class="highlighter-rouge">retrieveMail</code>関数でこの配列を（魔法のように）手に入れることができる。この続きの処理をロケット工学その他の助けを借りずに行おう。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">mailArchive</span> <span class="o">=</span> <span class="nx">retrieveMails</span><span class="p">();</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">mailArchive</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">email</span> <span class="o">=</span> <span class="nx">mailArchive</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"Processing e-mail #"</span><span class="p">,</span> <span class="nx">i</span><span class="p">);</span>
+  <span class="c1">// Do more things...</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>生きている猫のセットを現わす方法も決めなければならない。次の問題は、それから、電子メールから<code class="highlighter-rouge">"born"</code>か<code class="highlighter-rouge">"died"</code>で始まる段落を見つけることだ。</p>
+
+<hr />
+
+<p>1つめの問題は段落とは正確には何であるかということになるだろう。この場合、文字列の値自体は十分な助けとならない：JavaScriptのテキストの概念では’文字の連なり’よりも深い意味はなく、ここにおいての段落の定義は決める必要がある。</p>
+
+<p>先に、我々は改行のキャラクターというのを見た。多くの人々が段落を区切るのにこれらを使う。我々は段落を、これからは、改行文字から始まる、あるいは本文の最初から始まり、次の改行文字か内容自体の終わりによって終わる電子メールのを一部分であると考える。</p>
+
+<p>そして我々は文字列を段落に分割するアルゴリズムを我々自身で書く必要はない。文字列は既に<code class="highlighter-rouge">split</code>という名のメソッドを持っており、それは配列の<code class="highlighter-rouge">join</code>メソッドの（ほとんど）反対である。引数として与えられた文字列を基準として文字列を配列に分割し格納する。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">words</span> <span class="o">=</span> <span class="s2">"Cities of the Interior"</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">words</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>このように、改行(<code class="highlighter-rouge">"\n"</code>)で分割し、電子メールを段落に分割するのに使える。</p>
+
+<hr />
+
+<h3 id="演習-43"><a name="Ex4-3">[演習 4.3]</a></h3>
+
+<p><code class="highlighter-rouge">split</code>と<code class="highlighter-rouge">join</code>は正確には互いの反対であるとは言えない。<code class="highlighter-rouge">string.split(x).join(x)</code>は常に元の値となるが、しかし<code class="highlighter-rouge">array.join(x).split(x)</code>はそうならない。<code class="highlighter-rouge">.join(" ").split(" ")</code>が元と異なる例を挙げられるか？</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="s2">"c d"</span><span class="p">];</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">array</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">" "</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>“born”と”died”のどちらからも始まらない段落はプログラムによって無視できる。文字列が確かにある語から始まるかどうかテストするにはどうすればよいか？<code class="highlighter-rouge">charAt</code>メソッドを文字列から特定の文字を取り出すのに使える。<code class="highlighter-rouge">x.charAt(0)</code>は1つめの文字を与え、<code class="highlighter-rouge">1</code>であれば2つめの文字、のように続く。文字列が”born”から始まるかチェックする1つの方法は:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">paragraph</span> <span class="o">=</span> <span class="s2">"born 15-11-2003 (mother Spot): White Fang"</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"b"</span> <span class="o">&amp;&amp;</span> <span class="nx">paragraph</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"o"</span> <span class="o">&amp;&amp;</span>
+     <span class="nx">paragraph</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"r"</span> <span class="o">&amp;&amp;</span> <span class="nx">paragraph</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"n"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>しかしこれは少々かっこ悪い – 10文字からなる言葉をチェックすることを想像して欲しい。ここで学ばなければならないこと：行が途方もなく、複数行にまたがるほど長くなることがありうる。同様の役割を果たしている元の行の最初の要素を、新しい行の先頭に並べることで、結果を読みやすくすることができる。</p>
+
+<p>文字列は<code class="highlighter-rouge">slice</code>というメソッドも持っている。これは文字列の1つめの引数で与えられた位置の文字から、2つめの引数で与えられた位置の文字の前（その位置の文字は結果に含まれない）までを一部分をコピーする。これで先に書いたチェックを簡単に書くことができる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"born"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<h3 id="演習-44"><a name="Ex4-4">[演習 4.4]</a></h3>
+
+<p>両方とも文字列である2つの引数を取り、1つめの引数が2つめの引数と同じ文字から始まっていれば<code class="highlighter-rouge">true</code>を、そうでなければ<code class="highlighter-rouge">false</code>を返す<code class="highlighter-rouge">startWith</code>関数を書け。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">startsWith</span><span class="p">(</span><span class="nx">string</span><span class="p">,</span> <span class="nx">pattern</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">string</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">pattern</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="o">==</span> <span class="nx">pattern</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">startsWith</span><span class="p">(</span><span class="s2">"rotation"</span><span class="p">,</span> <span class="s2">"rot"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p><code class="highlighter-rouge">charAt</code>と<code class="highlighter-rouge">slice</code>で文字列に存在しない部分が指定されたら何が起こるだろう？今見せた<code class="highlighter-rouge">startsWith</code>でマッチすべき文字列よりパターンの方が長ければどうなる？</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="s2">"Pip"</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="mi">250</span><span class="p">));</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"Nop"</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">charAt</code>は与えられた位置に文字がなければ<code class="highlighter-rouge">""</code>を返し、そして<code class="highlighter-rouge">slice</code>は存在しない新しい文字列の一部をただ残す。</p>
+
+<p>そう、<code class="highlighter-rouge">startsWith</code>あのバージョンも動く。<code class="highlighter-rouge">startsWith("Idiots", "Most honoured colleagues")</code>が呼び出されたとき、<code class="highlighter-rouge">string</code>が十分な文字を持っていなければ、<code class="highlighter-rouge">slice</code>の呼び出しは常に<code class="highlighter-rouge">pattern</code>より短い文字列を返すだろう。そのため、<code class="highlighter-rouge">==</code>での比較は<code class="highlighter-rouge">false</code>を返し、それは正しい。</p>
+
+<p>それは常に異常な（しかし正しい）プログラムへの入力を考慮する時間を取る助けになる。これらは通常corner caseと呼ばれ、全ての’正常な’入力で完璧に動くプログラムがcorner caseでヘマすることはとてもよくあることだ。</p>
+
+<hr />
+
+<p>猫問題で解決されていないのは段落から名前を展開するところだけとなった。アルゴリズムはこうだ:</p>
+
+<ol>
+  <li>段落からコロンを探す。</li>
+  <li>コロンより後の部分を取り出す。</li>
+  <li>コンマを見て、取り出した部分を名前に分割する。</li>
+</ol>
+
+<p>これは<code class="highlighter-rouge">"died"</code>から始まる段落と<code class="highlighter-rouge">"born"</code>から始まる段落の両方で起こる。これを関数にいれて、異なる種類の段落を扱う2つのコードの両方で使つのはいいアイデアだ。</p>
+
+<hr />
+
+<h3 id="演習-45"><a name="Ex4-5">[演習 4.5]</a></h3>
+
+<p>段落を引数とし、名前の配列を返す<code class="highlighter-rouge">catNames</code>関数を書けるか？</p>
+
+<p>文字列は、文字列の中の文字または文字列の一部の（最初の）位置を見つける<code class="highlighter-rouge">indexOf</code>メソッドを持つ。また<code class="highlighter-rouge">slice</code>は引数を1つだけ与えられたとき、与えられた位置から文字列の最後までの全体を返す。</p>
+
+<p>コンソールを使うのは関数を調べる助けとなる。例えば、<code class="highlighter-rouge">"foo:bar".indexOf(":")</code>とタイプしてどうなるか見てみるといい。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">catNames</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">colon</span> <span class="o">=</span> <span class="nx">paragraph</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">":"</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">paragraph</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">colon</span> <span class="o">+</span> <span class="mi">2</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s2">", "</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">catNames</span><span class="p">(</span><span class="s2">"born 20/09/2004 (mother Yellow Bess): "</span> <span class="o">+</span>
+              <span class="s2">"Doctor Hobbles the 2nd, Noog"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>トリッキーな部分、アルゴリズムの元の説明では、コロンやコンマのあとに続く空白は無視していた。<code class="highlighter-rouge">+ 2</code>は文字列を分割するときに使われ、コロン自体とその後の空白を取り除くために必要になる。<code class="highlighter-rouge">split</code>の引数にコンマと空白の両方を含めるのは、実際には名前はコンマだけではなく、空白も含めたもので分割されているからである。</p>
+
+<p>この関数では問題のチェックを行っていない。この場合においては、入力が常に正しいと仮定しているからである。</p>
+
+<hr />
+
+<p>残っているのはこれらの断片を互いにつなぎ合わせることだ。1つのやり方としてはこのようになるだろう。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">mailArchive</span> <span class="o">=</span> <span class="nx">retrieveMails</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">livingCats</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"Spot"</span><span class="p">:</span> <span class="kc">true</span><span class="p">};</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">mail</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">mail</span> <span class="o">&lt;</span> <span class="nx">mailArchive</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">mail</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">paragraphs</span> <span class="o">=</span> <span class="nx">mailArchive</span><span class="p">[</span><span class="nx">mail</span><span class="p">].</span><span class="nx">split</span><span class="p">(</span><span class="s2">"\n"</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">paragraph</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+       <span class="nx">paragraph</span> <span class="o">&lt;</span> <span class="nx">paragraphs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+       <span class="nx">paragraph</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">startsWith</span><span class="p">(</span><span class="nx">paragraphs</span><span class="p">[</span><span class="nx">paragraph</span><span class="p">],</span> <span class="s2">"born"</span><span class="p">))</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">names</span> <span class="o">=</span> <span class="nx">catNames</span><span class="p">(</span><span class="nx">paragraphs</span><span class="p">[</span><span class="nx">paragraph</span><span class="p">]);</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">name</span> <span class="o">&lt;</span> <span class="nx">names</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">name</span><span class="o">++</span><span class="p">)</span>
+        <span class="nx">livingCats</span><span class="p">[</span><span class="nx">names</span><span class="p">[</span><span class="nx">name</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">startsWith</span><span class="p">(</span><span class="nx">paragraphs</span><span class="p">[</span><span class="nx">paragraph</span><span class="p">],</span> <span class="s2">"died"</span><span class="p">))</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">names</span> <span class="o">=</span> <span class="nx">catNames</span><span class="p">(</span><span class="nx">paragraphs</span><span class="p">[</span><span class="nx">paragraph</span><span class="p">]);</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">name</span> <span class="o">&lt;</span> <span class="nx">names</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">name</span><span class="o">++</span><span class="p">)</span>
+        <span class="k">delete</span> <span class="nx">livingCats</span><span class="p">[</span><span class="nx">names</span><span class="p">[</span><span class="nx">name</span><span class="p">]];</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">livingCats</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>これは大きく密度の高いコードの塊だ。少し時間をかけて、もう少し軽いものにしよう。しかし最初はこの結果を見てみよう。個々の猫が生きているかチェックする方法は分っている。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="s2">"Spot"</span> <span class="k">in</span> <span class="nx">livingCats</span><span class="p">)</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"Spot lives!"</span><span class="p">);</span>
+<span class="k">else</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"Good old Spot, may she rest in peace."</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>しかし生きている全ての猫を列挙するにはどうしたらいいだろう？<code class="highlighter-rouge">in</code>キーワードは<code class="highlighter-rouge">for</code>とともに使われたとき別の意味を持つ:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">cat</span> <span class="k">in</span> <span class="nx">livingCats</span><span class="p">)</span>
+  <span class="nx">print</span><span class="p">(</span><span class="nx">cat</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>このようなループは、セットの中の全ての名前を列挙可能なオブジェクトのプロパティの名前を全て処理する。</p>
+
+<hr />
+
+<p>コードの1片は不可侵のジャングルのように見える。猫問題の例の解答はこの病気にかかっている。これに光を当てる方法の1つとしては、ただ戦略的に空行を追加するのだ。これで見やすくはなるが、しかし問題を本当に解決するものではない。</p>
+
+<p>ここで必要なのはコードを砕くことだ。我々は既に助けとなる関数を<code class="highlighter-rouge">startsWith</code>と<code class="highlighter-rouge">catNames</code>との2つ書いており、そのどちらもが小さく、プログラムの理解可能な一部である。このやり方を続けていこう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">addToSet</span><span class="p">(</span><span class="nx">set</span><span class="p">,</span> <span class="nx">values</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">values</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="nx">set</span><span class="p">[</span><span class="nx">values</span><span class="p">[</span><span class="nx">i</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">removeFromSet</span><span class="p">(</span><span class="nx">set</span><span class="p">,</span> <span class="nx">values</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">values</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="k">delete</span> <span class="nx">set</span><span class="p">[</span><span class="nx">values</span><span class="p">[</span><span class="nx">i</span><span class="p">]];</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>これらの2つの関数はセットの名前の追加と削除の面倒を見てくれる。既に解答から2つの内側のループが切り出された:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">livingCats</span> <span class="o">=</span> <span class="p">{</span><span class="na">Spot</span><span class="p">:</span> <span class="kc">true</span><span class="p">};</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">mail</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">mail</span> <span class="o">&lt;</span> <span class="nx">mailArchive</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">mail</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">paragraphs</span> <span class="o">=</span> <span class="nx">mailArchive</span><span class="p">[</span><span class="nx">mail</span><span class="p">].</span><span class="nx">split</span><span class="p">(</span><span class="s2">"\n"</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">paragraph</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+       <span class="nx">paragraph</span> <span class="o">&lt;</span> <span class="nx">paragraphs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+       <span class="nx">paragraph</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">startsWith</span><span class="p">(</span><span class="nx">paragraphs</span><span class="p">[</span><span class="nx">paragraph</span><span class="p">],</span> <span class="s2">"born"</span><span class="p">))</span>
+      <span class="nx">addToSet</span><span class="p">(</span><span class="nx">livingCats</span><span class="p">,</span> <span class="nx">catNames</span><span class="p">(</span><span class="nx">paragraphs</span><span class="p">[</span><span class="nx">paragraph</span><span class="p">]));</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">startsWith</span><span class="p">(</span><span class="nx">paragraphs</span><span class="p">[</span><span class="nx">paragraph</span><span class="p">],</span> <span class="s2">"died"</span><span class="p">))</span>
+      <span class="nx">removeFromSet</span><span class="p">(</span><span class="nx">livingCats</span><span class="p">,</span> <span class="nx">catNames</span><span class="p">(</span><span class="nx">paragraphs</span><span class="p">[</span><span class="nx">paragraph</span><span class="p">]));</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>もしそう呼んでいいなら、完全な実装だ。</p>
+
+<p>なぜ<code class="highlighter-rouge">addToSet</code>と<code class="highlighter-rouge">removeFromSet</code>はなぜセットを引数として取るのか？もし望めば、これらは<code class="highlighter-rouge">livingCats</code>変数を直接使うことができる。理由はこの方法は現在の問題と完全に結びついていないためだ。もし<code class="highlighter-rouge">addToset</code>が直接<code class="highlighter-rouge">livingCats</code>を変更したら、それは<code class="highlighter-rouge">addCatsToCatSet</code>とかそのような名前で呼ばれるべきだ。この方法により今、これはより一般的で便利なツールとなっている。</p>
+
+<p>もしこれらの関数を他の問題に使うことがないと十分に証明されているのであば、そのように書いておくのも便利だ。それらは’自己充足的’であり、それ自体で読み理解することが可能で、<code class="highlighter-rouge">livingCats</code>といった外部の変数について知る必要もないからだ。</p>
+
+<p>この関数は純粋ではない：これらの<code class="highlighter-rouge">set</code>引数として渡されたオブジェクトを変更する。これらは本当の純粋な関数より脆くトリッキーなものとなるが、しかし、うまく動かない、または望む任意の値や変数を変更する関数よりはまだ混乱しにくい。</p>
+
+<hr />
+
+<p>アルゴリズムの分解を続けよう:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">findLivingCats</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">mailArchive</span> <span class="o">=</span> <span class="nx">retrieveMails</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">livingCats</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"Spot"</span><span class="p">:</span> <span class="kc">true</span><span class="p">};</span>
+
+  <span class="kd">function</span> <span class="nx">handleParagraph</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">startsWith</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">,</span> <span class="s2">"born"</span><span class="p">))</span>
+      <span class="nx">addToSet</span><span class="p">(</span><span class="nx">livingCats</span><span class="p">,</span> <span class="nx">catNames</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">));</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">startsWith</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">,</span> <span class="s2">"died"</span><span class="p">))</span>
+      <span class="nx">removeFromSet</span><span class="p">(</span><span class="nx">livingCats</span><span class="p">,</span> <span class="nx">catNames</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">));</span>
+  <span class="p">}</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">mail</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">mail</span> <span class="o">&lt;</span> <span class="nx">mailArchive</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">mail</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">paragraphs</span> <span class="o">=</span> <span class="nx">mailArchive</span><span class="p">[</span><span class="nx">mail</span><span class="p">].</span><span class="nx">split</span><span class="p">(</span><span class="s2">"\n"</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">paragraphs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+      <span class="nx">handleParagraph</span><span class="p">(</span><span class="nx">paragraphs</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">livingCats</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">howMany</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">cat</span> <span class="k">in</span> <span class="nx">findLivingCats</span><span class="p">())</span>
+  <span class="nx">howMany</span><span class="o">++</span><span class="p">;</span>
+<span class="nx">print</span><span class="p">(</span><span class="s2">"There are "</span><span class="p">,</span> <span class="nx">howMany</span><span class="p">,</span> <span class="s2">" cats."</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>アルゴリズムの全体が関数によって、カプセルの中に封じ込められた。これは実行した後ゴミの山が残らないということを意味する：<code class="highlighter-rouge">livingCats</code>は今やトップレベルのものでであるかわりに、関数の中のローカル変数となり、関数の実行中にしか存在しなくなった。このセットに必要なのは<code class="highlighter-rouge">findLivingCats</code>を呼び出しその戻り値を使うコードだけだ。</p>
+
+<p>私には<code class="highlighter-rouge">handleParagraph</code>もまた関数に分割した方が分りやすいように思える。しかしこれは猫アルゴリズム密接に結びついていて他の状況では意味がなくなる。その上、それは<code class="highlighter-rouge">livingCats</code>にアクセスする必要がある。それゆえ、それは関数内関数になる完全な候補だ。それが<code class="highlighter-rouge">findLivingCats</code>の中で生きているとき、そこにだけ関係するのは明らかで、その親の関数の変数にだけアクセスを持つ。</p>
+
+<p>この解答は先の解答より実際に<strong>大きい</strong>。まだ、それを小さくそして読みやすくすることに同意してくれると望む。</p>
+
+<hr />
+
+<p>このプログラムはまだ電子メールに含まれている多くの情報を無視している。誕生日、死亡日、母猫の名前などだ。</p>
+
+<p>日付から始めよう：日付を格納するのに良い方法は何か？<code class="highlighter-rouge">year</code>、<code class="highlighter-rouge">month</code>、<code class="highlighter-rouge">day</code>の3つのプロパティを持つオブジェクトを作ることができ、それらの数値を格納することができる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">when</span> <span class="o">=</span> <span class="p">{</span><span class="na">year</span><span class="p">:</span> <span class="mi">1980</span><span class="p">,</span> <span class="na">month</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="na">day</span><span class="p">:</span> <span class="mi">1</span><span class="p">};</span>
+</code></pre>
+</div>
+
+<p>しかしJavaScriptは既にこの目的のためのオブジェクトの種類を提供している。そのようなオブジェクトを<code class="highlighter-rouge">new</code>キーワードを使って作ることができる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">when</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">when</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>括弧とコロンによる表記のようなものは既に見てきた通り、<code class="highlighter-rouge">new</code>はオブジェクトの値を作り出す方法だ。全てのプロパティに名前と値を指定する代わりに、関数を使ってオブジェクトを作ることができる。これはオブジェクトを作るための標準的な処理の種類を定義することを可能にする。このような関数はコンストラクタと呼ばれる。<a href="/eloquentJavaScript/Object-oriented Programming.html">8章</a>でその書き方を見よう。</p>
+
+<p><code class="highlighter-rouge">Date</code>コンストラクタには幾つかの異なる用法がある。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">());</span>
+<span class="nx">show</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">));</span>
+<span class="nx">show</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">2007</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>見ての通り、これらのオブジェクトは日付と同様に日時を格納することができる。引数が与えられなかったとき、現在の日時を現わすオブジェクトが作られる。引数は特定の日付や時間を与えるのに使われる。引数の順番は年、月、日、時、分、病、ミリ秒である。後ろの4つはオプションで、省略されると0になる。</p>
+
+<p>これらのオブジェクトでの月の番号は0から11で、混乱するかもしれない。特に日の番号は<strong>1から始まる</strong>。</p>
+
+<hr />
+
+<p><code class="highlighter-rouge">Date</code>オブジェクトの内容は<code class="highlighter-rouge">get...</code>メソッドの数値として得られる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">today</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+<span class="nx">print</span><span class="p">(</span><span class="s2">"Year: "</span><span class="p">,</span> <span class="nx">today</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">(),</span> <span class="s2">", month: "</span><span class="p">,</span>
+      <span class="nx">today</span><span class="p">.</span><span class="nx">getMonth</span><span class="p">(),</span> <span class="s2">", day: "</span><span class="p">,</span> <span class="nx">today</span><span class="p">.</span><span class="nx">getDate</span><span class="p">());</span>
+<span class="nx">print</span><span class="p">(</span><span class="s2">"Hour: "</span><span class="p">,</span> <span class="nx">today</span><span class="p">.</span><span class="nx">getHours</span><span class="p">(),</span> <span class="s2">", minutes: "</span><span class="p">,</span>
+      <span class="nx">today</span><span class="p">.</span><span class="nx">getMinutes</span><span class="p">(),</span> <span class="s2">", seconds: "</span><span class="p">,</span> <span class="nx">today</span><span class="p">.</span><span class="nx">getSeconds</span><span class="p">());</span>
+<span class="nx">print</span><span class="p">(</span><span class="s2">"Day of week: "</span><span class="p">,</span> <span class="nx">today</span><span class="p">.</span><span class="nx">getDay</span><span class="p">());</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">getDay</code>を除いたこれら全ては、<code class="highlighter-rouge">set...</code>の変形を持ち、<code class="highlighter-rouge">date</code>オブジェクトの値を変更するのに使われる。</p>
+
+<p>オブジェクトの中で、日付は1970年1月1日からのミリ秒の積算として表現される。これはとても大きな数値としてイメージすることができる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">today</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">today</span><span class="p">.</span><span class="nx">getTime</span><span class="p">());</span>
+</code></pre>
+</div>
+
+<p>これは日付同士を比較するのに便利だ。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">wallFall</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">1989</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">gulfWarOne</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">1990</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">wallFall</span> <span class="o">&lt;</span> <span class="nx">gulfWarOne</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">wallFall</span> <span class="o">==</span> <span class="nx">wallFall</span><span class="p">);</span>
+<span class="c1">// but</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">wallFall</span> <span class="o">==</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">1989</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">&lt;</code>、<code class="highlighter-rouge">&gt;</code>、<code class="highlighter-rouge">&lt;=</code>および<code class="highlighter-rouge">=&gt;</code>での日付の比較は期待している通り正確である。日付オブジェクトをそれ自身と<code class="highlighter-rouge">==</code>で比較したら結果は<code class="highlighter-rouge">true</code>であり、それもまた正しい。しかし<code class="highlighter-rouge">==</code>を同じ日付を持つ異なるオブジェクトと比較すれば<code class="highlighter-rouge">false</code>となる。えっ？</p>
+
+<p>先に触れたように、<code class="highlighter-rouge">==</code>は異なるオブジェクトを比較したときにはそれらが同じプロパティを持っていようと<code class="highlighter-rouge">false</code>を返す。<code class="highlighter-rouge">&gt;=</code>および<code class="highlighter-rouge">==</code>が多かれ少なかれ同様なやり方を持っていることを期待するから、これは少し混乱しやすく誤りやすい。2つの日付が等しいことはこのようにテストする。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">wallFall1</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">1989</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span>
+    <span class="nx">wallFall2</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">1989</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">wallFall1</span><span class="p">.</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">==</span> <span class="nx">wallFall2</span><span class="p">.</span><span class="nx">getTime</span><span class="p">());</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>日付と時刻に加えて言えば、<code class="highlighter-rouge">Date</code>オブジェクトはタイムゾーンについての情報も含んでいる。アムステルダムが1時の時、時期にもよるが、ロンドンは正午、ニューヨークは朝7時である。タイムゾーンを勘定に入れることによってのみ、このような時刻を比較できる。<code class="highlighter-rouge">Date</code>の<code class="highlighter-rouge">getTimezoneOffset</code>関数によってGMT（グリニッジ標準時）から何分差があるかを知ることができる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">now</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">now</span><span class="p">.</span><span class="nx">getTimezoneOffset</span><span class="p">());</span>
+</code></pre>
+</div>
+
+<hr />
+
+<h3 id="演習-46"><a name="Ex4-6">[演習 4.6]</a></h3>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="s2">"died 27/04/2006: Black Leclère"</span>
+</code></pre>
+</div>
+
+<p>日付部分は常に段落の同じ場所にある。便利だね。このような段落を引数に取り、日付を展開したdateオブジェクトを返す<code class="highlighter-rouge">extractDate</code>関数を書け。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">extractDate</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">numberAt</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">start</span> <span class="o">+</span> <span class="nx">length</span><span class="p">));</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">numberAt</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="nx">numberAt</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+                  <span class="nx">numberAt</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">extractDate</span><span class="p">(</span><span class="s2">"died 27-04-2006: Black Leclère"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>これは<code class="highlighter-rouge">Number</code>を呼び出さなくても動くが、しかし先に触れたように、文字列をそれが数値であるかのように扱うのはよろしくない。内側の関数は<code class="highlighter-rouge">Number</code>と<code class="highlighter-rouge">slice</code>の部分を3回繰り返すのを防ぐために導入した。</p>
+
+<p>月の数値の<code class="highlighter-rouge">- 1</code>に注意。多くの人々のように、エミリー叔母さんも月を1から数え始めるので、<code class="highlighter-rouge">Date</code>コンストラクタに渡す前にそれを調整する必要がある。（日の数値はこの問題を持たず、よって<code class="highlighter-rouge">Date</code>オブジェクトも通常の人間通りに日を数える。）</p>
+
+<p><a href="/Regular Expressions.html">10章</a>において、固定的な構造を持つ文字列を部品に展開する、より実用的で確固たる方法を見よう。</p>
+
+<hr />
+
+<p>猫の格納は今までとは異なる動きをするようになる。<code class="highlighter-rouge">true</code>の値をセットに入れる代わりに、猫に関する情報をオブジェクトに格納する。猫が死んだら、セットから猫を取り除くのではなく、猫が死んだ日を格納する<code class="highlighter-rouge">death</code>プロパティをオブジェクトに追加する。</p>
+
+<p>これは<code class="highlighter-rouge">addToSet</code>と<code class="highlighter-rouge">removeFromSet</code>関数が使えないものになることを意味する。同じような、しかし誕生日とその後と、母猫の名前も格納するものが必要だ。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">catRecord</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">birthdate</span><span class="p">,</span> <span class="nx">mother</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span><span class="na">name</span><span class="p">:</span> <span class="nx">name</span><span class="p">,</span> <span class="na">birth</span><span class="p">:</span> <span class="nx">birthdate</span><span class="p">,</span> <span class="na">mother</span><span class="p">:</span> <span class="nx">mother</span><span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">addCats</span><span class="p">(</span><span class="nx">set</span><span class="p">,</span> <span class="nx">names</span><span class="p">,</span> <span class="nx">birthdate</span><span class="p">,</span> <span class="nx">mother</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">names</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="nx">set</span><span class="p">[</span><span class="nx">names</span><span class="p">[</span><span class="nx">i</span><span class="p">]]</span> <span class="o">=</span> <span class="nx">catRecord</span><span class="p">(</span><span class="nx">names</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">birthdate</span><span class="p">,</span> <span class="nx">mother</span><span class="p">);</span>
+<span class="p">}</span>
+    <span class="kd">function</span> <span class="nx">deadCats</span><span class="p">(</span><span class="nx">set</span><span class="p">,</span> <span class="nx">names</span><span class="p">,</span> <span class="nx">deathdate</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">names</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="nx">set</span><span class="p">[</span><span class="nx">names</span><span class="p">[</span><span class="nx">i</span><span class="p">]].</span><span class="nx">death</span> <span class="o">=</span> <span class="nx">deathdate</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">catRecord</code>は格納オブジェクトを分離する関数だ。それはSpotのオブジェクトを作るような他の状況でも便利だ。’Record’はこのようなオブジェクトに対してしばしば使われる用語で、限定された数の値のグループとして使われる。</p>
+
+<hr />
+
+<p>段落からの母猫の名前の展開に挑戦しよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="s2">"born 15/11/2003 (mother Spot): White Fang"</span>
+</code></pre>
+</div>
+
+<p>1つの手としてはこのようになる…。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">extractMother</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">start</span> <span class="o">=</span> <span class="nx">paragraph</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">"(mother "</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"(mother "</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">end</span> <span class="o">=</span> <span class="nx">paragraph</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">")"</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">paragraph</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">extractMother</span><span class="p">(</span><span class="s2">"born 15/11/2003 (mother Spot): White Fang"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">IndexOf</code>はパターンの終了位置ではなく開始位置を返すため、開始位置を<code class="highlighter-rouge">"(mother "</code>の長さで調整することに注意しよう。</p>
+
+<hr />
+
+<h3 id="演習-47"><a name="Ex4-7">[演習 4.7]</a></h3>
+
+<p><code class="highlighter-rouge">extractMother</code>はより一般的なやりかたで行うことができる。3つの引数を取る<code class="highlighter-rouge">between</code>関数を書け。それらの引数は全て文字列であり、1つめの引数から2つめと3つめの引数で与えられたパターンの間の部分を返す。</p>
+
+<p><code class="highlighter-rouge">between("born 15/11/2003 (mother Spot): White Fang", "(mother ", ")")</code>であれば<code class="highlighter-rouge">"Spot"</code>。<code class="highlighter-rouge">between("bu ] boo [ bah ] gzz", "[ ", " ]")</code>であれば<code class="highlighter-rouge">"bah"</code>を返すように。</p>
+
+<p>2つめのテストが動くようにするには、<code class="highlighter-rouge">indexOf</code>の2つめの、探し始める位置を指定するオプショナルな引数が便利だ。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">between</span><span class="p">(</span><span class="nx">string</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">startAt</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">start</span><span class="p">)</span> <span class="o">+</span> <span class="nx">start</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">endAt</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">end</span><span class="p">,</span> <span class="nx">startAt</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">string</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startAt</span><span class="p">,</span> <span class="nx">endAt</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">between</span><span class="p">(</span><span class="s2">"bu ] boo [ bah ] gzz"</span><span class="p">,</span> <span class="s2">"[ "</span><span class="p">,</span> <span class="s2">" ]"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p><code class="highlighter-rouge">between</code>があれば<code class="highlighter-rouge">extractMother</code>を簡単に書けるようになる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">extractMother</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">between</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">,</span> <span class="s2">"(mother "</span><span class="p">,</span> <span class="s2">")"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>新しい、猫アルゴリズムの実装はこのようになる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">findCats</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">mailArchive</span> <span class="o">=</span> <span class="nx">retrieveMails</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">cats</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"Spot"</span><span class="p">:</span> <span class="nx">catRecord</span><span class="p">(</span><span class="s2">"Spot"</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">1997</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+              <span class="s2">"unknown"</span><span class="p">)};</span>
+
+  <span class="kd">function</span> <span class="nx">handleParagraph</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">startsWith</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">,</span> <span class="s2">"born"</span><span class="p">))</span>
+      <span class="nx">addCats</span><span class="p">(</span><span class="nx">cats</span><span class="p">,</span> <span class="nx">catNames</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">),</span> <span class="nx">extractDate</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">),</span>
+              <span class="nx">extractMother</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">));</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">startsWith</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">,</span> <span class="s2">"died"</span><span class="p">))</span>
+      <span class="nx">deadCats</span><span class="p">(</span><span class="nx">cats</span><span class="p">,</span> <span class="nx">catNames</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">),</span> <span class="nx">extractDate</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">));</span>
+  <span class="p">}</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">mail</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">mail</span> <span class="o">&lt;</span> <span class="nx">mailArchive</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">mail</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">paragraphs</span> <span class="o">=</span> <span class="nx">mailArchive</span><span class="p">[</span><span class="nx">mail</span><span class="p">].</span><span class="nx">split</span><span class="p">(</span><span class="s2">"\n"</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">paragraphs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+      <span class="nx">handleParagraph</span><span class="p">(</span><span class="nx">paragraphs</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">cats</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">catData</span> <span class="o">=</span> <span class="nx">findCats</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>拡張したデータによりついにエミリー叔母さんが話すことについての手がかりを得ることができるようになった。このような関数は便利になりうる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">formatDate</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getDate</span><span class="p">()</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="p">(</span><span class="nx">date</span><span class="p">.</span><span class="nx">getMonth</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span>
+         <span class="s2">"/"</span> <span class="o">+</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">catInfo</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">name</span> <span class="k">in</span> <span class="nx">data</span><span class="p">))</span>
+    <span class="k">return</span> <span class="s2">"No cat by the name of "</span> <span class="o">+</span> <span class="nx">name</span> <span class="o">+</span> <span class="s2">" is known."</span><span class="p">;</span>
+
+  <span class="kd">var</span> <span class="nx">cat</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">name</span><span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="nx">name</span> <span class="o">+</span> <span class="s2">", born "</span> <span class="o">+</span> <span class="nx">formatDate</span><span class="p">(</span><span class="nx">cat</span><span class="p">.</span><span class="nx">birth</span><span class="p">)</span> <span class="o">+</span>
+                <span class="s2">" from mother "</span> <span class="o">+</span> <span class="nx">cat</span><span class="p">.</span><span class="nx">mother</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="s2">"death"</span> <span class="k">in</span> <span class="nx">cat</span><span class="p">)</span>
+    <span class="nx">message</span> <span class="o">+=</span> <span class="s2">", died "</span> <span class="o">+</span> <span class="nx">formatDate</span><span class="p">(</span><span class="nx">cat</span><span class="p">.</span><span class="nx">death</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">message</span> <span class="o">+</span> <span class="s2">"."</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">print</span><span class="p">(</span><span class="nx">catInfo</span><span class="p">(</span><span class="nx">catData</span><span class="p">,</span> <span class="s2">"Fat Igor"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>1つめの<code class="highlighter-rouge">catInfo</code>の<code class="highlighter-rouge">return</code>文は脱出口として使われる。与えられた名前の猫のデータがなければ、関数の残りの部分は意味がないので、即座に値を返し、残りのコードが実行されるのを防止する。</p>
+
+<p>過去において、プログラマーのグループは複数の<code class="highlighter-rouge">return</code>文を含む関数は犯罪的だと確かに考えていた。このアイデアはどのコードが実行され、どのコードが実行されなかったかを見るのを困難にする。<a href="/Error Handling.html">5章</a>にて論じる他のテクニックはこのアイデアの背景となる理由を多かれ少なかれ時代遅れにしたが、しかし’shortcut’な<code class="highlighter-rouge">return</code>文の使用を犯罪であるかのように考える人にもまだ時折出会うことだろう。</p>
+
+<hr />
+
+<h3 id="演習-48"><a name="Ex4-8">[演習 4.8]</a></h3>
+
+<p><code class="highlighter-rouge">catInfo</code>で使われた<code class="highlighter-rouge">formatDate</code>関数は月と日が1桁の長さしか持たない場合でも、その前にゼロを追加しない。それを行う新しいバージョンを書け。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">formatDate</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">pad</span><span class="p">(</span><span class="nx">number</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">number</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span>
+      <span class="k">return</span> <span class="s2">"0"</span> <span class="o">+</span> <span class="nx">number</span><span class="p">;</span>
+    <span class="k">else</span>
+      <span class="k">return</span> <span class="nx">number</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">pad</span><span class="p">(</span><span class="nx">date</span><span class="p">.</span><span class="nx">getDate</span><span class="p">())</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="nx">pad</span><span class="p">(</span><span class="nx">date</span><span class="p">.</span><span class="nx">getMonth</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span>
+             <span class="s2">"/"</span> <span class="o">+</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">formatDate</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<h3 id="演習-49"><a name="Ex4-9">[演習 4.9]</a></h3>
+
+<p>引数として与えられた猫のリストを含むオブジェクトから生存中で最も高齢の猫の名前を返す<code class="highlighter-rouge">oldestCat</code>関数を書け。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">oldestCat</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">oldest</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">name</span> <span class="k">in</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">cat</span> <span class="o">=</span> <span class="nx">data</span><span class="p">[</span><span class="nx">name</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="s2">"death"</span> <span class="k">in</span> <span class="nx">cat</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+        <span class="p">(</span><span class="nx">oldest</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="nx">oldest</span><span class="p">.</span><span class="nx">birth</span> <span class="o">&gt;</span> <span class="nx">cat</span><span class="p">.</span><span class="nx">birth</span><span class="p">))</span>
+      <span class="nx">oldest</span> <span class="o">=</span> <span class="nx">cat</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">oldest</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="k">else</span>
+    <span class="k">return</span> <span class="nx">oldest</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">print</span><span class="p">(</span><span class="nx">oldestCat</span><span class="p">(</span><span class="nx">catData</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">if</code>文の条件が少々怖く見えたかも知れない。これは’今処理中の猫が死んでおらず、かつ<code class="highlighter-rouge">oldest</code>が<code class="highlighter-rouge">null</code>または処理中の猫が<code class="highlighter-rouge">oldest</code>の猫より高齢な時だけ、処理中の猫を<code class="highlighter-rouge">oldest</code>変数の中に格納する’と読める。</p>
+
+<p>この関数は生きている猫が<code class="highlighter-rouge">data</code>の中にいなければ<code class="highlighter-rouge">null</code>を返すことに注意。あなたの解答ではそのような場合どうなるだろうか？</p>
+
+<hr />
+
+<p>もう配列には慣れたので、それに関係するものを見せよう。関数が呼ばれたとき、<code class="highlighter-rouge">arguments</code>という特殊な変数が関数の本体の実行中に環境に追加される。この変数はオブジェクトを配列であるかのように参照する。<code class="highlighter-rouge">0</code>は1つめのプロパティ、<code class="highlighter-rouge">1</code>は2つめといったように、関数に与えられた全ての引数が処理される。それはまた<code class="highlighter-rouge">length</code>プロパティも持つ。</p>
+
+<p>このオブジェクトは本物の配列ではなく、<code class="highlighter-rouge">push</code>のようなメソッドは持たないし、<code class="highlighter-rouge">length</code>プロパティのように何か追加されたときに自動的に更新されたりもしない。それがなぜなのか、私は本当のところを知らないが、しかしこれには注意が必要だ。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">argumentCounter</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"You gave me "</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="s2">" arguments."</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">argumentCounter</span><span class="p">(</span><span class="s2">"Death"</span><span class="p">,</span> <span class="s2">"Famine"</span><span class="p">,</span> <span class="s2">"Pestilence"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">print</code>のように、関数は任意の数の引数を取ることもできる。これらは典型的には<code class="highlighter-rouge">arguments</code>オブジェクトの値に何らかの処理を行いながらループする。他のものは呼び出し元から与えられなかったときに適当なデフォルトの値になる、オプショナルな引数を取る。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">number</span><span class="p">,</span> <span class="nx">howmuch</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="nx">howmuch</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">number</span> <span class="o">+</span> <span class="nx">howmuch</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">add</span><span class="p">(</span><span class="mi">6</span><span class="p">));</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">add</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<h3 id="演習-410"><a name="Ex4-10">[演習 4.10]</a></h3>
+
+<p><a href="#Ex4-2">演習4.2</a>の<code class="highlighter-rouge">range</code>関数を2つめの引数をオプションにできるように拡張しよう。もし与えられた引数が一つしかなければ、先ほどのように0から与えられた数までの範囲を作るようにするのである。もし引数が2つ与えられたら、1つめを開始、2つめを終了とする。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">range</span><span class="p">(</span><span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">end</span> <span class="o">=</span> <span class="nx">start</span><span class="p">;</span>
+    <span class="nx">start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">start</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="nx">end</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">range</span><span class="p">(</span><span class="mi">4</span><span class="p">));</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>オプションの引数は上記の<code class="highlighter-rouge">add</code>の例と全く同じようには動かない。それが与えられなかったとき、1つめの引数は<code class="highlighter-rouge">end</code>の役となり<code class="highlighter-rouge">start</code>は<code class="highlighter-rouge">0</code>となる。</p>
+
+<hr />
+
+<h3 id="演習-411"><a name="Ex4-11">[演習 4.11]</a></h3>
+
+<p>導入でのこの1行のコードを覚えているだろう。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">print</span><span class="p">(</span><span class="nx">sum</span><span class="p">(</span><span class="nx">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)));</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">range</code>を今得た。この行を動かすために必要なのは<code class="highlighter-rouge">sum</code>関数である。この関数は数値の配列を取って、それらの合計を返す。簡単だろうから、それを書け。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">sum</span><span class="p">(</span><span class="nx">numbers</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">numbers</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="nx">total</span> <span class="o">+=</span> <span class="nx">numbers</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+  <span class="k">return</span> <span class="nx">total</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">print</span><span class="p">(</span><span class="nx">sum</span><span class="p">(</span><span class="nx">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>前の章で<code class="highlighter-rouge">Math.max</code>関数と<code class="highlighter-rouge">Math.min</code>を見た。今知っていることから、これらが本当は<code class="highlighter-rouge">Math</code>という名のもとで格納されている<code class="highlighter-rouge">max</code>と<code class="highlighter-rouge">min</code>プロパティであることに気づいただろう。これはオブジェクトのもう1つの役割である：関連するいくつもの値を格納する倉庫である。</p>
+
+<p><code class="highlighter-rouge">Math</code>の中には実に多くの値があり、もしそれらが呼び出されれば、それらはグローバルな環境の中に直接場所を取ってその場所を汚す。より多くの名前を取れば、何かに、例えば、<code class="highlighter-rouge">max</code>といった名前を付けたくなることはなさそうなことではなく、変数の値が誤って上書きされてしまうことがありえる。</p>
+
+<p>既に取られている変数を定義しようとしたとき、多くの言語ではあなたを止めたり、警告したりする。しかしJavaScriptは異なる。</p>
+
+<p>いずれにせよ、<code class="highlighter-rouge">Math</code>内の数学的な関数や定数の完全な一揃いを見つけることができる。全ての三角関数 – <code class="highlighter-rouge">cos</code>、<code class="highlighter-rouge">sin</code>、<code class="highlighter-rouge">tan</code>、<code class="highlighter-rouge">acos</code>、<code class="highlighter-rouge">asin</code>、<code class="highlighter-rouge">atan</code>。πとeは大文字（<code class="highlighter-rouge">PI</code>と<code class="highlighter-rouge">E</code>）で書かれており、一時は、これはそれが定数であることを示すファッショナブルな方法であった。<code class="highlighter-rouge">pow</code>は先ほどまでに書いた<code class="highlighter-rouge">power</code>関数の良い代替であり、負の数や少数の累乗も受け付ける。<code class="highlighter-rouge">sqrt</code>は平方根だ。<code class="highlighter-rouge">max</code>と<code class="highlighter-rouge">min</code>は2つの値の中で最大または最小のものを与える。<code class="highlighter-rouge">round</code>、<code class="highlighter-rouge">floor</code>および<code class="highlighter-rouge">ceil</code>は値を四捨五入したり、切り捨てたり、切り上げたりする。</p>
+
+<p><code class="highlighter-rouge">Math</code>の中には他にも多くの値が含まれるが、しかしこのテキストは導入であり、リファレンスではない。リファレンスは言語にあるものを探すことはできるが、必要なのはそれがどのように呼び出され、正確にはどのように働くかということである。残念ながら、JavaScript向けの網羅的で完全なリファレンスというものはない。これはその現在の形が、ブラウザの違いや拡張機能の違いや時によって結果的に混沌としているためというのが大きい。ECMA標準ドキュメントは言語の基本のよいドキュメントの導入を提供するが、しかし多かれ少なかれ読みやすいとは言えない。<code class="highlighter-rouge">Math</code>オブジェクトや他の要素機能のようなもののよいリファレンスは、むしろ<a href="http://www.webreference.com/javascript/reference/core_ref/contents.html">ここ</a>で見つけることができるだろう。Netscapeからの古いドキュメントはまだ<a href="http://docs.sun.com/source/816-6408-10">Sunのウェブサイト</a>で見つけることができ、とても助けになるが、しかし期限切れになっていてもう正しいとは言えない。</p>
+
+<hr />
+
+<p><code class="highlighter-rouge">Math</code>オブジェクトで何が使えるか調べる方法をすでに知っているかもしれない:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">name</span> <span class="k">in</span> <span class="nb">Math</span><span class="p">)</span>
+  <span class="nx">print</span><span class="p">(</span><span class="nx">name</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>残念だが、何も出てこない。同様に、このように書いても:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">name</span> <span class="k">in</span> <span class="p">[</span><span class="s2">"Huey"</span><span class="p">,</span> <span class="s2">"Dewey"</span><span class="p">,</span> <span class="s2">"Loui"</span><span class="p">])</span>
+  <span class="nx">print</span><span class="p">(</span><span class="nx">name</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>期待されるような<code class="highlighter-rouge">length</code>や<code class="highlighter-rouge">push</code>、<code class="highlighter-rouge">join</code>ではなく、<code class="highlighter-rouge">0</code>、<code class="highlighter-rouge">1</code>および<code class="highlighter-rouge">2</code>しか出てこない。見ての通り、プロパティやオブジェクトは隠されている。それにはこのような良い理由がある：全てのオブジェクトは、例えばオブジェクトを関連のある文字列に変換する<code class="highlighter-rouge">toString</code>のような少数のメソッドを持ち、例えばオブジェクトの中から格納されている猫を探すようなことはしないで良い。</p>
+
+<p>なぜ<code class="highlighter-rouge">Math</code>のプロパティが隠されているのかは私にも分らない。誰かがそれをミステリアスな種類のオブジェクトにしようと望んだのだ。</p>
+
+<p>あなたのプログラムが追加するオブジェクトの全てのプロパティは見ることができる。それらを隠す手段は残念ながらなく、それがなぜかは<a href="/Object-oriented Programming.html">8章</a>で見るが、メソッドをオブジェクトに<code class="highlighter-rouge">for</code>/<code class="highlighter-rouge">in</code>ループなしに追加できるというのはいいことだ。</p>
+
+<hr />
+
+<p>幾つかのプロパティは読み取り専用であり、これらの値を得ることはできるが変更することはできない。例えば、文字列の値のプロパティは全て読み取り専用だ。</p>
+
+<p>他のプロパティは’監視’可能だ。これらを変更したら<strong>何か</strong>が起こる。例えば、配列のlengthを小さくしたら、はみ出た要素が捨てられてしまう。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Heaven"</span><span class="p">,</span> <span class="s2">"Earth"</span><span class="p">,</span> <span class="s2">"Man"</span><span class="p">];</span>
+<span class="nx">array</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">array</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>ブラウザによっては、オブジェクトは、それ自身のプロパティを監視するものを追加する<code class="highlighter-rouge">watch</code>メソッドを持っている。Internet Explorerはこれをサポートしていないので、全ての’大きな’ブラウザで実行する必要があるプログラムを書くときには使いづらい。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">winston</span> <span class="o">=</span> <span class="p">{</span><span class="na">mind</span><span class="p">:</span> <span class="s2">"compliant"</span><span class="p">};</span>
+<span class="kd">function</span> <span class="nx">watcher</span><span class="p">(</span><span class="nx">propertyName</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">to</span> <span class="o">==</span> <span class="s2">"compliant"</span><span class="p">)</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s2">"Doubleplusgood."</span><span class="p">);</span>
+  <span class="k">else</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s2">"Transmitting information to Thought Police..."</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">winston</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s2">"mind"</span><span class="p">,</span> <span class="nx">watcher</span><span class="p">);</span>
+
+<span class="nx">winston</span><span class="p">.</span><span class="nx">mind</span> <span class="o">=</span> <span class="s2">"rebellious"</span><span class="p">;</span>
+</code></pre>
+</div>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eloquent JavaScript(ja)</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Eloquent JavaScript(ja)
+            
+            </li>
+            
+            <li><a href="mailto:morinatsu@gmail.com">morinatsu@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/morinatsu"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">morinatsu</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/morinatsu"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">morinatsu</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Japanese translateion of &#39;Eloquent JavaScript&#39;</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
