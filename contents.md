@@ -11,8 +11,8 @@ Contents
    1. [導入]({{ "/Introduction.html" | prepend:site.baseurl }})
    2. [基本のJavaScript]({{ "/Basic JavaScript.html" | prepend:site.baseurl }})
    3. [関数]( {{ "/Functions.html" | prepend:site.baseurl }})
-   4. [データ構造]( {{ "Data structures.html" | prepend:site.baseurl }})
-   5. Error Handling
+   4. [データ構造]( {{ "/Data structures.html" | prepend:site.baseurl }})
+   5. [エラー・ハンドリング]({{ "/Error Handling.html" | prepend:site.baseurl }})
    6. Functional Programming
    7. Searching
    8. Object-oriented Programming

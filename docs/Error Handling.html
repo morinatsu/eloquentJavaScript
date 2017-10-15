@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>5. エラー・ハンドリング</title>
+  <meta name="description" content="Japanese translateion of &#39;Eloquent JavaScript&#39;">
+
+  <link rel="stylesheet" href="/eloquentJavaScript/assets/main.css">
+  <link rel="canonical" href="https://morinatsu.github.com/eloquentJavaScript/Error%20Handling.html">
+  <link rel="alternate" type="application/rss+xml" title="Eloquent JavaScript(ja)" href="/eloquentJavaScript/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/eloquentJavaScript/">Eloquent JavaScript(ja)</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Basic%20JavaScript.html">2. 基本のJavaScript</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Data%20structures.html">4. データ構造</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Error%20Handling.html">5. エラー・ハンドリング</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Functions.html">3. 関数</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Introduction.html">1. 導入</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/about/">About</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/contents.html">Contents</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/">Eloquent JavaScript - Top</a>
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="エラーハンドリング">エラー・ハンドリング</h1>
+
+<p>全てが期待通りであるときに動くプログラムを書くのは良いスタートだ。期待していない条件に遭遇したときに行儀良く振る舞うプログラムにすることは本当のチャレンジである。</p>
+
+<p>プログラムが遭遇しうる問題のある状況は2つのカテゴリに分けられる：プログラマーのミスと本来の問題だ。もし誰かが必要な引数を関数に渡すのを忘れたら、それが1つめの種類の問題の例だ。他方、もしプログラムがユーザーに名前を入力するようにと質問し、そして空の文字列が帰ってきたとしたら、それはプログラマーが防止できる問題ではない。</p>
+
+<p>一般的に、プログラマーの誤りというのは見つけ修正することができ、本来の誤りはに対しては、コードをチェックし回復するためにふさわしいアクションを取るか（例えば、名前を聞き直すとか）、さもなくば最後には想定された、きれいなやりかたで失敗する。</p>
+
+<hr />
+
+<p>重要なのはプログラムが陥ったのはこれらのうちどちらのカテゴリーのものであるか確実に判断することだ。例えば、我々の古い<code class="highlighter-rouge">power</code>関数について考えよう:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">power</span><span class="p">(</span><span class="nx">base</span><span class="p">,</span> <span class="nx">exponent</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">count</span> <span class="o">&lt;</span> <span class="nx">exponent</span><span class="p">;</span> <span class="nx">count</span><span class="o">++</span><span class="p">)</span>
+    <span class="nx">result</span> <span class="o">*=</span> <span class="nx">base</span><span class="p">;</span>
+  <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>ギークが<code class="highlighter-rouge">power("Rabbit", 4)</code>と呼び出してみたとき、それは明らかにプログラマーの誤りだが、しかし<code class="highlighter-rouge">power(9, 0.5)</code>についてはどうだろうか？この関数は小数の累乗を扱うことができない、しかし、数学的な話としては、小数の累乗というのは完全に理屈に合っている（<code class="highlighter-rouge">Math.pow</code>は扱える）。完全にクリアではない種類の入力を関数が受けうる状況において、コメントに受け入れ可能な引数の種類書いておくのはしばしば良いアイデアである。</p>
+
+<hr />
+
+<p>もし関数がそれ自体では解決不能な問題に遭遇したら、どのようにすべきか？<a href="/Data structures.html">4章</a>で書いた<code class="highlighter-rouge">between</code>関数では:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">between</span><span class="p">(</span><span class="nx">string</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">startAt</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">start</span><span class="p">)</span> <span class="o">+</span> <span class="nx">start</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">endAt</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">end</span><span class="p">,</span> <span class="nx">startAt</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">string</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startAt</span><span class="p">,</span> <span class="nx">endAt</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>もし、文字列に存在しない<code class="highlighter-rouge">start</code>と<code class="highlighter-rouge">end</code>が与えられたら、<code class="highlighter-rouge">indexOf</code>は<code class="highlighter-rouge">-1</code>を返しこのバージョンの<code class="highlighter-rouge">between</code>はナンセンスに満ちた値を返すだろう：<code class="highlighter-rouge">between("Your mother!", "{-", "-}")</code>は<code class="highlighter-rouge">"our mother"</code>を返す。</p>
+
+<p>このプログラムの実行中、期待された通りに文字列の値が設定されて、関数が呼ばれたため、幸運にも処理を続けることができる。しかし値は誤っていて、なんであろうと終了し、結果も誤っているだろう。
+もし不幸にも、この誤りが20の他の関数に渡されるだけだったら1つの問題しか起こさないだろう。このような場合、問題が発生を見つけるのは非常に困難になる。</p>
+
+<p>ある場合において、正しくない入力が与えられたときに行儀悪くふるまう関数に注意しないと、問題は不確かなものになる。例えば、関数が2, 3のカ所から呼ばれているだけなのが確実なら、これらの場所が正しい入力を与えているかどうか確認することができる。問題のあるケースを扱うために関数が大きく醜いものになるのは、一般的には悪いことではない。</p>
+
+<p>しかし多くの場合、’静かに’失敗する関数は使うのが難しく、危険である。もし<code class="highlighter-rouge">between</code>を呼び出すコードが、全てがどこにあるか知ろうとしたらどうなるだろうか？ここで、全ての仕事をやり直すと言うことはできない。<code class="highlighter-rouge">between</code>を実行し、<code class="highlighter-rouge">between</code>自身の結果がそれ自体に含まれているかチェックする。それはよくない。1つの解決としては<code class="highlighter-rouge">between</code>が失敗したとき、<code class="highlighter-rouge">false</code>とか<code class="highlighter-rouge">undefined</code>のような特別な値を返すようにすることだ。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">between</span><span class="p">(</span><span class="nx">string</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">startAt</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">start</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">startAt</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">undefined</span><span class="p">;</span>
+  <span class="nx">startAt</span> <span class="o">+=</span> <span class="nx">start</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">endAt</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">end</span><span class="p">,</span> <span class="nx">startAt</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">endAt</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">undefined</span><span class="p">;</span>
+
+  <span class="k">return</span> <span class="nx">string</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">startAt</span><span class="p">,</span> <span class="nx">endAt</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>エラーチェックが全般的に関数を美しくなくしたように見えるかもしれない。しかし今では<code class="highlighter-rouge">between</code>を呼び出すコードはこのように書ける。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">input</span> <span class="o">=</span> <span class="nx">prompt</span><span class="p">(</span><span class="s2">"Tell me something"</span><span class="p">,</span> <span class="s2">""</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">parenthesized</span> <span class="o">=</span> <span class="nx">between</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="s2">"("</span><span class="p">,</span> <span class="s2">")"</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">parenthesized</span> <span class="o">!=</span> <span class="kc">undefined</span><span class="p">)</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"You parenthesized '"</span><span class="p">,</span> <span class="nx">parenthesized</span><span class="p">,</span> <span class="s2">"'."</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>多くの場合、特別な値を返すのはエラーが起こっていることを示すのに完全で良い方法だ。それは、しかしながら、欠点もある。1つには、関数が既に可能な全て種類の値を返すものである場合はどうだろうか？例えば、配列の最後の要素を返す、この関数について考えてみよう。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">lastElement</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">array</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">array</span><span class="p">[</span><span class="nx">array</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+  <span class="k">else</span>
+    <span class="k">return</span> <span class="kc">undefined</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">lastElement</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">]));</span>
+</code></pre>
+</div>
+
+<p>この配列は最後の要素を持っているか？<code class="highlighter-rouge">lastElement</code>の戻り値を見る限り、そうとは言いがたい。</p>
+
+<p>2つめの問題は、特別な値を返すことは、しばしば別な問題を引き起こす元となるということだ。もし同じコードの部品が<code class="highlighter-rouge">between</code>10回呼び出すとき、<code class="highlighter-rouge">undefined</code>が帰ってきたか10回チェックする必要がある。また、もし関数が<code class="highlighter-rouge">between</code>を失敗からの回復の戦略なく呼び出したら、関数は<code class="highlighter-rouge">between</code>の戻り値をチェックせねばならず、もしそれが<code class="highlighter-rouge">undefined</code>だったときには、この関数は<code class="highlighter-rouge">undefined</code>か他の特別な値を呼び元に返し、そこでもまたこの値をチェックすることになる。</p>
+
+<p>しばしば、おかしなことが起こったとき、実用的なのは、実行を止めて問題の扱い方を知っている所に明示的にジャンプすることだろう。</p>
+
+<p>よし、我々はついている。多くのプログラミング言語がそのようなものを提供している。通常、それは例外ハンドリングと呼ばれる。</p>
+
+<hr />
+
+<p>例外ハンドリングの理屈はこのようなものだ：コードが例外という値を起こす（または投げる）ことを可能にする。例外を起こすというのは関数からの強制的な飛び出しに似ている – 現在の関数から飛び出すだけでなく、その呼び元の外、現在実行中の場所からトップレベルまでの全ての道を登り上がる。これはスタック解放と呼ばれる。<a href="/Functions.html">3章</a>の関数呼び出しのスタックを思い出そう。例外はこのスタックを飛び降り、遭遇した呼び出しの背景を全て捨てる。</p>
+
+<p>それらが常に元のスタックを飛び降りるなら、例外は使いづらい物になるだろう、それらはプログラムをいいものにする別の手段も提供する。幸運にも、それは例外の障害物をスタックに沿ってセットすることを可能にする。これらは飛び降りてきた例外を’捕まえ’、それに何かをすることができ、例外が捕まった場所からプログラムは実行を続ける。</p>
+
+<p>例:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">lastElement</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">array</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">array</span><span class="p">[</span><span class="nx">array</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+  <span class="k">else</span>
+    <span class="k">throw</span> <span class="s2">"Can not take the last element of an empty array."</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">lastElementPlusTen</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">lastElement</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">try</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="nx">lastElementPlusTen</span><span class="p">([]));</span>
+<span class="p">}</span>
+<span class="k">catch</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"Something went wrong: "</span><span class="p">,</span> <span class="nx">error</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">throw</code>は例外を起こすのに使うキーワードだ。<code class="highlighter-rouge">try</code>キーワードは例外への障害をセットアップする：その後ろのブロックの中のコードで、例外が起こったら、<code class="highlighter-rouge">catch</code>ブロックが実行される。<code class="highlighter-rouge">catch</code>キーワードの後の括弧の中の変数名はブロックの中で、例外の値に名前を与えるものだ。</p>
+
+<p><code class="highlighter-rouge">lastElementPlusTen</code>関数は<code class="highlighter-rouge">lastElement</code>の中で起こった誤りを完全に無視することに注意。これは例外のもつ大きな長所だ – エラーハンドリングのコードはエラーが起こるかもしれない場所、そしてエラーを扱う場所にだけ必要なのだ。その間の関数ではすべて忘れて良い。</p>
+
+<p>そう、ほとんど。</p>
+
+<hr />
+
+<p>下記のコードについて考えよう：<code class="highlighter-rouge">processThing</code>関数は、実行中の実体が何であるかを示す<code class="highlighter-rouge">curentThing</code>というトップレベルの変数の設定を必要とし、他の関数もこれにアクセスする。通常は引数として渡すだけだろうが、しかしこれでは実用的ではない。関数が終了したとき、<code class="highlighter-rouge">currentThing</code>も<code class="highlighter-rouge">null</code>を返す。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">currentThing</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">processThing</span><span class="p">(</span><span class="nx">thing</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">currentThing</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span>
+    <span class="k">throw</span> <span class="s2">"Oh no! We are already processing a thing!"</span><span class="p">;</span>
+
+  <span class="nx">currentThing</span> <span class="o">=</span> <span class="nx">thing</span><span class="p">;</span>
+  <span class="cm">/* よく分らない処理の実行中... */</span>
+  <span class="nx">currentThing</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>しかし、もしよく分らない処理が例外を投げたらどうなるだろうか？その場合<code class="highlighter-rouge">processThing</code>の呼び出しは例外のためスタックから放り出され、<code class="highlighter-rouge">currentThing</code>は<code class="highlighter-rouge">null</code>にリセットされなくなるだろう。</p>
+
+<p><code class="highlighter-rouge">try</code>文には<code class="highlighter-rouge">finally</code>キーワードも続けて書くことができ、それは’<strong>何が</strong>起ころうと、このコードを<code class="highlighter-rouge">try</code>ブロックのコードの実行後に実行する’という意味である。もし関数がクリアする必要がある何かを持っていたら、それをクリーンアップするコードは通常<code class="highlighter-rouge">finally</code>ブロックに書かれるべきだ。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">processThing</span><span class="p">(</span><span class="nx">thing</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">currentThing</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span>
+    <span class="k">throw</span> <span class="s2">"Oh no! We are already processing a thing!"</span><span class="p">;</span>
+
+  <span class="nx">currentThing</span> <span class="o">=</span> <span class="nx">thing</span><span class="p">;</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="cm">/* do complicated processing... */</span>
+  <span class="p">}</span>
+  <span class="k">finally</span> <span class="p">{</span>
+    <span class="nx">currentThing</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>プログラムに含まれる多くの誤りはJavaScript実行環境に例外を起こさせる。例えば:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">try</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="nx">Sasquatch</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">catch</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"Caught: "</span> <span class="o">+</span> <span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>このような場合、特別なエラーオブジェクトが起こる。これらは常に問題の説明を含む<code class="highlighter-rouge">message</code>プロパティを持つ。同様なオブジェクトを<code class="highlighter-rouge">new</code>キーワードと<code class="highlighter-rouge">Error</code>コンストラクタで起こすことができる。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">"Fire!"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>例外が捕まることなくスタックの底から出て来たとき、それは実行環境で扱われる。これは異なるブラウザ間では違いが起こることを意味し、それはしばしばログに書かれるエラーの説明であったり、エラーを説明するポップアップであったりする。</p>
+
+<p>このページのコンソールに入力されたコードが作ったエラーは常にコンソールに捕まって表示され、他には出力されない。</p>
+
+<hr />
+
+<p>多くのプログラマーは例外は純粋にエラーハンドリングの仕掛けであると考える。本質的には、しかしながら、プログラムの制御フローに影響を与えるもう一つの手段であるというだけだ。例えば、再帰関数の<code class="highlighter-rouge">break</code>文のように使うこともできる。下記はオブジェクト、ないしさらにその中のオブジェクトが、その中に少なくとも7つの<code class="highlighter-rouge">true</code>の値を含んでいるかを調べる相当奇妙な関数だ。:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">FoundSeven</span> <span class="o">=</span> <span class="p">{};</span>
+
+<span class="kd">function</span> <span class="nx">hasSevenTruths</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">counted</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="kd">function</span> <span class="nx">count</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">name</span> <span class="k">in</span> <span class="nx">object</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">object</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">===</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">counted</span><span class="o">++</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">counted</span> <span class="o">==</span> <span class="mi">7</span><span class="p">)</span>
+          <span class="k">throw</span> <span class="nx">FoundSeven</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">object</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"object"</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">count</span><span class="p">(</span><span class="nx">object</span><span class="p">[</span><span class="nx">name</span><span class="p">]);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="nx">count</span><span class="p">(</span><span class="nx">object</span><span class="p">);</span>
+    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">catch</span> <span class="p">(</span><span class="nx">exception</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">exception</span> <span class="o">!=</span> <span class="nx">FoundSeven</span><span class="p">)</span>
+      <span class="k">throw</span> <span class="nx">exception</span><span class="p">;</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>内側の<code class="highlighter-rouge">count</code>関数は、引数のオブジェクト毎に再帰的に呼び出される。
+変数<code class="highlighter-rouge">counted</code>が7に達したときは、数え続ける意味はない、しかしその下に他の呼び出しがあるかもしれないので、現在の<code class="highlighter-rouge">count</code>の呼び出しから戻っても、数を数えるのを停止する必要はない。制御が<code class="highlighter-rouge">count</code>の呼び出しから飛び抜けて、<code class="highlighter-rouge">cactch</code>ブロックに着地するように値を投げるだけだ。</p>
+
+<p>しかし、例外の場合に<code class="highlighter-rouge">true</code>をただ返すだけというのは正しくない。何か他の間違いが起こっていないか、例外が<code class="highlighter-rouge">FoundSeven</code>オブジェクトかどうかを最初にチェックした上で、この目的のための個別のものを作る。もしそうでなければ、この<code class="highlighter-rouge">catch</code>ブロックはそれの扱い方が分らず、エラーがもう一度起こることになる。</p>
+
+<p>これはエラー条件を扱う際の共通のパターンでもある – <code class="highlighter-rouge">catch</code>ブロックは扱いが分る例外だけを確実に扱うようにしなければならない。この章のいくつかの例のように、文字列の値を投げるのは、例外のタイプを認識するのを難しくするために、良いアイデアであることは希だ。<code class="highlighter-rouge">FoundSeven</code>のようなユニークな値を使うか、<a href="/Object-oriented Programming.html">8章</a>で説明するような新しいタイプのオブジェクトを導入するのがベターだ。</p>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eloquent JavaScript(ja)</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Eloquent JavaScript(ja)
+            
+            </li>
+            
+            <li><a href="mailto:morinatsu@gmail.com">morinatsu@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/morinatsu"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">morinatsu</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/morinatsu"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">morinatsu</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Japanese translateion of &#39;Eloquent JavaScript&#39;</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

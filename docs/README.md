@@ -1,3 +1,3 @@
-# Eloquent JavaScript(ja)
+# eloquentJavaScript
 
 Japanese translation of "Eloquent JavaScript".
