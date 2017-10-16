@@ -14,7 +14,7 @@ Contents
    4. [データ構造]( {{ "/Data structures.html" | prepend:site.baseurl }})
    5. [エラー・ハンドリング]({{ "/Error Handling.html" | prepend:site.baseurl }})
    6. [関数型プログラミング]({{ "/Functional Programming.html" | prepend:site.baseurl }})
-   7. Searching
+   7. [探索]({{ "/Searching.html" | prepend:site.baseurl }})
    8. Object-oriented Programming
    9. Modularity
    10. Regular Expressions
