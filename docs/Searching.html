@@ -117,7 +117,7 @@
 
 <p>最初の問題を紹介しよう。この地図を見て欲しい。太平洋の熱帯の小さな島、ヒバオアだ。</p>
 
-<p><img src="/assets/img/Hiva_Oa.png" alt="Hiva_Oa" /></p>
+<p><img src="/eloquentJavaScript/assets/img/Hiva_Oa.png" alt="Hiva_Oa" /></p>
 
 <p>灰色の線は道路、傍らの数値はこれらの道路の長さだ。ヒバオアの2つの地点の間の最も短いルートを見つけるプログラムが必要であると想像しよう。どのようにアプローチすれば良いだろうか？これについてしばらく考えてみよう。</p>
 
@@ -632,13 +632,13 @@
 </code></pre>
 </div>
 
-<p><a href="/Binary Heaps.html">Appendix 2</a>でこのデータ構造の実に興味深い実装について論じている。<a href="/Object-oriented Programming.html">8章</a>を読み終わった後に、それを見たくなるかもしれない。</p>
+<p><a href="/eloquentJavaScript/Binary Heaps.html">Appendix 2</a>でこのデータ構造の実に興味深い実装について論じている。<a href="/eloquentJavaScript/Object-oriented Programming.html">8章</a>を読み終わった後に、それを見たくなるかもしれない。</p>
 
 <hr />
 
 <p>できる限りの効率を絞り出す必要があるので、これと別の効果的な手段も用いる。ヒバオアのアルゴリズムはルートを格納するために場所の配列を持っていて、これらは拡張するときに<code class="highlighter-rouge">concat</code>メソッドでコピーされた。今回、探検すべきルートが多すぎるため、我々には配列をコピーする余裕はない。代わりに、ルートを格納するためにオブジェクトの鎖を使う。鎖の中の全てのオブジェクトは地図上のポイント、ルートの長さのようなプロパティを持ち、また鎖の中の直前のポイントのプロパティも持つ。このようなものだ。：</p>
 
-<p><img src="/assets/img/objectchain.png" alt="objectchain" /></p>
+<p><img src="/eloquentJavaScript/assets/img/objectchain.png" alt="objectchain" /></p>
 
 <p>シアンの円の場所は関係のあるオブジェクト、そして線はプロパティを表現している – 点になっている終端はプロパティの値を指す。オブジェクト<code class="highlighter-rouge">A</code>はルートの開始地点である。オブジェクト<code class="highlighter-rouge">B</code>は、<code class="highlighter-rouge">A</code>からの続きである新しいルートを作る。それは呼び出すと、そのルートの開始地点を示す、<code class="highlighter-rouge">from</code>プロパティを持つ。後でルートを再構築することが必要になったとき、これらのプロパティで既に通ったルートの全ての地点をたどることができる。オブジェクト<code class="highlighter-rouge">B</code>が2つのルートの部分になっていることに注意。1つは<code class="highlighter-rouge">D</code>、もう1つは<code class="highlighter-rouge">E</code>で終わっている。多くのルートがあったときにこれが記憶装置の容量を節約してくれる – 全ての新しいルートはそれ自身の1つのオブジェクトしか必要とせず、残りはスタート地点から同じ経路を通っている他のルートと共有している。</p>
 
@@ -663,7 +663,7 @@
 
 <p>変な数式は道をまっすぐな部分と斜めに進む部分に分解するためのものだ。もし、このような道があるとして…</p>
 
-<p><img src="/assets/img/diagonalpath.png" alt="diagonalpath" /></p>
+<p><img src="/eloquentJavaScript/assets/img/diagonalpath.png" alt="diagonalpath" /></p>
 
 <p>…道は横方向に四角<code class="highlighter-rouge">8</code>つ分、縦方向に<code class="highlighter-rouge">4</code>つ分あり、<code class="highlighter-rouge">8 - 4 = 4</code>だけまっすぐ、<code class="highlighter-rouge">4</code>だけ斜めに進む。</p>
 
@@ -726,7 +726,7 @@
 
 <p>データ構造を作り、操作する関数のセットを提供することによって、データ構造の型を定義するのは便利なテクニックだ。それはデータ構造それ自体の詳細からデータ構造を使うコードの’分離’を可能にする。上記2つの実装のどちらを使っても、リーチド・リストを必要とするコードは全く同じように動くことに注意。使われているオブジェクトの種類に気を遣うことなく、期待する結果を手に入れることができる。</p>
 
-<p>このことについて<a href="/Object-oriented Programming.html">8章</a>でもっと詳しく論じ、そこで<code class="highlighter-rouge">BinaryHeap</code>のように、<code class="highlighter-rouge">new</code>によって作られ、メソッドを持つオブジェクト型の作り方を学ぶ。</p>
+<p>このことについて<a href="/eloquentJavaScript/Object-oriented Programming.html">8章</a>でもっと詳しく論じ、そこで<code class="highlighter-rouge">BinaryHeap</code>のように、<code class="highlighter-rouge">new</code>によって作られ、メソッドを持つオブジェクト型の作り方を学ぶ。</p>
 
 <hr />
 

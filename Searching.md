@@ -12,7 +12,7 @@ title: 7. 探索
 
 最初の問題を紹介しよう。この地図を見て欲しい。太平洋の熱帯の小さな島、ヒバオアだ。
 
-![Hiva_Oa]({{ "/assets/img/Hiva_Oa.png" | prepend:site.base_url }})
+![Hiva_Oa]({{ "/assets/img/Hiva_Oa.png" | prepend:site.baseurl }})
 
 灰色の線は道路、傍らの数値はこれらの道路の長さだ。ヒバオアの2つの地点の間の最も短いルートを見つけるプログラムが必要であると想像しよう。どのようにアプローチすれば良いだろうか？これについてしばらく考えてみよう。
 
@@ -525,13 +525,13 @@ while (heap.size() > 0)
   show(heap.pop());
 ```
 
-[Appendix 2]({{ "/Binary Heaps.html" | prepend:site.base_url }})でこのデータ構造の実に興味深い実装について論じている。[8章]({{ "/Object-oriented Programming.html" | prepend:site.base_url }})を読み終わった後に、それを見たくなるかもしれない。
+[Appendix 2]({{ "/Binary Heaps.html" | prepend:site.baseurl }})でこのデータ構造の実に興味深い実装について論じている。[8章]({{ "/Object-oriented Programming.html" | prepend:site.baseurl }})を読み終わった後に、それを見たくなるかもしれない。
 
 * * *
 
 できる限りの効率を絞り出す必要があるので、これと別の効果的な手段も用いる。ヒバオアのアルゴリズムはルートを格納するために場所の配列を持っていて、これらは拡張するときに`concat`メソッドでコピーされた。今回、探検すべきルートが多すぎるため、我々には配列をコピーする余裕はない。代わりに、ルートを格納するためにオブジェクトの鎖を使う。鎖の中の全てのオブジェクトは地図上のポイント、ルートの長さのようなプロパティを持ち、また鎖の中の直前のポイントのプロパティも持つ。このようなものだ。：
 
-![objectchain]({{ "/assets/img/objectchain.png" | prepend:site.base_url }})
+![objectchain]({{ "/assets/img/objectchain.png" | prepend:site.baseurl }})
 
 シアンの円の場所は関係のあるオブジェクト、そして線はプロパティを表現している -- 点になっている終端はプロパティの値を指す。オブジェクト`A`はルートの開始地点である。オブジェクト`B`は、`A`からの続きである新しいルートを作る。それは呼び出すと、そのルートの開始地点を示す、`from`プロパティを持つ。後でルートを再構築することが必要になったとき、これらのプロパティで既に通ったルートの全ての地点をたどることができる。オブジェクト`B`が2つのルートの部分になっていることに注意。1つは`D`、もう1つは`E`で終わっている。多くのルートがあったときにこれが記憶装置の容量を節約してくれる -- 全ての新しいルートはそれ自身の1つのオブジェクトしか必要とせず、残りはスタート地点から同じ経路を通っている他のルートと共有している。
 
@@ -556,7 +556,7 @@ function estimatedDistance(pointA, pointB) {
 
 変な数式は道をまっすぐな部分と斜めに進む部分に分解するためのものだ。もし、このような道があるとして...
 
-![diagonalpath]({{ "/assets/img/diagonalpath.png" | prepend:site.base_url }})
+![diagonalpath]({{ "/assets/img/diagonalpath.png" | prepend:site.baseurl }})
 
 …道は横方向に四角`8`つ分、縦方向に`4`つ分あり、`8 - 4 = 4`だけまっすぐ、`4`だけ斜めに進む。
 
@@ -619,7 +619,7 @@ function findReached(list, point) {
 
 データ構造を作り、操作する関数のセットを提供することによって、データ構造の型を定義するのは便利なテクニックだ。それはデータ構造それ自体の詳細からデータ構造を使うコードの'分離'を可能にする。上記2つの実装のどちらを使っても、リーチド・リストを必要とするコードは全く同じように動くことに注意。使われているオブジェクトの種類に気を遣うことなく、期待する結果を手に入れることができる。
 
-このことについて[8章]({{ "/Object-oriented Programming.html" | prepend:site.base_url }})でもっと詳しく論じ、そこで`BinaryHeap`のように、`new`によって作られ、メソッドを持つオブジェクト型の作り方を学ぶ。
+このことについて[8章]({{ "/Object-oriented Programming.html" | prepend:site.baseurl }})でもっと詳しく論じ、そこで`BinaryHeap`のように、`new`によって作られ、メソッドを持つオブジェクト型の作り方を学ぶ。
 
 * * *
 
