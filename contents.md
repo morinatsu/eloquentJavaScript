@@ -15,7 +15,7 @@ Contents
    5. [エラー・ハンドリング]({{ "/Error Handling.html" | prepend:site.baseurl }})
    6. [関数型プログラミング]({{ "/Functional Programming.html" | prepend:site.baseurl }})
    7. [探索]({{ "/Searching.html" | prepend:site.baseurl }})
-   8. Object-oriented Programming
+   8. [オブジェクト指向プログラミング]({{ "/Object-oriented Programming.html" | prepend:site.baseurl }})
    9. Modularity
    10. Regular Expressions
    11. Web programming A crash course

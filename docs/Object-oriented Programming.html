@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>8. オブジェクト指向プログラミング</title>
+  <meta name="description" content="Japanese translateion of &#39;Eloquent JavaScript&#39;">
+
+  <link rel="stylesheet" href="/eloquentJavaScript/assets/main.css">
+  <link rel="canonical" href="https://morinatsu.github.com/eloquentJavaScript/Object-oriented%20Programming.html">
+  <link rel="alternate" type="application/rss+xml" title="Eloquent JavaScript(ja)" href="/eloquentJavaScript/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/eloquentJavaScript/">Eloquent JavaScript(ja)</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Basic%20JavaScript.html">2. 基本のJavaScript</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Data%20structures.html">4. データ構造</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Error%20Handling.html">5. エラー・ハンドリング</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Functional%20Programming.html">6. 関数型プログラミング</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Functions.html">3. 関数</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Introduction.html">1. 導入</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Object-oriented%20Programming.html">8. オブジェクト指向プログラミング</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Searching.html">7. 探索</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/about/">About</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/contents.html">Contents</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/">Eloquent JavaScript - Top</a>
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="オブジェクト指向プログラミング">オブジェクト指向プログラミング</h1>
+
+<p>90年代の初め、オブジェクト指向プログラミングと呼ばれるものがソフトウェア産業をかき立てた。その背景にあるアイデアはその時点でも本当に新しいものではなかったが、転がり始めるとついに十分な勢いを得て、ファッショナブルなものとなった。本が書かれ、コースが与えられ、プログラミング言語が開発された。全ては突然で、皆がオブジェクト指向の美点を賞賛し、熱狂的に全ての問題に適用し、彼ら自身は<strong>プログラムを正しく書く方法</strong>をついに見つけたのだと信じていた。</p>
+
+<p>多くのことが起こった。プロセスが困難で混乱しているとき、人々は常に魔法的な解決に用心する。それ自身が与える解決が、そのようなものに見えるとき、彼らは献身的な花になる準備をする。多くのプログラマーにとって、今日でも、オブジェクト指向（または彼らがそのようにみなすもの）は福音であった。プログラムが’真のオブジェクト指向でない’とき、それは劣ったものであると判断されることも意味していた。</p>
+
+<p>おかしな流行もこれと同じだけ続いた、にもかかわらず、オブジェクト指向の寿命は、その核心のアイデアがとても充実していて有益だったという事実によって大いに説明できる。この章では、JavaScriptの（むしろエキセントリックな）受容に沿って、これらのアイデアについて論じよう。上の段にはその信用を傷つけようという意図はない。私が望むのはそれらに無分別な傾倒を抱くことに対しての注意喚起だ。</p>
+
+<hr />
+
+<p>その名が示すとおり、オブジェクト指向プログラミングはオブジェクトに関係がある。これまでは、我々はオブジェクトをデータのゆるい集まりとして使ってきており、それがふさわしいと思えるときにプロパティを付けたり変更したりしてきた。オブジェクト指向アプローチにおいては、オブジェクトはそれ自身の小さな世界とみなされ、外の世界からは限定的で予め定義されたインターフェース、個別のメソッドやプロパティのみを通じてそれに触れるようになる。<a href="/eloquentJavaScript/Searching.html">7章</a>で使った’リーチド・リスト’はこれの1つの例だ： <code class="highlighter-rouge">makeReachedList</code>、<code class="highlighter-rouge">storeReached</code>、<code class="highlighter-rouge">findReached</code>の3つの関数だけを使ってそれを操作できる。これらの3つの関数がそれらのオブジェクトのインターフェースを形作っている。</p>
+
+<p><code class="highlighter-rouge">Date</code>、<code class="highlighter-rouge">Error</code>、<code class="highlighter-rouge">BinaryHeap</code>オブジェクトもこれと同じように働く。そのオブジェクトで動く正規の関数を提供する代わりに、<code class="highlighter-rouge">new</code>キーワードでそれらのオブジェクトを作り、メソッドやプロパティで残りのインターフェースを提供する。</p>
+
+<hr />
+
+<p>オブジェクトにメソッドを与える1つの方法は単に関数値をくっつけることだ。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">rabbit</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="nx">rabbit</span><span class="p">.</span><span class="nx">speak</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">line</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"The rabbit says '"</span><span class="p">,</span> <span class="nx">line</span><span class="p">,</span> <span class="s2">"'"</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">rabbit</span><span class="p">.</span><span class="nx">speak</span><span class="p">(</span><span class="s2">"Well, now you're asking me."</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>多くの場合、このメソッドは<strong>何者が</strong>動いているのかを知るために必要となるだろう。例えば、もし複数の異なるウサギがいたら、<code class="highlighter-rouge">speak</code>メソッドは話しているウサギが誰かを示す。この目的のために、<code class="highlighter-rouge">this</code>という特別な変数があり、これは関数がメソッドとして呼ばれたときに、関係するオブジェクトを常に示す。関数がメソッドとして呼ばれるというのは、プロパティであるかのように探された時で、<code class="highlighter-rouge">object.method()</code>というのが、明示的な呼び出しである。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">speak</span><span class="p">(</span><span class="nx">line</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"The "</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">adjective</span><span class="p">,</span> <span class="s2">" rabbit says '"</span><span class="p">,</span> <span class="nx">line</span><span class="p">,</span> <span class="s2">"'"</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">whiteRabbit</span> <span class="o">=</span> <span class="p">{</span><span class="na">adjective</span><span class="p">:</span> <span class="s2">"white"</span><span class="p">,</span> <span class="na">speak</span><span class="p">:</span> <span class="nx">speak</span><span class="p">};</span>
+<span class="kd">var</span> <span class="nx">fatRabbit</span> <span class="o">=</span> <span class="p">{</span><span class="na">adjective</span><span class="p">:</span> <span class="s2">"fat"</span><span class="p">,</span> <span class="na">speak</span><span class="p">:</span> <span class="nx">speak</span><span class="p">};</span>
+
+<span class="nx">whiteRabbit</span><span class="p">.</span><span class="nx">speak</span><span class="p">(</span><span class="s2">"Oh my ears and whiskers, how late it's getting!"</span><span class="p">);</span>
+<span class="nx">fatRabbit</span><span class="p">.</span><span class="nx">speak</span><span class="p">(</span><span class="s2">"I could sure use a carrot right now."</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p><a href="/eloquentJavaScript/Functional Programming.html">6章</a>では常に<code class="highlighter-rouge">null</code>にしておいた、<code class="highlighter-rouge">apply</code>メソッドの1つめの引数の謎を今明らかにしよう。この引数は適用する関数にオブジェクトを指定するために使える。メソッドでない関数にはこれは関係がなく、そのため<code class="highlighter-rouge">null</code>としていた。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">speak</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">fatRabbit</span><span class="p">,</span> <span class="p">[</span><span class="s2">"Yum."</span><span class="p">]);</span>
+</code></pre>
+</div>
+
+<p>関数は<code class="highlighter-rouge">apply</code>と同じような<code class="highlighter-rouge">call</code>メソッドも持っていて、しかしこれには、1つの配列の代わりに、引数を別々に分けて関数に与えることができる。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">speak</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">fatRabbit</span><span class="p">,</span> <span class="s2">"Burp."</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p><code class="highlighter-rouge">new</code>キーワードは新しいオブジェクトを作る便利な方法を提供する。関数が<code class="highlighter-rouge">new</code>という語を先頭に付けて呼ばれたとき、その<code class="highlighter-rouge">this</code>変数は、（明示的に他の何かを返さないときは）自動的に返された<strong>新しい</strong>オブジェクトを指す。このような新しいオブジェクトを作るための関数はコンストラクターと呼ばれる。ウサギのためのコンストラクタはここ。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Rabbit</span><span class="p">(</span><span class="nx">adjective</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">adjective</span> <span class="o">=</span> <span class="nx">adjective</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">speak</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">line</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s2">"The "</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">adjective</span><span class="p">,</span> <span class="s2">" rabbit says '"</span><span class="p">,</span> <span class="nx">line</span><span class="p">,</span> <span class="s2">"'"</span><span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">killerRabbit</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rabbit</span><span class="p">(</span><span class="s2">"killer"</span><span class="p">);</span>
+<span class="nx">killerRabbit</span><span class="p">.</span><span class="nx">speak</span><span class="p">(</span><span class="s2">"GRAAAAAAAAAH!"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>便宜上、JavaScriptのプログラマーの間ではコンストラクターの名前は大文字で始めることになっている。これで他の関数と簡単に区別できるようになる。</p>
+
+<p>なぜ<code class="highlighter-rouge">new</code>キーワードが必要なのだろうか？結局のところ、単純にこのように書くこともできる。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">makeRabbit</span><span class="p">(</span><span class="nx">adjective</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="na">adjective</span><span class="p">:</span> <span class="nx">adjective</span><span class="p">,</span>
+    <span class="na">speak</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">line</span><span class="p">)</span> <span class="p">{</span><span class="cm">/*etc*/</span><span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">blackRabbit</span> <span class="o">=</span> <span class="nx">makeRabbit</span><span class="p">(</span><span class="s2">"black"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>しかし全く同じというわけではない。<code class="highlighter-rouge">new</code>は裏で他のことも行っている。その1つには、<code class="highlighter-rouge">killerRabit</code>はそれを作った<code class="highlighter-rouge">Rabit</code>関数を示す<code class="highlighter-rouge">constructor</code>というプロパティを持つ。<code class="highlighter-rouge">blackRabbit</code>もそのようなプロパティを持っているが、それは<code class="highlighter-rouge">Object</code>関数を示している。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="nx">killerRabbit</span><span class="p">.</span><span class="nx">constructor</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">blackRabbit</span><span class="p">.</span><span class="nx">constructor</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p><code class="highlighter-rouge">constructor</code>プロパティはどこからくるのか？それはrabbitのプロトタイプの一部である。プロトタイプは、もし何かの混乱があったとき、JavaScriptのオブジェクトを動かすパワフルな方法だ。プロトタイプが元になっている全てのオブジェクトには固有のプロパティのセットが与えられている。これまで使ってきた単純なオブジェクトはもっとも基本的なプロトタイプを元にしていて、それは<code class="highlighter-rouge">Object</code>コンストラクターに結びついている。実際、<code class="highlighter-rouge"><span class="p">{}</span></code>とタイプするのは<code class="highlighter-rouge">new Object()</code>とタイプするのに等しい。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">simpleObject</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">simpleObject</span><span class="p">.</span><span class="nx">constructor</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">simpleObject</span><span class="p">.</span><span class="nx">toString</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">toString</code>メソッドは<code class="highlighter-rouge">Object</code>プロトタイプの一部だ。これは、全ての単純なオブジェクトはそれを文字列に変換する<code class="highlighter-rouge">toString</code>メソッドを持つ、ということを意味する。rabbitオブジェクトは<code class="highlighter-rouge">Rabbit</code>コンストラクターに結びついたプロトタイプに基づいている。コンストラクターの<code class="highlighter-rouge">prototype</code>プロパティをそれ、それらのプロトタイプにアクセスするのに使える。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="nx">Rabbit</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">Rabbit</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>全ての関数は自動的に<code class="highlighter-rouge">prototype</code>プロパティを得て、<code class="highlighter-rouge">constructor</code>プロパティがその関数を指す返す。なぜならrabbitプロトタイプはそれ自体が<code class="highlighter-rouge">Object</code>プロトタイプをもとにしたオブジェクトであるからで、その<code class="highlighter-rouge">toString</code>メソッドを共有している。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="nx">killerRabbit</span><span class="p">.</span><span class="nx">toString</span> <span class="o">==</span> <span class="nx">simpleObject</span><span class="p">.</span><span class="nx">toString</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>オブジェクトがそのプロトタイプのプロパティを共有しているように見えたとしても、その共有は一方通行のものだ。プロトタイプのプロパティはもとになっているオブジェクトに影響するが、しかしこのオブジェクトのプロパティがプロトタイプを変更することはない。</p>
+
+<p>正確なルールはこうだ：プロパティの値を探すとき、JavaScriptは、まずオブジェクト<strong>それ自身</strong>が持っているプロパティを探す。もし探している名前のプロパティが見つかれば、その値を得る。もし、そのようなプロパティがなければ、オブジェクトのプロトタイプにさかのぼって探し続け、さらにそのプロトタイプのプロトタイプ、へと続く。もしプロパティが見つからなかったら、<code class="highlighter-rouge">undefined</code>値が与えられる。他方、プロパティに値を<strong>設定するとき</strong>は、JavaScriptはプロトタイプを見ることなく、常にそのオブジェクト自身のプロパティを設定する。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">Rabbit</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">teeth</span> <span class="o">=</span> <span class="s2">"small"</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">killerRabbit</span><span class="p">.</span><span class="nx">teeth</span><span class="p">);</span>
+<span class="nx">killerRabbit</span><span class="p">.</span><span class="nx">teeth</span> <span class="o">=</span> <span class="s2">"long, sharp, and bloody"</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">killerRabbit</span><span class="p">.</span><span class="nx">teeth</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">Rabbit</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">teeth</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>これは、プロトタイプはそれをもとにしているオブジェクトにいつでも新しいプロパティとメソッドを追加することができる、ということを意味する。例えば、ウサギたちにダンスをさせる必要がでてくるかもしれない。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">Rabbit</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">dance</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"The "</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">adjective</span><span class="p">,</span> <span class="s2">" rabbit dances a jig."</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">killerRabbit</span><span class="p">.</span><span class="nx">dance</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>そして、お察しの通り、プロトタイプ的なウサギは、<code class="highlighter-rouge">speak</code>メソッドのように全てのウサギが共通に持っている値を完全に置き換える。これは<code class="highlighter-rouge">Rabbit</code>コンストラクターへの新しいアプローチである。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Rabbit</span><span class="p">(</span><span class="nx">adjective</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">adjective</span> <span class="o">=</span> <span class="nx">adjective</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">Rabbit</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">speak</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">line</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"The "</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">adjective</span><span class="p">,</span> <span class="s2">" rabbit says '"</span><span class="p">,</span> <span class="nx">line</span><span class="p">,</span> <span class="s2">"'"</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">hazelRabbit</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rabbit</span><span class="p">(</span><span class="s2">"hazel"</span><span class="p">);</span>
+<span class="nx">hazelRabbit</span><span class="p">.</span><span class="nx">speak</span><span class="p">(</span><span class="s2">"Good Frith!"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>全てのオブジェクトがプロトタイプを持ち、そしてプロトタイプ由来のプロパティを受け継ぐという事実はトリッキーになり得る。これは、<a href="/eloquentJavaScript/Data structures.html">4章</a>のように物事の集合をオブジェクトに格納するのは間違いを起こすかもしれないということを意味する。もし、例えば、<code class="highlighter-rouge">"constructor"</code>という猫に出会ったかどうかをこのようにチェックしたらどうなるか。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">noCatsAtAll</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="k">if</span> <span class="p">(</span><span class="s2">"constructor"</span> <span class="k">in</span> <span class="nx">noCatsAtAll</span><span class="p">)</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"Yes, there definitely is a cat called 'constructor'."</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>これは問題をはらんでいる。これに関する問題は、<code class="highlighter-rouge">Object</code>や<code class="highlighter-rouge">Array</code>のような標準コンストラクターのプロトタイプを新しい有用な関数で拡張するのはしばしば実用的になりうる、ということだ。例えば、オブジェクトの持っている全ての（隠されていない）プロパティの名前の配列を返す<code class="highlighter-rouge">properties</code>というメソッドを全てのオブジェクトに与えることもできる。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">properties</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">property</span> <span class="k">in</span> <span class="k">this</span><span class="p">)</span>
+    <span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">property</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">test</span> <span class="o">=</span> <span class="p">{</span><span class="na">x</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">3</span><span class="p">};</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">test</span><span class="p">.</span><span class="nx">properties</span><span class="p">());</span>
+</code></pre>
+</div>
+
+<p>そしてこれは明確に問題を見せる。今や<code class="highlighter-rouge">Object</code>プロトタイプは<code class="highlighter-rouge">proerties</code>というプロパティをもち、<code class="highlighter-rouge">for</code>と<code class="highlighter-rouge">in</code>を使って任意のオブジェクトのプロパティをループし、我々が一般的には望んでいない共有されたプロパティまでも与えてくれる。我々はオブジェクトそれ自体が持っているプロパティにしか興味はない。</p>
+
+<p>幸運にも、プロパティがそのオブジェクト自身のものか、そのプロトタイプの中の1つのものかを知る手段がある。残念ながら、それは1つのオブジェクトのプロパティを少々かっこう悪くループする。すべてのオブジェクトは<code class="highlighter-rouge">hasOwnPropertiy</code>というメソッドを持ち、それは与えられた名前のプロパティをオブジェクトが持っているかどうかを教えてくれる。これを使って、<code class="highlighter-rouge">properties</code>メソッドをこう書き換えよう。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">properties</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">property</span> <span class="k">in</span> <span class="k">this</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">property</span><span class="p">))</span>
+      <span class="nx">result</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">property</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">test</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"Fat Igor"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="s2">"Fireball"</span><span class="p">:</span> <span class="kc">true</span><span class="p">};</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">test</span><span class="p">.</span><span class="nx">properties</span><span class="p">());</span>
+</code></pre>
+</div>
+
+<p>そしてもちろん、高階関数にそれを抽象化することもできる。<code class="highlighter-rouge">action</code>関数がオブジェクトの中でプロパティの名前とその値の両方で呼ばれていることに注意しよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">forEachIn</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">property</span> <span class="k">in</span> <span class="nx">object</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">object</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">property</span><span class="p">))</span>
+      <span class="nx">action</span><span class="p">(</span><span class="nx">property</span><span class="p">,</span> <span class="nx">object</span><span class="p">[</span><span class="nx">property</span><span class="p">]);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">chimera</span> <span class="o">=</span> <span class="p">{</span><span class="na">head</span><span class="p">:</span> <span class="s2">"lion"</span><span class="p">,</span> <span class="na">body</span><span class="p">:</span> <span class="s2">"goat"</span><span class="p">,</span> <span class="na">tail</span><span class="p">:</span> <span class="s2">"snake"</span><span class="p">};</span>
+<span class="nx">forEachIn</span><span class="p">(</span><span class="nx">chimera</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"The "</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="s2">" of a "</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="s2">"."</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<p>しかし、もし<code class="highlighter-rouge">hasOwnProperty</code>という名前の猫がいたらどうなるだろう？（あなたが知ることはないだろう。）それはオブジェクトに格納され、そして次に猫のコレクションを見ようとしたときに、そのプロパティが関数の値を指していないために、<code class="highlighter-rouge">object.hasOwnProperty</code>は失敗する。かっこう悪いことをしてこれを解決できる。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">forEachIn</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">property</span> <span class="k">in</span> <span class="nx">object</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="nx">property</span><span class="p">))</span>
+      <span class="nx">action</span><span class="p">(</span><span class="nx">property</span><span class="p">,</span> <span class="nx">object</span><span class="p">[</span><span class="nx">property</span><span class="p">]);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">test</span> <span class="o">=</span> <span class="p">{</span><span class="na">name</span><span class="p">:</span> <span class="s2">"Mordecai"</span><span class="p">,</span> <span class="na">hasOwnProperty</span><span class="p">:</span> <span class="s2">"Uh-oh"</span><span class="p">};</span>
+<span class="nx">forEachIn</span><span class="p">(</span><span class="nx">test</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"Property "</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="s2">" = "</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<p>(注: この例は現在のところInternet Explorer 8では正しく動かない、どうやら組み込みのプロトタイプのプロパティに問題があるらしい。)</p>
+
+<p>ここで、オブジェクト自身で見つけたメソッドの代わりに、<code class="highlighter-rouge">Object</code>プロトタイプ由来のメソッドを得て、それから正しいオブジェクトに適用するために<code class="highlighter-rouge">call</code>してみよう。誰かが実際に<code class="highlighter-rouge">Object.prototype</code>のメソッドで何かヘマをすることがなければ（しないように）、これは正しく動くだろう。</p>
+
+<hr />
+
+<p><code class="highlighter-rouge">hasOwnProperty</code>はオブジェクトが特定のプロパティを持っているかを見たいときに<code class="highlighter-rouge">in</code>演算子を使うような状況でも使うことができる。しかしながら、もう一つ問題がある。<a href="/eloquentJavaScript/Data structures.html">4章</a>で見たいくつかのプロパティ、<code class="highlighter-rouge">toString</code>のような、は’隠されて’いて、<code class="highlighter-rouge">for/in</code>でプロパティを一通り見ても出てこない。Geckoファミリーのブラウザ（Firefox、最も重要な）は全てのオブジェクトに<code class="highlighter-rouge">__proto__</code>という隠されたプロパティを与えており、それはそのオブジェクトのプロトタイプを示しているということが分る。プログラムが明示的に加えてなくても、<code class="highlighter-rouge">hasOwnProperty</code>はこれについて真を返す。オブジェクトのプロトタイプへのアクセスを持つことはとても便利であり得るが、しかしそのように、それをプロパティにするのは良いアイデアではない。まだ、Firefoxは広く使われているブラウザなので、ウェブへのプログラムを書くときはこれに注意する必要がある。<code class="highlighter-rouge">propertyIsEnumerable</code>というメソッドがあり、それは隠されたプロパティについて<code class="highlighter-rouge">false</code>を返し、<code class="highlighter-rouge">__proto__</code>のようなおかしなものを除外するのにつかうことができる。このような1つの式で信頼できるものとして働くようになる。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">object</span> <span class="o">=</span> <span class="p">{</span><span class="na">foo</span><span class="p">:</span> <span class="s2">"bar"</span><span class="p">};</span>
+<span class="nx">show</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="s2">"foo"</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+     <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">propertyIsEnumerable</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="s2">"foo"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>上手くて単純だろうか。違う？これはJavaScriptでうまくデザインされなかった点の1つだ。オブジェクトは2つの役割を演じるが、’メソッドを持つ値’の役割においてはプロトタイプは偉大な働きをし、’プロパティの集合’という役割においてはプロトタイプがただの邪魔になる。</p>
+
+<hr />
+
+<p>渡されたオブジェクトのプロパティをチェックすることが必要になる度に上記の式を毎回書くのはうまくない。関数に押し込むこともできるが、しかし、オブジェクトをプロパティの集合として扱いたいときのような特別な状況のためにコンストラクターとプロトタイプを書くのがより良いアプローチだろう。これを使うことで、名前でプロパティを見つけ出すことができるようになるから、これを<code class="highlighter-rouge">Dictionary</code>（辞書）と呼ぼう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Dictionary</span><span class="p">(</span><span class="nx">startValues</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">values</span> <span class="o">=</span> <span class="nx">startValues</span> <span class="o">||</span> <span class="p">{};</span>
+<span class="p">}</span>
+<span class="nx">Dictionary</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">store</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">values</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="nx">Dictionary</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">lookup</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">values</span><span class="p">[</span><span class="nx">name</span><span class="p">];</span>
+<span class="p">};</span>
+<span class="nx">Dictionary</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">contains</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">values</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">propertyIsEnumerable</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">values</span><span class="p">,</span> <span class="nx">name</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="nx">Dictionary</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">each</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">forEachIn</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">values</span><span class="p">,</span> <span class="nx">action</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">colours</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Dictionary</span><span class="p">({</span><span class="na">Grover</span><span class="p">:</span> <span class="s2">"blue"</span><span class="p">,</span>
+                              <span class="na">Elmo</span><span class="p">:</span> <span class="s2">"orange"</span><span class="p">,</span>
+                              <span class="na">Bert</span><span class="p">:</span> <span class="s2">"yellow"</span><span class="p">});</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">colours</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="s2">"Grover"</span><span class="p">));</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">colours</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="s2">"constructor"</span><span class="p">));</span>
+<span class="nx">colours</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">colour</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="s2">" is "</span><span class="p">,</span> <span class="nx">colour</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<p>オブジェクトをプロパティの集合として扱うアプローチに関する上手くない点が、便利なインターフェースにより、今や完全に’カプセル化’された：1つのコンストラクターと4つのメソッドである。<code class="highlighter-rouge">Dictionary</code>オブジェクトの<code class="highlighter-rouge">values</code>プロパティはこのインターフェースの部分ではないことに注意しよう。<code class="highlighter-rouge">Dictionary</code>オブジェクト使うにあたり、その内側の詳細を直接扱う必要はない。</p>
+
+<p>インターフェースを書くのがいつであろうと、それが何を行いどのように使うものかを手早くコメントに書いておくのは良いアイデアである。このインターフェースを使いたいと思った、それを書いた3ヶ月後のあなた自身を含む誰かが、これによって、プログラムを完全に見なくても、その使い方を早く知ることができる。</p>
+
+<p>インターフェースを設計する時の多くの時間、何を思いついたにせよ、すぐにその限界や問題を見つけ、変更するだろう。時間を浪費しないようにするには、2,3の本当の状況でそれら自身を試してからインターフェースを文書化することだ。―もちろん、これは文書化のことを一時的に忘れるようにということでもある。個人的には、私は文書を書くことをシステムの’仕上げ’を加えることとして見ている。その準備ができたように感じたときが、それについて書くときで、英語（かなんかの言語）が、JavaScript（かなんかのプログラミング言語）であるかのように書くのである。</p>
+
+<hr />
+
+<p>オブジェクトの外部インターフェースと内部の詳細を区別するのは2つの理由により重要だ。1つめは、小さく、明確に書かれたインターフェースはオブジェクトを使いやすくするということだ。インターフェースを守ることだけを意識していれば、オブジェクトそれ自体の残りの部分を変更することに悩まなくて済む。</p>
+
+<p>2つめは、結局はオブジェクト型[^1]の内部の実装を変更することがしばしば必要になったり実用的であったりするということだ。例えば、より効率的にすること、あるいは問題を修正すること。外側のコードが単一のプロパティ毎にそのオブジェクトの詳細にアクセスしていたら、オブジェクト以外のコードをたくさん修正することなしにはオブジェクトを何も修正できなくなる。もし外側のコードが小さなインターフェースしか使っていなければ、インターフェースを変更するまでは、やりたいだけのことができる。</p>
+
+<p>[^1] これらのタイプは他のプログラミング言語では通常’クラス’と呼ばれる。</p>
+
+<p>ある人々はここからさらに先に行く。彼らは、例えば、オブジェクトのインターフェースにプロパティを含めず、メソッドだけを含めようとする – もし彼らのオブジェクトが<code class="highlighter-rouge">length</code>を持っていたら、それにはlengthプロパティではなく、<code class="highlighter-rouge">getLength</code>メソッドでアクセスする。この方法で、もし彼らのオブジェクトを変更したいとき、<code class="highlighter-rouge">length</code>プロパティがない限り、例えば、今、内部的な配列の長さを返さなければならないなら、彼らはインターフェースを変えずに関数を変更できる。</p>
+
+<p>私自身は多くの場合これにはそれほどの価値はないと考えている。<code class="highlighter-rouge">return this.length;</code>のみの<code class="highlighter-rouge">getLength</code>メソッドを加えることは；ほとんど意味のないコードの追加でしかなく、多くの状況で、自分のオブジェクトのインターフェースを時々変更しなければならないリスクより、意味のないコードが増えることの方が問題が大きいと考えている。</p>
+
+<hr />
+
+<p>既存のプロトタイプに新しいメソッドを追加することはとても便利だ。特にJavaScriptでの<code class="highlighter-rouge">Array</code>や<code class="highlighter-rouge">String</code>プロトタイプは2, 3のより基本的なメソッドを使ってきた。例えば、<code class="highlighter-rouge">forEach</code>と<code class="highlighter-rouge">map</code>を配列のメソッドに代えて、4章で書いた<code class="highlighter-rouge">startsWith</code>関数を文字列のメソッドにしたり。</p>
+
+<p>しかしながら、もしプログラムが同じウェブページで、他のプログラム（あなたが書くものでも、他の誰かのものでも）と同じように実行されるなら、それは<code class="highlighter-rouge">for/in</code>を素朴に – 以前我々もそうしてきたように – プロトタイプ、特に<code class="highlighter-rouge">Object</code>や<code class="highlighter-rouge">Array</code>プロトタイプに何かを加えることは、これらのループが突然に新しいプロパティを見始めるため、間違いなく何かを壊すことになる。この理由により、これらのプロトタイプに絶対に触らないようにしている。もちろん、もし注意深ければ、かつ酷い書かれ方をしたコードと共存しなければならなくなるようなことはないと想定できれば、標準プロトタイプにメソッドを加えることは完全に良いテクニックである。</p>
+
+<hr />
+
+<p>この章では、バーチャルな飼育器(terrarium)、タンクとその中を動き回る昆虫を作ることにする。いくつかのオブジェクトが入り組むことになるだろう（結局、この章はオブジェクト指向プログラミングなので）。むしろ単純なアプローチを取って、飼育器は、<a href="/eloquentJavaScript/Searching.html">7章</a>の2つめの地図のように二次元のマス目とする。このマス目の上に虫の数を持つ。飼育器が活動中のとき、全ての虫は移動のような行動を行うチャンスを半秒ごとに得る。</p>
+
+<p>そういうわけで、時間と空間を固定されたサイズを持つ単位に分割しよう – 空間には四角を、時間には半秒を。これは、通常、プログラム内で物事をモデル化するのを簡単にするが、しかしもちろん非常に不正確であるという欠点も持つ。幸運にも、この飼育器シミュレータはどのような正確さも必要としておらず、そのことは捨て置くことができる。</p>
+
+<hr />
+
+<p>飼育器は文字列の配列である’計画’によって定義される。単一の文字列を使うこともできるが、JavaScriptは文字列を単一の行でしか書けないため、タイプするのがたいへんだ。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">thePlan</span> <span class="o">=</span>
+  <span class="p">[</span><span class="s2">"############################"</span><span class="p">,</span>
+   <span class="s2">"#      #    #      o      ##"</span><span class="p">,</span>
+   <span class="s2">"#                          #"</span><span class="p">,</span>
+   <span class="s2">"#          #####           #"</span><span class="p">,</span>
+   <span class="s2">"##         #   #    ##     #"</span><span class="p">,</span>
+   <span class="s2">"###           ##     #     #"</span><span class="p">,</span>
+   <span class="s2">"#           ###      #     #"</span><span class="p">,</span>
+   <span class="s2">"#   ####                   #"</span><span class="p">,</span>
+   <span class="s2">"#   ##       o             #"</span><span class="p">,</span>
+   <span class="s2">"# o  #         o       ### #"</span><span class="p">,</span>
+   <span class="s2">"#    #                     #"</span><span class="p">,</span>
+   <span class="s2">"############################"</span><span class="p">];</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">"#"</code>文字は飼育器の壁（そして飼育器に置かれた装飾用の岩）を表現し、<code class="highlighter-rouge">"o"</code>は虫を、そして空白はお察しの通り何もない空間を表現する。</p>
+
+<p>このようなplan配列を飼育器オブジェクトを作るのに使う。このオブジェクトは飼育器の形と内容を追跡し、その中の虫を動かせる。4つのメソッドを持つ：1つめは<code class="highlighter-rouge">toString</code>で、飼育器をもとの文字列と同様な文字列に変換し、その中で何が起こっているか分るようにする。それから、<code class="highlighter-rouge">step</code>で、飼育器の中の全ての虫がもし彼らが望めば1ステップだけ動けるようにする。最後に<code class="highlighter-rouge">start</code>と<code class="highlighter-rouge">stop</code>、飼育器が動いているかどうかを制御し、動いているなら<code class="highlighter-rouge">step</code>が半秒ごとに呼び出されて、虫が動き続ける。</p>
+
+<hr />
+
+<h3 id="演習-81"><a name="Ex8-1">[演習 8.1]</a></h3>
+
+<p>マス目上のポイントをオブジェクトにより再度表そう。<a href="/eloquentJavaScript/Searching.html">7章</a>ではpointsとともに働く<code class="highlighter-rouge">point</code>、<code class="highlighter-rouge">addPoints</code>、<code class="highlighter-rouge">samePoints</code>の3つの関数を使った。今回、コンストラクターと2つのメソッドを使う。地点を表わすxとyの2つの引数の組を取り、<code class="highlighter-rouge">x</code>と<code class="highlighter-rouge">y</code>をプロパティに持つオブジェクトを作る<code class="highlighter-rouge">Point</code>コンストラクタを書け。このコンストラクターのプロトタイプに、他の地点を引数に取り、2つの地点の<code class="highlighter-rouge">x</code>と<code class="highlighter-rouge">y</code>の合計した<strong>新しい</strong>地点を返す<code class="highlighter-rouge">add</code>メソッドを加えよ。1つの地点を引数に取り、<code class="highlighter-rouge">this</code>（この）ポイントと与えられたポイントが同じ地点を指しているかどうかを真偽値として返す<code class="highlighter-rouge">isEqualTo</code>メソッドも加えよ。</p>
+
+<p>2つのメソッドとは別に、<code class="highlighter-rouge">x</code>と<code class="highlighter-rouge">y</code>プロパティはこの型のオブジェクトのインターフェースの一部でもある：pointオブジェクトを使うコードは自由に<code class="highlighter-rouge">x</code>と<code class="highlighter-rouge">y</code>を取り出し変更できる。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Point</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">y</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">Point</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">add</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">other</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">other</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">other</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="nx">Point</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">isEqualTo</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">other</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">==</span> <span class="nx">other</span><span class="p">.</span><span class="nx">x</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">==</span> <span class="nx">other</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">show</span><span class="p">((</span><span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)).</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)));</span>
+</code></pre>
+</div>
+
+<p>あなたの版の<code class="highlighter-rouge">add</code>が<code class="highlighter-rouge">this</code>ポイントを壊すことなく、確実に新しいpointオブジェクトを作るようにすること。現在のpointを変更するメソッドはむしろ<code class="highlighter-rouge">+=</code>演算子のようなものであるから、そいうわけでこちらは<code class="highlighter-rouge">+</code>演算子のようなものだ。</p>
+
+<hr />
+
+<p>決まったプログラムに実装するためにオブジェクトを書くとき、その機能がその後どちらに向かうかは常に明らかというわけでない。あることをオブジェクトのメソッドとして書くのが最善だとしても、他のものは分離した関数に書いた方が良く、またあるものは別の型のオブジェクトとして実装するのが最善である。物事をクリアに組織的にしておくには、オブジェクトのメソッドと応答をできる限り小さい量に抑えておくことが重要だ。1つのオブジェクトが大きすぎるとき、機能は大きなゴミの山となり、恐ろしく混乱したソースになるだろう。</p>
+
+<p>上記で、飼育器のオブジェクトはその中身を格納し、その中の虫を動かさせる責任を負うだろうと言った。最初に、飼育器が虫を<strong>動かす</strong>、ではなく飼育器が虫を<strong>動かさせる</strong>、であることに注意して欲しい。虫たち自身もまたオブジェクトであり、そしてこれらのオブジェクトは彼らが何をしたいか判断する責任を負う。飼育器は半秒ごとに彼らに何をするか尋ねるインフラのみを提供し、そしてもし虫たちが動くことを決断したら、それでこの移動が実際に起こる。</p>
+
+<p>飼育器の中身をマス目に格納するのはとても複雑になり得る。表現の種類と、この表現へのアクセス手段、マス目を’計画’配列で初期化する方法、<code class="highlighter-rouge">toString</code>メソッドのためにマス目の内容を文字列に各方法、マス目上の虫の動きを定義しよう。もしこれの部分を他のオブジェクトに移動できるとしたら、飼育器のオブジェクト自体が大きすぎたり複雑になったりしないので、その方が良いだろう。</p>
+
+<hr />
+
+<p>1つのオブジェクトに混乱したデータ表現と問題のあるコードを見つける度に、データ表現のコードを他の型のオブジェクトに分離しようとするのは良いアイデアだ。この場合、値のマス目の表現が必要であり、そこで飼育器に必要な操作をサポートする<code class="highlighter-rouge">Grid</code>型を書く。</p>
+
+<p>マス目上の値を格納するには、2つのオプションがある。1つは配列の配列を使う。このようになる。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">grid</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">"0,0"</span><span class="p">,</span> <span class="s2">"1,0"</span><span class="p">,</span> <span class="s2">"2,0"</span><span class="p">],</span>
+            <span class="p">[</span><span class="s2">"0,1"</span><span class="p">,</span> <span class="s2">"1,1"</span><span class="p">,</span> <span class="s2">"2,1"</span><span class="p">]];</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">grid</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]);</span>
+</code></pre>
+</div>
+
+<p>また、単一の配列に値を入れることもできる。この場合、<code class="highlighter-rouge">x</code>、<code class="highlighter-rouge">y</code>の要素は配列の中の<code class="highlighter-rouge">x + y * width</code>の位置の要素として探すことができ、この<code class="highlighter-rouge">width</code>というのはマス目の幅である。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">grid</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"0,0"</span><span class="p">,</span> <span class="s2">"1,0"</span><span class="p">,</span> <span class="s2">"2,0"</span><span class="p">,</span>
+            <span class="s2">"0,1"</span><span class="p">,</span> <span class="s2">"1,1"</span><span class="p">,</span> <span class="s2">"2,1"</span><span class="p">];</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">grid</span><span class="p">[</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">*</span> <span class="mi">3</span><span class="p">]);</span>
+</code></pre>
+</div>
+
+<p>私は2つめの表現を選んだ、なぜなら、こちらの方が配列の初期化が楽だからだ。<code class="highlighter-rouge">new Array(x)</code>は<code class="highlighter-rouge">undefined</code>値で満たされた長さ<code class="highlighter-rouge">x</code>の新しい配列を作る。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Grid</span><span class="p">(</span><span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">width</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">height</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">cells</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">width</span> <span class="o">*</span> <span class="nx">height</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">Grid</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">valueAt</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">cells</span><span class="p">[</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">];</span>
+<span class="p">};</span>
+<span class="nx">Grid</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">setValueAt</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">point</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">cells</span><span class="p">[</span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="nx">Grid</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">isInside</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">point</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">point</span><span class="p">.</span><span class="nx">x</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">point</span><span class="p">.</span><span class="nx">y</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+         <span class="nx">point</span><span class="p">.</span><span class="nx">x</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">&amp;&amp;</span> <span class="nx">point</span><span class="p">.</span><span class="nx">y</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="nx">Grid</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">moveValue</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">setValueAt</span><span class="p">(</span><span class="nx">to</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">valueAt</span><span class="p">(</span><span class="nx">from</span><span class="p">));</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">setValueAt</span><span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<hr />
+
+<h3 id="演習-82"><a name="Ex8-2">[演習 8.2]</a></h3>
+
+<p>マス目の全ての要素に渡って、移動が必要な虫を探したり、全てを文字列に変換することも必要だ。これを簡単に作るには、アクションをその引数として取る高階関数を作るのだ。<code class="highlighter-rouge">Grid</code>プロトタイプに<code class="highlighter-rouge">each</code>メソッドを追加し、それは引数が2つの関数を引数として取る。それはこの関数を全てのマス目について呼び出し、その地点のpointオブジェクトを1つめの引数に、そしてマス目上のその地点の値を2つめの引数として与える。</p>
+
+<p><code class="highlighter-rouge">0,0</code>の地点から始めて、1行を一時に、<code class="highlighter-rouge">1,0</code>は<code class="highlighter-rouge">0,1</code>の前に扱われる。これで後で飼育器の<code class="highlighter-rouge">toString</code>関数を書くのが楽になる。（ヒント：<code class="highlighter-rouge">x</code>の<code class="highlighter-rouge">for</code>ループの組を<code class="highlighter-rouge">y</code>のforループの組の中に入れよう）</p>
+
+<p>gridオブジェクトに<code class="highlighter-rouge">cells</code>プロパティを直接ぶら下げず、その場所の値を取るのに<code class="highlighter-rouge">valueAt</code>を使うほうが賢明だろう。この方法は、もし（何らかの理由により）値の格納に別な方法を使うことに決めたとき、<code class="highlighter-rouge">valueAt</code>と<code class="highlighter-rouge">setValueAt</code>を書き換えるだけで済み、他のメソッドには触らないことができる。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">Grid</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">each</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">point</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
+      <span class="nx">action</span><span class="p">(</span><span class="nx">point</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">valueAt</span><span class="p">(</span><span class="nx">point</span><span class="p">));</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>最後に、このgridをテストしよう。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">testGrid</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Grid</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="nx">testGrid</span><span class="p">.</span><span class="nx">setValueAt</span><span class="p">(</span><span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">"#"</span><span class="p">);</span>
+<span class="nx">testGrid</span><span class="p">.</span><span class="nx">setValueAt</span><span class="p">(</span><span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">"o"</span><span class="p">);</span>
+<span class="nx">testGrid</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">point</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="s2">","</span><span class="p">,</span> <span class="nx">point</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="s2">": "</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p><code class="highlighter-rouge">Terrarium</code>（飼育器）のコンストラクターを書く前に、その中に住む’虫のオブジェクト’をもう少し詳細にしよう。初めは、飼育器は彼らが取りたいアクションを尋ねると書いた。これはこのように働く：それぞれの虫のオブジェクトは<code class="highlighter-rouge">act</code>メソッドを持ち、それは呼び出されたら、’アクション’を返す。アクションは<code class="highlighter-rouge">type</code>プロパティを伴うオブジェクトで、その名前は虫が取りたいアクションのタイプ、例えば<code class="highlighter-rouge">"move"</code>（移動）になる。多くのアクションにおいて、アクションは虫が動きたい方向のような拡張の情報も持つ。</p>
+
+<p>虫たちは恐るべき近眼で、すぐ隣のマス目しか見ることができない。しかし、彼らはそれをベースに行動する。<code class="highlighter-rouge">act</code>メソッドが呼ばれたとき、虫の周囲の情報を持つオブジェクトを与えられる。8つの方向のそれぞれについて、その中にプロパティを持つ。プロパティは虫の上なら北の<code class="highlighter-rouge">"n"</code>、左上なら北東の<code class="highlighter-rouge">"ne"</code>というようなことを示し、残りも同様とする。その名前で参照している方向を探すには、以下の辞書オブジェクトが有用である。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">directions</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Dictionary</span><span class="p">(</span>
+  <span class="p">{</span><span class="s2">"n"</span><span class="p">:</span>  <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+   <span class="s2">"ne"</span><span class="p">:</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+   <span class="s2">"e"</span><span class="p">:</span>  <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">),</span>
+   <span class="s2">"se"</span><span class="p">:</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">),</span>
+   <span class="s2">"s"</span><span class="p">:</span>  <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">),</span>
+   <span class="s2">"sw"</span><span class="p">:</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">),</span>
+   <span class="s2">"w"</span><span class="p">:</span>  <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">),</span>
+   <span class="s2">"nw"</span><span class="p">:</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)});</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">).</span><span class="nx">add</span><span class="p">(</span><span class="nx">directions</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s2">"se"</span><span class="p">)));</span>
+</code></pre>
+</div>
+
+<p>虫が移動することを決断したとき、彼は、これらの方向の一つの名前が入った<code class="highlighter-rouge">direction</code>プロパティを持つactionオブジェクトを結果として与えることで、動きたい方向を示す。’光に向かって’、常に南にしか行かない、単純な、頭の悪い虫はこのようになる。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">StupidBug</span><span class="p">()</span> <span class="p">{};</span>
+<span class="nx">StupidBug</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">act</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"move"</span><span class="p">,</span> <span class="na">direction</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">};</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>これで<code class="highlighter-rouge">Terrarium</code>オブジェクト型それ自体に取り組めるようになった。最初に、計画（文字列の配列）を引数に取り、そのマス目を初期化する、そのコンストラクターだ。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">wall</span> <span class="o">=</span> <span class="p">{};</span>
+
+<span class="kd">function</span> <span class="nx">Terrarium</span><span class="p">(</span><span class="nx">plan</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">grid</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Grid</span><span class="p">(</span><span class="nx">plan</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">length</span><span class="p">,</span> <span class="nx">plan</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">plan</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nx">plan</span><span class="p">[</span><span class="nx">y</span><span class="p">];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">line</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">grid</span><span class="p">.</span><span class="nx">setValueAt</span><span class="p">(</span><span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">),</span>
+                      <span class="nx">elementFromCharacter</span><span class="p">(</span><span class="nx">line</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">x</span><span class="p">)));</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">grid</span> <span class="o">=</span> <span class="nx">grid</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">elementFromCharacter</span><span class="p">(</span><span class="nx">character</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">character</span> <span class="o">==</span> <span class="s2">" "</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">undefined</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">character</span> <span class="o">==</span> <span class="s2">"#"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">wall</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">character</span> <span class="o">==</span> <span class="s2">"o"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">StupidBug</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">wall</code>はマス目の中で壁の位置を示すオブジェクトだ。本物の壁のように、何もせず、ただそこにあってスペースを埋める。</p>
+
+<hr />
+
+<p>一番わかりやすい飼育器オブジェクトのメソッドは<code class="highlighter-rouge">toString</code>で、これは飼育器を文字列に変換する。これを簡単に作るために、<code class="highlighter-rouge">wall</code>と<code class="highlighter-rouge">StupidBug</code>のプロトタイプに、それを表現する文字を持つ<code class="highlighter-rouge">character</code>プロパティを付けてマークする。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">wall</span><span class="p">.</span><span class="nx">character</span> <span class="o">=</span> <span class="s2">"#"</span><span class="p">;</span>
+<span class="nx">StupidBug</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">character</span> <span class="o">=</span> <span class="s2">"o"</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">characterFromElement</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">element</span> <span class="o">==</span> <span class="kc">undefined</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">" "</span><span class="p">;</span>
+  <span class="k">else</span>
+    <span class="k">return</span> <span class="nx">element</span><span class="p">.</span><span class="nx">character</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">characterFromElement</span><span class="p">(</span><span class="nx">wall</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<h3 id="演習-83"><a name="Ex8-3">[演習 8.3]</a></h3>
+
+<p>これで、<code class="highlighter-rouge">Grid</code>オブジェクトの<code class="highlighter-rouge">each</code>メソッドを文字列を組み立てるのに使うことができる。しかし読みやすい結果を作るためには、行の終わり毎に改行を入れるのがいいだろう。grid上の位置の<code class="highlighter-rouge">x</code>は行の終わりに着いたかどうかの判定に使える。引数を取らず、飼育器をうまく2次元の視点で<code class="highlighter-rouge">print</code>するための文字列を返す<code class="highlighter-rouge">toString</code>メソッドを追加しよう。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">Terrarium</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">characters</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="kd">var</span> <span class="nx">endOfLine</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">point</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">characters</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">characterFromElement</span><span class="p">(</span><span class="nx">value</span><span class="p">));</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span> <span class="o">==</span> <span class="nx">endOfLine</span><span class="p">)</span>
+      <span class="nx">characters</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s2">"\n"</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="k">return</span> <span class="nx">characters</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">""</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>そしてこれを試そう…</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">terrarium</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Terrarium</span><span class="p">(</span><span class="nx">thePlan</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">terrarium</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>可能なら、上記の演習を解くときに、gridの<code class="highlighter-rouge">each</code>に渡される引数である関数の中から<code class="highlighter-rouge">this.grid</code>へのアクセスを試みてみよう。これは動かないだろう。関数の呼び出しは、それがメソッドとして呼ばれたものでなくても、常に新しい<code class="highlighter-rouge">this</code>の中の関数の中で定義されたものを返す。それゆえ、関数の外側の<code class="highlighter-rouge">this</code>変数は見ることができない。</p>
+
+<p><code class="highlighter-rouge">endOfLine</code>のように、内側の関数から<strong>参照できる</strong>変数の中に必要な情報を格納することによって、<code class="highlighter-rouge">this</code>の代替にするのがしばしばわかりやすい手段である。もし完全な<code class="highlighter-rouge">this</code>オブジェクトにアクセスする必要があるなら、それも変数に入れてしまえる。<code class="highlighter-rouge">self</code>(または<code class="highlighter-rouge">that</code>)という名前がしばしばそのような変数のために使われる。</p>
+
+<p>しかしこれら全ての余分な変数はかっこう悪いかもしれない。他の良い解決法は、<a href="/eloquentJavaScript/Functional Programming.html">6章</a>の<code class="highlighter-rouge">partial</code>と同じような関数を使うことだ。これは、関数に引数を追加する代わりに<code class="highlighter-rouge">this</code>オブジェクトを追加し、最初の引数を関数の<code class="highlighter-rouge">apply</code>メソッドに使う：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">bind</span><span class="p">(</span><span class="nx">func</span><span class="p">,</span> <span class="nx">object</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">return</span> <span class="nx">func</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">testArray</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="kd">var</span> <span class="nx">pushTest</span> <span class="o">=</span> <span class="nx">bind</span><span class="p">(</span><span class="nx">testArray</span><span class="p">.</span><span class="nx">push</span><span class="p">,</span> <span class="nx">testArray</span><span class="p">);</span>
+<span class="nx">pushTest</span><span class="p">(</span><span class="s2">"A"</span><span class="p">);</span>
+<span class="nx">pushTest</span><span class="p">(</span><span class="s2">"B"</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">testArray</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>この手で、内側の関数を<code class="highlighter-rouge">this</code>に<code class="highlighter-rouge">bind</code>して、それが外側の関数のものであるかのように同じ<code class="highlighter-rouge">this</code>を得られる。</p>
+
+<hr />
+
+<h3 id="演習-84"><a name="Ex8-4">[演習 8.4]</a></h3>
+
+<p><code class="highlighter-rouge">bind(testArray.push, testArray)</code>の式のtestArrayの名前が2回出てくる。オブジェクトの名前を2回も<strong>使うことなく</strong>、オブジェクトとその中の1つのメソッドを結びつける関数<code class="highlighter-rouge">method</code>を設計できるだろうか？</p>
+
+<p>[解答を見る]</p>
+
+<p>メソッドの名前を文字列で与えれば可能だ。こうすれば、<code class="highlighter-rouge">method</code>関数は正しい関数値をそれ自身から見つけることができる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">method</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">object</span><span class="p">[</span><span class="nx">name</span><span class="p">].</span><span class="nx">apply</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">pushTest</span> <span class="o">=</span> <span class="nx">method</span><span class="p">(</span><span class="nx">testArray</span><span class="p">,</span> <span class="s2">"push"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>飼育器の<code class="highlighter-rouge">step</code>メソッドを実装するには<code class="highlighter-rouge">bind</code>（または<code class="highlighter-rouge">method</code>）が必要だ。このメソッドはマス目上の全てのバグに、そのアクションを尋ね、与えられたアクションを実行する。gridの<code class="highlighter-rouge">each</code>を使って、出会った虫をそのまま操作したいと思うかもしれない。しかし、そうしてしまうと、南か東に動いた虫が動いたとき、同じターンなのに、その虫が2回動けてしまう。</p>
+
+<p>その代わりに、まず1つの配列に全ての虫を集め、それから後にその虫たちを処理する。この虫を捕まえるメソッド、または<code class="highlighter-rouge">act</code>メソッドを持つ他のものは、虫をその現在の位置とともに1つのオブジェクトに格納する。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">Terrarium</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">listActingCreatures</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">found</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">point</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">!=</span> <span class="kc">undefined</span> <span class="o">&amp;&amp;</span> <span class="nx">value</span><span class="p">.</span><span class="nx">act</span><span class="p">)</span>
+      <span class="nx">found</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="na">object</span><span class="p">:</span> <span class="nx">value</span><span class="p">,</span> <span class="na">point</span><span class="p">:</span> <span class="nx">point</span><span class="p">});</span>
+  <span class="p">});</span>
+  <span class="k">return</span> <span class="nx">found</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<hr />
+
+<h3 id="演習-85"><a name="Ex8-5">[演習 8.5]</a></h3>
+
+<p>虫にどう行動するか聞くとき、その周囲いついての情報のオブジェクトを渡さなければならない。このオブジェクトは先ほどの名前（<code class="highlighter-rouge">"n"</code>、<code class="highlighter-rouge">"ne"</code>、etc.）をプロパティ名に使う。それぞれのプロパティは、<code class="highlighter-rouge">characterFromElement</code>によって、その方向で虫が出会うことになるものを示す、1文字の文字列を持つ。</p>
+
+<p><code class="highlighter-rouge">listSurroundings</code>メソッドを<code class="highlighter-rouge">Terrarium</code>プロトタイプに追加せよ。虫が今いる場所のpointを引数として取り、その地点の周囲の情報のオブジェクトを返す。その地点がマス目の端だったときは、<code class="highlighter-rouge">"#"</code>をマス目の外側の方向として使い、虫がマス目から抜け出そうとしないようにせよ。</p>
+
+<p>[ヒント] 全ての方向について書き出さず、<code class="highlighter-rouge">directions</code>辞書の<code class="highlighter-rouge">each</code>メソッドを使おう。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">Terrarium</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">listSurroundings</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">center</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{};</span>
+  <span class="kd">var</span> <span class="nx">grid</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">grid</span><span class="p">;</span>
+  <span class="nx">directions</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">direction</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">place</span> <span class="o">=</span> <span class="nx">center</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">direction</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">grid</span><span class="p">.</span><span class="nx">isInside</span><span class="p">(</span><span class="nx">place</span><span class="p">))</span>
+      <span class="nx">result</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">characterFromElement</span><span class="p">(</span><span class="nx">grid</span><span class="p">.</span><span class="nx">valueAt</span><span class="p">(</span><span class="nx">place</span><span class="p">));</span>
+    <span class="k">else</span>
+      <span class="nx">result</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"#"</span><span class="p">;</span>
+  <span class="p">});</span>
+  <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">grid</code>変数を使うに当たっては<code class="highlighter-rouge">this</code>周りの問題に注意しよう。</p>
+
+<hr />
+
+<p>上記の両方のメソッドはいずれも<code class="highlighter-rouge">Terrarium</code>オブジェクトの外部インターフェースではなく、内側の詳細だ。いくつかの言語では明示的に決まったメソッドとプロパティを’プライベートな’ものとし、オブジェクトの外側からの呼び出しをエラーにする。JavaScriptはそうではなく、オブジェクトのインターフェースの記述はコメントに頼ることになる。外側と内側のプロパティを識別するのに、例えば、全ての内部プロパティの接頭辞の下線(<code class="highlighter-rouge">'_'</code>)など、名前のスキーマを使うことはしばしば有益である。これにより、たまたまオブジェクトのインターフェースに含まれない部分をスポット的に使うことができる。</p>
+
+<hr />
+
+<p>次はもう一つの内部メソッドで、虫たちの次のアクションを聞いて、それを実行する。引数として、<code class="highlighter-rouge">object</code>と<code class="highlighter-rouge">listActingCreatures</code>の返り値である<code class="highlighter-rouge">point</code>プロパティを持つオブジェクトを取る。今のところ、わかっているのは<code class="highlighter-rouge">"move"</code>アクションのみである。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">Terrarium</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">processCreature</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">creature</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">surroundings</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">listSurroundings</span><span class="p">(</span><span class="nx">creature</span><span class="p">.</span><span class="nx">point</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">action</span> <span class="o">=</span> <span class="nx">creature</span><span class="p">.</span><span class="nx">object</span><span class="p">.</span><span class="nx">act</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">type</span> <span class="o">==</span> <span class="s2">"move"</span> <span class="o">&amp;&amp;</span> <span class="nx">directions</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">direction</span><span class="p">))</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">to</span> <span class="o">=</span> <span class="nx">creature</span><span class="p">.</span><span class="nx">point</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">directions</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">direction</span><span class="p">));</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">isInside</span><span class="p">(</span><span class="nx">to</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">valueAt</span><span class="p">(</span><span class="nx">to</span><span class="p">)</span> <span class="o">==</span> <span class="kc">undefined</span><span class="p">)</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">moveValue</span><span class="p">(</span><span class="nx">creature</span><span class="p">.</span><span class="nx">point</span><span class="p">,</span> <span class="nx">to</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">"Unsupported action: "</span> <span class="o">+</span> <span class="nx">action</span><span class="p">.</span><span class="nx">type</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>選んだ方向がマス目の中かつ空であることをチェックし、他は無視していることに注意。これにより、虫たちがどのようなアクションを取ろうとしても – もしそれが実際に可能なときのみ実行される。これが虫と飼育器の間の絶縁体の層として振る舞い、虫の<code class="highlighter-rouge">act</code>メソッドを書くときに精密さを低くすることができる – 例えば<code class="highlighter-rouge">StupidBug</code>（愚かな虫）は、その道に壁があろうと無かろうと常に南にしか進まない。</p>
+
+<hr />
+
+<p>これら3つの内部メソッドにより、ついに<code class="highlighter-rouge">step</code>メソッドを書けるようになった。全ての虫に何か（<code class="highlighter-rouge">act</code>メソッドを持つ全ての要素 – もし望むなら<code class="highlighter-rouge">wall</code>オブジェクトにそれを与えれば、歩く壁を作れる）する機会を与える。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">Terrarium</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">step</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">forEach</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">listActingCreatures</span><span class="p">(),</span>
+          <span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">processCreature</span><span class="p">,</span> <span class="k">this</span><span class="p">));</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>今こそ、飼育器を造り、虫が動くところを見よう…</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">terrarium</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Terrarium</span><span class="p">(</span><span class="nx">thePlan</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">terrarium</span><span class="p">);</span>
+<span class="nx">terrarium</span><span class="p">.</span><span class="nx">step</span><span class="p">();</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">terrarium</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>待った。上記の<code class="highlighter-rouge">print(terrarium)</code>の呼び出しと<code class="highlighter-rouge">toString</code>メソッドの出力の表示の終了をどのようにしようか？<code class="highlighter-rouge">print</code>はその引数を<code class="highlighter-rouge">String</code>関数を使って文字列に変える。オブジェクトはその<code class="highlighter-rouge">toString</code>メソッドを呼び出されることで文字列に変わるので、オブジェクトをプリントアウトするときに読みやすいようにするには、オブジェクト型に意味のある<code class="highlighter-rouge">toString</code>を与えるのが良い手である。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">Point</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">toString</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s2">"("</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="s2">","</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="s2">")"</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="nx">print</span><span class="p">(</span><span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>約束したように、<code class="highlighter-rouge">Terrarium</code>オブジェクトはシミュレーションの開始と終了の<code class="highlighter-rouge">start</code>と<code class="highlighter-rouge">stop</code>メソッドも持つ。このために、ブラウザが提供する、<code class="highlighter-rouge">setInterval</code>と<code class="highlighter-rouge">clearInterval</code>の2つの関数を使う。1つめの関数はその1つめの引数（関数、またはJavaScriptのコードを含む文字列）を定期的に実行する。2つめの引数には発動の間隔をミリ秒（1/1000秒）で与える。その効果を止めるために<code class="highlighter-rouge">clearInterval</code>に与えるための値が戻り値として返る。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">annoy</span> <span class="o">=</span> <span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span><span class="nx">print</span><span class="p">(</span><span class="s2">"What?"</span><span class="p">);},</span> <span class="mi">400</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>そして…</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">clearInterval</span><span class="p">(</span><span class="nx">annoy</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>時間ベースのワンショットのアクションのために同様の関数がある。<code class="highlighter-rouge">setTimeout</code>は関数か文字列をミリ秒で与えられた時間の後で実行し、<code class="highlighter-rouge">clearTimeout</code>はそのアクションをキャンセルする。</p>
+
+<hr />
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">Terrarium</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">start</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">running</span><span class="p">)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">running</span> <span class="o">=</span> <span class="nx">setInterval</span><span class="p">(</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">step</span><span class="p">,</span> <span class="k">this</span><span class="p">),</span> <span class="mi">500</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">Terrarium</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">stop</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">running</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">clearInterval</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">running</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">running</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>今我々は単細胞な虫がいる飼育器を持っていて、それを実行することができる。しかし、起こっていることを見続けようにも、<code class="highlighter-rouge">print(Terrarium)</code>を繰り返さなければそれを見ることができない。これはとても実用的でない。自動的にプリントされるようにしたほうがいいだろう。もしそれもできるなら、1000の飼育器をプリントする代わりに、1つの飼育器のプリントアウトを更新できたほうがいい。2つめの問題には、このページが便利なことに<code class="highlighter-rouge">inPlacePrinter</code>という関数を提供している。それは<code class="highlighter-rouge">print</code>のような関数だが、出力を追加する代わりに、前回の出力を置き換える。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">printHere</span> <span class="o">=</span> <span class="nx">inPlacePrinter</span><span class="p">();</span>
+<span class="nx">printHere</span><span class="p">(</span><span class="s2">"Now you see it."</span><span class="p">);</span>
+<span class="nx">setTimeout</span><span class="p">(</span><span class="nx">partial</span><span class="p">(</span><span class="nx">printHere</span><span class="p">,</span> <span class="s2">"Now you don't."</span><span class="p">),</span> <span class="mi">1000</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>飼育器を変更毎に再プリントするため、<code class="highlighter-rouge">step</code>メソッドをこのように書き換えよう：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">Terrarium</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">step</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">forEach</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">listActingCreatures</span><span class="p">(),</span>
+          <span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">processCreature</span><span class="p">,</span> <span class="k">this</span><span class="p">));</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">onStep</span><span class="p">)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">onStep</span><span class="p">();</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>今、飼育器に追加した<code class="highlighter-rouge">onStep</code>プロパティは、ステップ毎に呼び出される。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">terrarium</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Terrarium</span><span class="p">(</span><span class="nx">thePlan</span><span class="p">);</span>
+<span class="nx">terrarium</span><span class="p">.</span><span class="nx">onStep</span> <span class="o">=</span> <span class="nx">partial</span><span class="p">(</span><span class="nx">inPlacePrinter</span><span class="p">(),</span> <span class="nx">terrarium</span><span class="p">);</span>
+<span class="nx">terrarium</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">partial</code>の使用に注意 – これは飼育器に適用するためのin-placeプリンターを作る。このプリンターは1つだけ引数を取り、それが部分的に適用されたら残りの引数はなく、引数がゼロの関数となる。まさにそうなることが<code class="highlighter-rouge">onStep</code>プロパティに必要だ。</p>
+
+<p>面白いことが起こらなくなったら（それはあっという間だろう）飼育器を止めるのを忘れないように。コンピュータの資源を浪費することはない：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">terrarium</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>しかし1種類の虫、しかも単細胞な虫しかいない飼育器を欲しい人がいるだろうか？私は嫌だ。もし別の種類の虫を加えることができたら、それがいいだろう。幸運にも、やることは<code class="highlighter-rouge">elementFromCharacter</code>をより一般的にすることだけだ。今ここには直接タイプされ、または’ハードコード’された3つのケースが含まれている。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">elementFromCharacter</span><span class="p">(</span><span class="nx">character</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">character</span> <span class="o">==</span> <span class="s2">" "</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">undefined</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">character</span> <span class="o">==</span> <span class="s2">"#"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">wall</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">character</span> <span class="o">==</span> <span class="s2">"o"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">StupidBug</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>最初の2つはそのままにしておけるが、最後の1つは個別的すぎるやり方だ。よりよいアプローチは文字と対応するコンストラクターを辞書に格納することで、このようになる。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">creatureTypes</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Dictionary</span><span class="p">();</span>
+<span class="nx">creatureTypes</span><span class="p">.</span><span class="nx">register</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">constructor</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">(</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">character</span><span class="p">,</span> <span class="nx">constructor</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">elementFromCharacter</span><span class="p">(</span><span class="nx">character</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">character</span> <span class="o">==</span> <span class="s2">" "</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">undefined</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">character</span> <span class="o">==</span> <span class="s2">"#"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">wall</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">creatureTypes</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">character</span><span class="p">))</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="p">(</span><span class="nx">creatureTypes</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="nx">character</span><span class="p">))();</span>
+  <span class="k">else</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">"Unknown character: "</span> <span class="o">+</span> <span class="nx">character</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">creatureTypes</code>に追加された<code class="highlighter-rouge">register</code>メソッドに注意 – これは辞書オブジェクトだが、しかし追加のメソッドをサポートしていけない理由はない。このメソッドはコンストラクターに結びついた文字を探し出し、辞書に格納する。そのプロトタイプが実際に<code class="highlighter-rouge">character</code>プロパティを持っているコンストラクターについてだけ呼び出すことができる。</p>
+
+<p><code class="highlighter-rouge">elementFromCharacter</code>は今、<code class="highlighter-rouge">creatureTypes</code>から与えられた文字を探しだし、未知の文字に遭えば例外を起こす。</p>
+
+<hr />
+
+<p>これが新しい虫のタイプだ。そしてその文字を<code class="highlighter-rouge">creatureTypes</code>に登録するためにregisterを呼び出す。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">BouncingBug</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">direction</span> <span class="o">=</span> <span class="s2">"ne"</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">BouncingBug</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">act</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">surroundings</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">direction</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">" "</span><span class="p">)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">direction</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">direction</span> <span class="o">==</span> <span class="s2">"ne"</span> <span class="p">?</span> <span class="s2">"sw"</span> <span class="p">:</span> <span class="s2">"ne"</span><span class="p">);</span>
+  <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"move"</span><span class="p">,</span> <span class="na">direction</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">direction</span><span class="p">};</span>
+<span class="p">};</span>
+<span class="nx">BouncingBug</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">character</span> <span class="o">=</span> <span class="s2">"%"</span><span class="p">;</span>
+
+<span class="nx">creatureTypes</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="nx">BouncingBug</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>どんな虫か解釈できるだろうか？</p>
+
+<hr />
+
+<h3 id="演習-86"><a name="Ex8-6">[演習 8.6]</a></h3>
+
+<p>壁があろうと無かろうと、毎ターンランダムな方向に進もうとする<code class="highlighter-rouge">DrunkBug</code>という虫の型を作れ。7章の<code class="highlighter-rouge">Math.random</code>のトリックを忘れないこと。</p>
+
+<p>[解答を見る]</p>
+
+<p>ランダムな方向を取るために、方向の名前の配列が必要になる。もちろん、<code class="highlighter-rouge">["n", "ne", ...]</code>とタイプするだけでも可能だが、それでは情報が重複し、重複した情報は我々をナーバスにする。配列を組み立てるために<code class="highlighter-rouge">direction</code>の<code class="highlighter-rouge">each</code>メソッドを使うこともでき、既にあるものよりその方がいいだろう。</p>
+
+<p>しかし、明らかに一般性のある方法がここにある。プロパティ名のリストを辞書に得るというのは有益なツールに思えるので、<code class="highlighter-rouge">Dictionary</code>プロトタイプにそれを加えよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">Dictionary</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">names</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">names</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span><span class="nx">names</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">name</span><span class="p">);});</span>
+  <span class="k">return</span> <span class="nx">names</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">directions</span><span class="p">.</span><span class="nx">names</span><span class="p">());</span>
+</code></pre>
+</div>
+
+<p>本物の神経症のプログラマーは、辞書の中に格納された値のリストを返す、<code class="highlighter-rouge">values</code>メソッドも加えて、明示的に対称性を戻したいと思うだろう。しかし、<a href="http://www.c2.com/cgi/wiki?YouArentGonnaNeedIt">それが必要になるまで</a>待とうというほうに賛成だ。</p>
+
+<p>配列からランダムな要素を取り出す方法をここに示す。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">randomElement</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">array</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">"The array is empty."</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">array</span><span class="p">[</span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span><span class="p">)];</span>
+<span class="p">}</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">randomElement</span><span class="p">([</span><span class="s2">"heads"</span><span class="p">,</span> <span class="s2">"tails"</span><span class="p">]));</span>
+</code></pre>
+</div>
+
+<p>そして虫そのもの。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">DrunkBug</span><span class="p">()</span> <span class="p">{};</span>
+<span class="nx">DrunkBug</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">act</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"move"</span><span class="p">,</span>
+          <span class="na">direction</span><span class="p">:</span> <span class="nx">randomElement</span><span class="p">(</span><span class="nx">directions</span><span class="p">.</span><span class="nx">names</span><span class="p">())};</span>
+<span class="p">};</span>
+<span class="nx">DrunkBug</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">character</span> <span class="o">=</span> <span class="s2">"~"</span><span class="p">;</span>
+
+<span class="nx">creatureTypes</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="nx">DrunkBug</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>さて、新しい虫をテストしよう。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">newPlan</span> <span class="o">=</span>
+  <span class="p">[</span><span class="s2">"############################"</span><span class="p">,</span>
+   <span class="s2">"#                      #####"</span><span class="p">,</span>
+   <span class="s2">"#    ##                 ####"</span><span class="p">,</span>
+   <span class="s2">"#   ####     ~ ~          ##"</span><span class="p">,</span>
+   <span class="s2">"#    ##       ~            #"</span><span class="p">,</span>
+   <span class="s2">"#                          #"</span><span class="p">,</span>
+   <span class="s2">"#                ###       #"</span><span class="p">,</span>
+   <span class="s2">"#               #####      #"</span><span class="p">,</span>
+   <span class="s2">"#                ###       #"</span><span class="p">,</span>
+   <span class="s2">"# %        ###        %    #"</span><span class="p">,</span>
+   <span class="s2">"#        #######           #"</span><span class="p">,</span>
+   <span class="s2">"############################"</span><span class="p">];</span>
+
+<span class="kd">var</span> <span class="nx">terrarium</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Terrarium</span><span class="p">(</span><span class="nx">newPlan</span><span class="p">);</span>
+<span class="nx">terrarium</span><span class="p">.</span><span class="nx">onStep</span> <span class="o">=</span> <span class="nx">partial</span><span class="p">(</span><span class="nx">inPlacePrinter</span><span class="p">(),</span> <span class="nx">terrarium</span><span class="p">);</span>
+<span class="nx">terrarium</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>跳ねる虫が酔っ払った奴にぶつかって跳ね返ったら？ホンモノのドラマだ。いずれにせよ、この魅惑的なショーを見終わったら、それを閉じよう。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">terrarium</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>今の2種類のオブジェクトはともに1つの<code class="highlighter-rouge">act</code>メソッドと<code class="highlighter-rouge">character</code>プロパティを持っている。なぜなら、これらの特徴を共有することで、飼育器は同じ手段でそれらにアプローチできるからだ。これにより、飼育器についてのコードを全く変えることなしに、全ての種類の虫を持つことができる。このテクニックはポリモーフィズムとよばれ、ほぼ間違いなく、オブジェクト指向プログラミングの最もパワフルな面である。</p>
+
+<p>ポリモーフィズムの基本的なアイデアは、コードの部分が決まったインターフェースを持つオブジェクトとともに動くよう書かれていれば、このインターフェースをサポートする任意の種類のオブジェクトがコードに接続でき、そしてそれがそのまま動くということだ。これの単純な例は、既に見てきたオブジェクトの<code class="highlighter-rouge">toString</code>メソッドである。意味のある<code class="highlighter-rouge">toString</code>メソッドを持つ全てのオブジェクトは<code class="highlighter-rouge">print</code>、および文字列に値を変換する必要のある他の関数に与えられることができ、そして文字列を組み立てるのに選ばれたそれらの<code class="highlighter-rouge">toString</code>メソッドがどのようなものであろうと、正しい文字列が作られる。</p>
+
+<p>同様に、<code class="highlighter-rouge">forEach</code>も変数<code class="highlighter-rouge">arguments</code>の中に見つかった本物の配列と偽物の配列の両方で動き、なぜならそれが必要としているものは<code class="highlighter-rouge">length</code>プロパティと、配列の要素を示す、<code class="highlighter-rouge">0</code>、<code class="highlighter-rouge">1</code>`とかそのような、プロパティで全部だからである。</p>
+
+<hr />
+
+<p>飼育器の中の生命をより生命らしくするために、食物と繁殖の概念を追加しよう。飼育器の中のそれぞれの生物は、新しいプロパティ、<code class="highlighter-rouge">energy</code>を得て、それは行動することで減り、物を食べることで増える。energyが十分なとき、生物は繁殖する[^2]ことができ、同じ種類の新しい生物が生成される。</p>
+
+<p>[^2] 物事を合理的に単純に保つため、飼育器の中の生物は全て無性生殖であることとする。</p>
+
+<p>もし、虫しかいなければ、移動によるエネルギーの消費と共食いにより、飼育器はエントロピーの力に屈してしまい、エネルギーは枯渇し、生命の無い荒れ地になるだろう。これの（少なくとも、早すぎる）発生を防ぐために、飼育器に地衣類を生やそう。地衣類は動かず、光合成でエネルギーを集め、繁殖する。</p>
+
+<p>この働きをつくるために、異なる<code class="highlighter-rouge">processCreature</code>メソッドを持つ飼育器が必要だ。<code class="highlighter-rouge">Terrarium</code>プロトタイプのメソッドをただ置き換えることもできるが、しかし飛び跳ねる虫や依った虫のシミュレーションに合わせたいし、古い飼育器を壊すのは嫌だ。</p>
+
+<p>私たちがやるのは、<code class="highlighter-rouge">Terrarium</code>プロトタイプをベースとしつつ異なる<code class="highlighter-rouge">processCreature</code>メソッドを持つ、<code class="highlighter-rouge">LifeLikeTerrarium</code>新しいコンストラクターを作ることだ。</p>
+
+<hr />
+
+<p>これを行うには2つの方法がある。<code class="highlighter-rouge">Terratium.prototype</code>を一通り見て、1つ1つ<code class="highlighter-rouge">LifeLikeTerrarium.prototype</code>に加えることができる。これは簡単で、いくつかの場合には最も良い解決だ。しかし、この場合はより明らかな手段がある。もし古いprototypeオブジェクトを新しいprototypeオブジェクトのプロトタイプにしたら（あなたはここを2, 3度読み返す必要があるだろう）、それは自動的にその全てのプロパティを持つ。</p>
+
+<p>残念ながら、JavaScriptは決まった他のオブジェクトをプロトタイプとして、オブジェクトを作るわかりやすい手段を持っていない。これを行う関数を書くのは可能であるが、それでも、以下のトリックが必要だ。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">clone</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">OneShotConstructor</span><span class="p">(){}</span>
+  <span class="nx">OneShotConstructor</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">object</span><span class="p">;</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nx">OneShotConstructor</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>この関数は、与えられたオブジェクトをプロトタイプとする、空のワンショットのコンストラクターを使う。このコンストラクターで<code class="highlighter-rouge">new</code>を使ったとき、与えられたオブジェクトをもとにした新しいオブジェクトが作られる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">LifeLikeTerrarium</span><span class="p">(</span><span class="nx">plan</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Terrarium</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">plan</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">LifeLikeTerrarium</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">clone</span><span class="p">(</span><span class="nx">Terrarium</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+<span class="nx">LifeLikeTerrarium</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="nx">LifeLikeTerrarium</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<p>新しいコンストラクターは古いものから異なることをする必要が無く、<code class="highlighter-rouge">this</code>オブジェクトの、古いものを呼ぶだけだ。新しいプロトタイプに<code class="highlighter-rouge">constructor</code>プロパティを戻すか、またはそのコンストラクターが<code class="highlighter-rouge">Terrarium</code>であると主張しなければならない（もちろん、このプロパティを使う時だけ実際に問題になり、我々はそうしない）。</p>
+
+<hr />
+
+<p>今、LifeLikeTerrariumオブジェクトのメソッドのいくつかを置き換えたり、あるいは新しいものを加えることができる。新しいオブジェクトは古い物をベースにしているので、TerrariumとLifeLikeTerrariumで同じになるメソッドを再度書く手間は省ける。このテクニックは’継承（インヘリタンス）’と呼ばれる。新しい型は古い型のプロパティを継承する。多くの場合、これは新しい型は古い型のインターフェースをまだサポートした上で、古い型が持たないメソッドもサポートするということである。これにより、新しい型のオブジェクトは（ポリモーフィズム的に）古い型が使われていた全ての場所で使われることができる。</p>
+
+<p>明示的にオブジェクト指向プログラミングをサポートしている、多くのプログラミング言語では、継承はとてもわかいやすいものだ。JavaScriptでは、言語は本当にそれを単純に行う手段を個別には持っていない。このため、JavaScriptプログラマーは’継承’のための多くの異なるアプローチを発明してきた。残念ながら、完璧なものはない。幸運にも、アプローチの範囲は幅広く、プログラマーは解決したい問題に最も適したもの選択でき、他の言語では全く不可能なトリックでさえ使える。</p>
+
+<p>この章の終わりで、継承を行う他の手段と、それらの問題を見せよう。</p>
+
+<p>これが新しい<code class="highlighter-rouge">processCreature</code>メソッドである。大きくなった。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">LifeLikeTerrarium</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">processCreature</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">creature</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">surroundings</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">listSurroundings</span><span class="p">(</span><span class="nx">creature</span><span class="p">.</span><span class="nx">point</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">action</span> <span class="o">=</span> <span class="nx">creature</span><span class="p">.</span><span class="nx">object</span><span class="p">.</span><span class="nx">act</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">);</span>
+
+  <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="kc">undefined</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">valueAtTarget</span> <span class="o">=</span> <span class="kc">undefined</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">direction</span> <span class="o">&amp;&amp;</span> <span class="nx">directions</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">direction</span><span class="p">))</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">direction</span> <span class="o">=</span> <span class="nx">directions</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">direction</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">maybe</span> <span class="o">=</span> <span class="nx">creature</span><span class="p">.</span><span class="nx">point</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">direction</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">isInside</span><span class="p">(</span><span class="nx">maybe</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nx">target</span> <span class="o">=</span> <span class="nx">maybe</span><span class="p">;</span>
+      <span class="nx">valueAtTarget</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">valueAt</span><span class="p">(</span><span class="nx">target</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">type</span> <span class="o">==</span> <span class="s2">"move"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">target</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">valueAtTarget</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">moveValue</span><span class="p">(</span><span class="nx">creature</span><span class="p">.</span><span class="nx">point</span><span class="p">,</span> <span class="nx">target</span><span class="p">);</span>
+      <span class="nx">creature</span><span class="p">.</span><span class="nx">point</span> <span class="o">=</span> <span class="nx">target</span><span class="p">;</span>
+      <span class="nx">creature</span><span class="p">.</span><span class="nx">object</span><span class="p">.</span><span class="nx">energy</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">type</span> <span class="o">==</span> <span class="s2">"eat"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">valueAtTarget</span> <span class="o">&amp;&amp;</span> <span class="nx">valueAtTarget</span><span class="p">.</span><span class="nx">energy</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">setValueAt</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">);</span>
+      <span class="nx">creature</span><span class="p">.</span><span class="nx">object</span><span class="p">.</span><span class="nx">energy</span> <span class="o">+=</span> <span class="nx">valueAtTarget</span><span class="p">.</span><span class="nx">energy</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">type</span> <span class="o">==</span> <span class="s2">"photosynthese"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">creature</span><span class="p">.</span><span class="nx">object</span><span class="p">.</span><span class="nx">energy</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">type</span> <span class="o">==</span> <span class="s2">"reproduce"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">target</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">valueAtTarget</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">species</span> <span class="o">=</span> <span class="nx">characterFromElement</span><span class="p">(</span><span class="nx">creature</span><span class="p">.</span><span class="nx">object</span><span class="p">);</span>
+      <span class="kd">var</span> <span class="nx">baby</span> <span class="o">=</span> <span class="nx">elementFromCharacter</span><span class="p">(</span><span class="nx">species</span><span class="p">);</span>
+      <span class="nx">creature</span><span class="p">.</span><span class="nx">object</span><span class="p">.</span><span class="nx">energy</span> <span class="o">-=</span> <span class="nx">baby</span><span class="p">.</span><span class="nx">energy</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">creature</span><span class="p">.</span><span class="nx">object</span><span class="p">.</span><span class="nx">energy</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">setValueAt</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span> <span class="nx">baby</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">type</span> <span class="o">==</span> <span class="s2">"wait"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">creature</span><span class="p">.</span><span class="nx">object</span><span class="p">.</span><span class="nx">energy</span> <span class="o">-=</span> <span class="mf">0.2</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">"Unsupported action: "</span> <span class="o">+</span> <span class="nx">action</span><span class="p">.</span><span class="nx">type</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">creature</span><span class="p">.</span><span class="nx">object</span><span class="p">.</span><span class="nx">energy</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">grid</span><span class="p">.</span><span class="nx">setValueAt</span><span class="p">(</span><span class="nx">creature</span><span class="p">.</span><span class="nx">point</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>この関数はまだ生物に行動を聞くところから始まる。それから、もし行動が<code class="highlighter-rouge">direction</code>プロパティを持っていたら、この方向のポイントと現在いるところの値をマス目上のポイントで明示的に計算する。サポートされている行動5つのうち3つについてはこれを知る必要があり、もしそれら全てを分離して計算していたらもっとコードが汚くなっただろう。<code class="highlighter-rouge">direction</code>プロパティが無かったり、間違っていたら、<code class="highlighter-rouge">target</code>と<code class="highlighter-rouge">valueAtTarget</code>変数は未定義となる。</p>
+
+<p>この後は、全ての行動に渡る。いくつかの行動は実行する前に追加のチェックを必要とし、これは別々の<code class="highlighter-rouge">if</code>で行われる。例えば、もし生物だったら、壁の中を進もうとしたりというように。我々は<code class="highlighter-rouge">"Unsupported action"</code>例外を生成しない。</p>
+
+<p><code class="highlighter-rouge">"reproduce"</code>アクションに注意、親の生物は新しい生物の得るエネルギーの2倍のエネルギーを失い（出産は楽じゃ無い）、新しい生物は親が十分なエネルギーを持っているときのみ生まれることができる。</p>
+
+<p>行動が実行された後、生物がエネルギー切れになっていないかチェックし、もしそうであれば、それは死んだので、取り除く。</p>
+
+<hr />
+
+<p>地衣類はあまり複雑な生命ではない。それを表現するのに”*“文字を使う。<a href="#Ex8-6">演習8.6</a>の<code class="highlighter-rouge">randomElement</code>関数を確実に定義すること。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Lichen</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">energy</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">Lichen</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">act</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">emptySpace</span> <span class="o">=</span> <span class="nx">findDirections</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">,</span> <span class="s2">" "</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">energy</span> <span class="o">&gt;=</span> <span class="mi">13</span> <span class="o">&amp;&amp;</span> <span class="nx">emptySpace</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"reproduce"</span><span class="p">,</span> <span class="na">direction</span><span class="p">:</span> <span class="nx">randomElement</span><span class="p">(</span><span class="nx">emptySpace</span><span class="p">)};</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">energy</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"photosynthese"</span><span class="p">};</span>
+  <span class="k">else</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"wait"</span><span class="p">};</span>
+<span class="p">};</span>
+<span class="nx">Lichen</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">character</span> <span class="o">=</span> <span class="s2">"*"</span><span class="p">;</span>
+
+<span class="nx">creatureTypes</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="nx">Lichen</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">findDirections</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">,</span> <span class="nx">wanted</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">found</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="nx">directions</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">surroundings</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">==</span> <span class="nx">wanted</span><span class="p">)</span>
+      <span class="nx">found</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">name</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="k">return</span> <span class="nx">found</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>地衣類は20エネルギーより大きく成長することは無く、または他の地衣類に周りを囲まれ繁殖するスペースが無いときだけ<strong>大きくなる</strong>。</p>
+
+<hr />
+
+<h3 id="演習-87"><a name="Ex8-7">[演習 8.7]</a></h3>
+
+<p><code class="highlighter-rouge">LichenEater</code>（苔を食べる生物）を作れ。<code class="highlighter-rouge">10</code>のエネルギーから始めて、下記のように振る舞う。：</p>
+
+<ul>
+  <li>30以上のエネルギーがあり、周りに空いている場所があれば、繁殖する。</li>
+  <li>そうでなければ、もし地衣類が近くにいれば、その中の1つをランダムに食べる。</li>
+  <li>そうでなければ、動く場所があれば、ランダムに空いている隣の四角に移動する。</li>
+  <li>そうでなければ、待つ。</li>
+</ul>
+
+<p><code class="highlighter-rouge">findDirections</code>と<code class="highlighter-rouge">randomElement</code>を周囲のチェックと方向の選択に使う。<code class="highlighter-rouge">"c"</code>（パックマン）をLichenEaterの文字とする、</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">LichenEater</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">energy</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">LichenEater</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">act</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">emptySpace</span> <span class="o">=</span> <span class="nx">findDirections</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">,</span> <span class="s2">" "</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">lichen</span> <span class="o">=</span> <span class="nx">findDirections</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">,</span> <span class="s2">"*"</span><span class="p">);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">energy</span> <span class="o">&gt;=</span> <span class="mi">30</span> <span class="o">&amp;&amp;</span> <span class="nx">emptySpace</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"reproduce"</span><span class="p">,</span> <span class="na">direction</span><span class="p">:</span> <span class="nx">randomElement</span><span class="p">(</span><span class="nx">emptySpace</span><span class="p">)};</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">lichen</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"eat"</span><span class="p">,</span> <span class="na">direction</span><span class="p">:</span> <span class="nx">randomElement</span><span class="p">(</span><span class="nx">lichen</span><span class="p">)};</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">emptySpace</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"move"</span><span class="p">,</span> <span class="na">direction</span><span class="p">:</span> <span class="nx">randomElement</span><span class="p">(</span><span class="nx">emptySpace</span><span class="p">)};</span>
+  <span class="k">else</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"wait"</span><span class="p">};</span>
+<span class="p">};</span>
+<span class="nx">LichenEater</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">character</span> <span class="o">=</span> <span class="s2">"c"</span><span class="p">;</span>
+
+<span class="nx">creatureTypes</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="nx">LichenEater</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>試してみよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">lichenPlan</span> <span class="o">=</span>
+  <span class="p">[</span><span class="s2">"############################"</span><span class="p">,</span>
+   <span class="s2">"#                     ######"</span><span class="p">,</span>
+   <span class="s2">"#    ***                **##"</span><span class="p">,</span>
+   <span class="s2">"#   *##**         **  c  *##"</span><span class="p">,</span>
+   <span class="s2">"#    ***     c    ##**    *#"</span><span class="p">,</span>
+   <span class="s2">"#       c         ##***   *#"</span><span class="p">,</span>
+   <span class="s2">"#                 ##**    *#"</span><span class="p">,</span>
+   <span class="s2">"#   c       #*            *#"</span><span class="p">,</span>
+   <span class="s2">"#*          #**       c   *#"</span><span class="p">,</span>
+   <span class="s2">"#***        ##**    c    **#"</span><span class="p">,</span>
+   <span class="s2">"#*****     ###***       *###"</span><span class="p">,</span>
+   <span class="s2">"############################"</span><span class="p">];</span>
+
+<span class="kd">var</span> <span class="nx">terrarium</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LifeLikeTerrarium</span><span class="p">(</span><span class="nx">lichenPlan</span><span class="p">);</span>
+<span class="nx">terrarium</span><span class="p">.</span><span class="nx">onStep</span> <span class="o">=</span> <span class="nx">partial</span><span class="p">(</span><span class="nx">inPlacePrinter</span><span class="p">(),</span> <span class="nx">terrarium</span><span class="p">);</span>
+<span class="nx">terrarium</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>おそらく、地衣類が飼育器の中の大きな部分を占めるように早く成長するのを見て、その後、大量の食料がLichenEaterを増やし、全ての地衣類を食べ尽くし、彼ら自身もいなくなる。ああ、自然の悲劇よ。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">terrarium</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>飼育器の居住者が2, 3分後に死滅するのでは気が滅入る。これに対処するために、LichenEaterに長期間持続可能な農業経営を教えよう。周りに最低2つの地衣類が無ければ、腹が減っていても食べないことにして、地衣類が根絶されないようにする。これにはしつけが必要だが、しかしその結果は自滅しない生活圏になるだろう。これが新しい<code class="highlighter-rouge">act</code>メソッドだ – <code class="highlighter-rouge">lichen.length</code>が最低2あるときだけ食べるようにするところだけ変更した。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">LichenEater</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">act</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">emptySpace</span> <span class="o">=</span> <span class="nx">findDirections</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">,</span> <span class="s2">" "</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">lichen</span> <span class="o">=</span> <span class="nx">findDirections</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">,</span> <span class="s2">"*"</span><span class="p">);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">energy</span> <span class="o">&gt;=</span> <span class="mi">30</span> <span class="o">&amp;&amp;</span> <span class="nx">emptySpace</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"reproduce"</span><span class="p">,</span> <span class="na">direction</span><span class="p">:</span> <span class="nx">randomElement</span><span class="p">(</span><span class="nx">emptySpace</span><span class="p">)};</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">lichen</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"eat"</span><span class="p">,</span> <span class="na">direction</span><span class="p">:</span> <span class="nx">randomElement</span><span class="p">(</span><span class="nx">lichen</span><span class="p">)};</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">emptySpace</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"move"</span><span class="p">,</span> <span class="na">direction</span><span class="p">:</span> <span class="nx">randomElement</span><span class="p">(</span><span class="nx">emptySpace</span><span class="p">)};</span>
+  <span class="k">else</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"wait"</span><span class="p">};</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>上記の<code class="highlighter-rouge">lichenPlan</code>飼育器を再び動かし、どうなるか見よう。とても幸運なことがない限り、LichenEaterはしばらく後に絶滅してしまうだろう。なぜなら、多くの時間、飢えたまま、隅に生えている地衣類を見つける代わりに、空の空間を目的無く四方に這うだけになるからである。</p>
+
+<hr />
+
+<h3 id="演習-88"><a name="Ex8-8">[演習 8.8]</a></h3>
+
+<p><code class="highlighter-rouge">LichenEater</code>が生き残りやすくなるよう変更する手段を見つけよう。ズルはしないこと – <code class="highlighter-rouge">this.energy += 100</code>はズルだ。もしコンストラクターを書き直すなら、<code class="highlighter-rouge">creatureType</code>辞書に再登録するのを忘れないようにするか、飼育器は古いコンストラクターのものを使い続けよう。</p>
+
+<p>[解答を見る]</p>
+
+<p>1つのアプローチは移動のランダムさを減らすことだ。常にランダムな方向をとり続けることで、しばしばどこにも向かわずに行ったり来たりすることになる。進んだ最後の方向を覚えておいて、その方向を好んで選ぶことにより、時間の浪費を減らし、早く食物を見つけられるようにしよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">CleverLichenEater</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">energy</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">direction</span> <span class="o">=</span> <span class="s2">"ne"</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">CleverLichenEater</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">act</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">emptySpace</span> <span class="o">=</span> <span class="nx">findDirections</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">,</span> <span class="s2">" "</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">lichen</span> <span class="o">=</span> <span class="nx">findDirections</span><span class="p">(</span><span class="nx">surroundings</span><span class="p">,</span> <span class="s2">"*"</span><span class="p">);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">energy</span> <span class="o">&gt;=</span> <span class="mi">30</span> <span class="o">&amp;&amp;</span> <span class="nx">emptySpace</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"reproduce"</span><span class="p">,</span>
+            <span class="na">direction</span><span class="p">:</span> <span class="nx">randomElement</span><span class="p">(</span><span class="nx">emptySpace</span><span class="p">)};</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">lichen</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"eat"</span><span class="p">,</span>
+            <span class="na">direction</span><span class="p">:</span> <span class="nx">randomElement</span><span class="p">(</span><span class="nx">lichen</span><span class="p">)};</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">emptySpace</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">surroundings</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">direction</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">" "</span><span class="p">)</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">direction</span> <span class="o">=</span> <span class="nx">randomElement</span><span class="p">(</span><span class="nx">emptySpace</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"move"</span><span class="p">,</span>
+            <span class="na">direction</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">direction</span><span class="p">};</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="s2">"wait"</span><span class="p">};</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+<span class="nx">CleverLichenEater</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">character</span> <span class="o">=</span> <span class="s2">"c"</span><span class="p">;</span>
+
+<span class="nx">creatureTypes</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="nx">CleverLichenEater</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>前回の飼育器プランを使って試してみよう。</p>
+
+<hr />
+
+<h3 id="演習-89"><a name="Ex8-9">[演習 8.9]</a></h3>
+
+<p>1つにリンクした食物連鎖はまだちょっと初歩的だ。LichenEaterを食べて生きる<code class="highlighter-rouge">LichenEaterEater</code>（<code class="highlighter-rouge">"@"</code>文字）という新しい生物を書くことができるだろうか？早すぎる滅亡のないエコシステムに合うような手を見つけてみよう。<code class="highlighter-rouge">lichenPlan</code>配列をこれらを2, 3含むようにして、それを試そう。</p>
+
+<p>あなた自身で書いてみて欲しい。私は、これらの生物が根絶したり、LichenEaterを食べ尽くして根絶させたりすることを防ぐ本当に良い手段を見つけるのに失敗した。食料が2つあるときだけ食べるというトリックはうまくいかなかった。なぜなら、食物の方も動くので2つが1つの場所で出会うことが希だったからである。LichenEaterEaterを太らせる（高いenergy）のは良さそうに思われ、LichenEaterが乏しいときは長く生き残り、繁殖だけが遅くなり、その食物が早く根絶することは防がれた。</p>
+
+<p>地衣類と捕食者達は周期的な動きをするようになる – 地衣類が豊作になると、捕食者達が大量に生まれ、それにより地衣類が少なくなり、捕食者達が餓死し、それにより地衣類が豊富になる、そのように続く。LichenEaterEaterが、2, 3ターン食物を見つけられないよう、冬眠するように作ることもできる（<code class="highlighter-rouge">"wait"</code>行動をしばらく続くようにして）。もしこの冬眠のターン数を正しく選ぶか、あるいはたくさんの食物の匂いをかぎつけたときに自動的に起きるようにしたら、これは良い戦略になるだろう。</p>
+
+<hr />
+
+<p>飼育器に関する議論はここで結びとしよう。章の残りは継承と、JavaScriptにおける継承にまつわる問題をより深く見ることに費やそう。</p>
+
+<hr />
+
+<p>最初に、いくつかの理論では、オブジェクト指向プログラミングの生徒はしばしば、継承の使い方の正しい、正しくないという議論に酷く退屈することがある。継承を覚えることは重要である、結局は、怠惰な[^3]プログラマーが書くコードを減らすためのただのトリックとして。すなわち、継承を正しく使えているかどうかという疑問は結局、結果のコードが正しく、無益な繰り返しを避けられているかということになる。それでも、これらの生徒が使っている原則は継承について考え始めるための良い手段を提供する。</p>
+
+<p>[^3] 怠惰はプログラマーにとって必ずしも悪ではない。せっせと同じ事を何度も繰り返す種類の人々は偉大な組み立てライン工やひどいプログラマーになる。</p>
+
+<p>継承は、既存の型’スーパータイプ’をもとにした新しい型のオブジェクト’サブタイプ’を作ることである。サブタイプはスーパータイプの全てのプロパティをメソッドを初めから持ち、それらを継承し、それからこれらをいくつか変更したり、任意に新しい物を追加する。サブタイプによってモデル化されたものがスーパータイプのオブジェクト<strong>である</strong>ときに継承はよく使われる。</p>
+
+<p>このように、<code class="highlighter-rouge">Piano</code>（ピアノ）型は<code class="highlighter-rouge">Instrument</code>（楽器）型のサブタイプであり得て、なぜならそれはピアノは楽器<strong>である</strong>からだ。ピアノが完全な鍵盤の配列を持っているからといって、<code class="highlighter-rouge">Piano</code>を配列のサブタイプにしようとするかもしれないが、ピアノは配列<strong>ではなく</strong>、そのように実装することは全ての種類の愚かさへの手綱に縛り付けるようなものだ。例えば、ピアノはペダルも持っている。なぜ<code class="highlighter-rouge">piano[0]</code>が最初の鍵盤であって、最初のペダルでは無いのか？この状況においては、もちろん、ピアノは鍵盤も<strong>持っている</strong>ので、<code class="highlighter-rouge">keys</code>プロパティと<code class="highlighter-rouge">pedals</code>プロパティの両方を配列として与えるほうがいいだろう。</p>
+
+<p>あるサブタイプを他のサブタイプのスーパータイプとすることは可能だ。いくつかの問題が複雑な型の家系図を組み立てることによって最も良く解決される。それでも、継承の使いすぎには注意しよう。継承の過剰使用はプログラムを大きな醜い失敗作にするための大きな道だ。</p>
+
+<hr />
+
+<p><code class="highlighter-rouge">new</code>キーワードとコンストラクターの<code class="highlighter-rouge">prototype</code>プロパティの働きはオブジェクトの使用の確かな道を提案する。飼育器の生物のような単純なオブジェクトには、この方法がむしろいいだろう。残念ながら、継承の厳格な使用を始める時、オブジェクトへのこのアプローチは早く不細工になる。共通の操作の世話をするいくつかの関数を加えることが物事を少しスムーズにする。多くの人々が、例えば、オブジェクトに<code class="highlighter-rouge">inherit</code>と<code class="highlighter-rouge">method</code>メソッドを定義する。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">inherit</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">baseConstructor</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">clone</span><span class="p">(</span><span class="nx">baseConstructor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">method</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">func</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">prototype</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">func</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kd">function</span> <span class="nx">StrangeArray</span><span class="p">(){}</span>
+<span class="nx">StrangeArray</span><span class="p">.</span><span class="nx">inherit</span><span class="p">(</span><span class="nb">Array</span><span class="p">);</span>
+<span class="nx">StrangeArray</span><span class="p">.</span><span class="nx">method</span><span class="p">(</span><span class="s2">"push"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">push</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+  <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">push</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">strange</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">StrangeArray</span><span class="p">();</span>
+<span class="nx">strange</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">strange</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>もし’JavaScript’と’inheritance’の語でウェブを検索しても、これの多くの異なるバリエーションにしか出会わないだろう。そのうちのいくつかは上記よりもっと複雑でできがいい。</p>
+
+<p>ここで書かれている<code class="highlighter-rouge">push</code>メソッドは親の型のプロトタイプの<code class="highlighter-rouge">push</code>メソッドをどのように使っているかに注意しよう。これは継承を使う時に – サブタイプの中で内部的にスーパータイプのメソッドを、なにも拡張すること無く使う時にしばしば使われる。</p>
+
+<hr />
+
+<p>この基本的なアプローチの、大きな問題はコンストラクターとプロトタイプの間の二重性だ。コンストラクターはとても中心的な役割で、オブジェクト型それ自身の名前を与えられたものであり、そしてプロトタイプを得ることが必要なとき、コンストラクターに行きその<code class="highlighter-rouge">prototype</code>プロパティを得なければならない。</p>
+
+<p>タイプする文字数が<strong>多い</strong>（<code class="highlighter-rouge">"prototype"</code>は9文字）だけではなく、混乱してもいる。上記の例では、空の、使い途の無いコンストラクターを<code class="highlighter-rouge">StrangeArray</code>のために書かなければならない。何度か、間違ってコンストラクターの代わりにそのプロトタイプにメソッドを追加したり、本当は<code class="highlighter-rouge">Array.prototype.slice</code>のつもりで<code class="highlighter-rouge">Array.slice</code>を呼び出そうとしたりしたことがある。私に関する限り、プロトタイプそれ自体がオブジェクト型の重要な面であり、コンストラクターはただその拡張であり、特別な種類のメソッドでしかない。</p>
+
+<hr />
+
+<p>少数の単純なヘルパーメソッドを<code class="highlighter-rouge">Object.prototype</code>に加えることで、オブジェクトと継承に代わりのアプローチを作ることが可能になる。このアプローチでは、型はそのプロトタイプで表現され、それらのプロトタイプを格納するのに先頭を大文字にした変数を使うことになる。それが何か’constructing’の作業が必要なときは、<code class="highlighter-rouge">construct</code>というメソッドを実行する。<code class="highlighter-rouge">new</code>キーワードの代わりに使う<code class="highlighter-rouge">create</code>というメソッドを<code class="highlighter-rouge">Object</code>プロトタイプに加えよう。オブジェクトを複製し、そのようなメソッドがあれば、<code class="highlighter-rouge">create</code>に渡された引数をそれに与えて、その<code class="highlighter-rouge">construct</code>メソッドを呼び出す。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">object</span> <span class="o">=</span> <span class="nx">clone</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">object</span><span class="p">.</span><span class="nx">construct</span> <span class="o">==</span> <span class="s2">"function"</span><span class="p">)</span>
+    <span class="nx">object</span><span class="p">.</span><span class="nx">construct</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">object</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>継承はプロトタイプ・オブジェクトの複製とそのプロパティのいくつかの追加またはで置き換えで行える。これの便利な短縮形、<code class="highlighter-rouge">extend</code>メソッドも提供する。これは適用されたオブジェクトを複製し、この複製に、引数として与えられたオブジェクトのプロパティを加える。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">extend</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">properties</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">clone</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+  <span class="nx">forEachIn</span><span class="p">(</span><span class="nx">properties</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">result</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+  <span class="p">});</span>
+  <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">Object</code>プロトタイプを壊す危険がないとはいえない場合は、これらはもちろん通常の（メソッドで無い）関数として実装できる。</p>
+
+<hr />
+
+<p>1つの例として、もしあなたがそれなりの歳なら、かつて1度は’テキスト・アドベンチャー’ゲームを遊んだことがあるかもしれない。バーチャルな世界をコマンドをタイプすることで動き回り、周囲の物事と行った行動について、テキストによる説明を得るのだ。そのようなゲームだ！</p>
+
+<p>そんなゲームのアイテムのプロトタイプはこのように書く。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">Item</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">construct</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="na">inspect</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s2">"it is "</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="s2">"."</span><span class="p">);</span>
+  <span class="p">},</span>
+  <span class="na">kick</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s2">"klunk!"</span><span class="p">);</span>
+  <span class="p">},</span>
+  <span class="na">take</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s2">"you can not lift "</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="s2">"."</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">lantern</span> <span class="o">=</span> <span class="nx">Item</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s2">"the brass lantern"</span><span class="p">);</span>
+<span class="nx">lantern</span><span class="p">.</span><span class="nx">kick</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>これをこのように継承する…</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">DetailedItem</span> <span class="o">=</span> <span class="nx">Item</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">construct</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">details</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">Item</span><span class="p">.</span><span class="nx">construct</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">name</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">details</span> <span class="o">=</span> <span class="nx">details</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="na">inspect</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s2">"you see "</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="s2">", "</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">details</span><span class="p">,</span> <span class="s2">"."</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">giantSloth</span> <span class="o">=</span> <span class="nx">DetailedItem</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
+  <span class="s2">"the giant sloth"</span><span class="p">,</span>
+  <span class="s2">"it is quietly hanging from a tree, munching leaves"</span><span class="p">);</span>
+<span class="nx">giantSloth</span><span class="p">.</span><span class="nx">inspect</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>強制的な<code class="highlighter-rouge">prototype</code>プロトタイプの部分から抜け出すのは、<code class="highlighter-rouge">DetailedItem</code>のコンストラクターから<code class="highlighter-rouge">Item.construct</code>を呼び出すような事をちょっと単純にする。<code class="highlighter-rouge">DetailedItem.construct</code>の中で<code class="highlighter-rouge">this.name = name</code>とするのはあまり良いアイデアでは無いことに注意しよう。これは行を重複させる。確かに、行を重複させると<code class="highlighter-rouge">Item.construct</code>関数を呼び出すより短くなる、しかし、もしこのコンストラクターに後から何か付け加えようとしたときに、2カ所でそれを加えなければならなくなる。</p>
+
+<hr />
+
+<p>多くの場合、サブタイプのコンストラクターはスーパータイプのコンストラクターを呼び出すことから始まる。この手段により、スーパータイプとして正しい型のオブジェクトとして始めて、それから拡張することができる。このプロトタイプへの新しいアプローチでは、コンストラクターを必要としない型はそのままでよい。自動的にそのスーパータイプのコンストラクターを継承する。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">SmallItem</span> <span class="o">=</span> <span class="nx">Item</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">kick</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">print</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="s2">" flies across the room."</span><span class="p">);</span>
+  <span class="p">},</span>
+  <span class="na">take</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// (imagine some code that moves the item to your pocket here)</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s2">"you take "</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="s2">"."</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">pencil</span> <span class="o">=</span> <span class="nx">SmallItem</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s2">"the red pencil"</span><span class="p">);</span>
+<span class="nx">pencil</span><span class="p">.</span><span class="nx">take</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">SmallItem</code>はそれ自体のコンストラクターが定義されていないにもかかわらず、<code class="highlighter-rouge">name</code>引数が働くように作られ、なぜならそれは<code class="highlighter-rouge">Item</code>プロトタイプからコンストラクターを継承しているからである。</p>
+
+<hr />
+
+<p>JavaScriptは<code class="highlighter-rouge">instanceof</code>という演算子を持ち、オブジェクトがどのプロトタイプをもとに作られたか求めることができる。左辺にオブジェクト、右辺にコンストラクターを与えれば、真偽値が返ってきて、<code class="highlighter-rouge">true</code>であればコンストラクターの<code class="highlighter-rouge">prototype</code>プロパティは直接あるいは間接的にそのオブジェクトのプロトタイプであり、<code class="highlighter-rouge">false</code>であればそうではない。</p>
+
+<p>正規のコンストラクターを使わないとき、この演算子はむしろややこしい – コンストラクター関数がその2つめの引数として期待されているが、しかし我々はプロトタイプしか持っていない。<code class="highlighter-rouge">clone</code>関数と同様のトリックをそのために使うことができる。：’でっち上げのコンストラクター’を使って、それに<code class="highlighter-rouge">instanceof</code>を適用しよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nb">Object</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">hasPrototype</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">prototype</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">DummyConstructor</span><span class="p">()</span> <span class="p">{}</span>
+  <span class="nx">DummyConstructor</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">prototype</span><span class="p">;</span>
+  <span class="k">return</span> <span class="k">this</span> <span class="k">instanceof</span> <span class="nx">DummyConstructor</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">pencil</span><span class="p">.</span><span class="nx">hasPrototype</span><span class="p">(</span><span class="nx">Item</span><span class="p">));</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">pencil</span><span class="p">.</span><span class="nx">hasPrototype</span><span class="p">(</span><span class="nx">DetailedItem</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>次に、細かい説明を持った小さなアイテムを作ることにしよう。それは<code class="highlighter-rouge">DetailedItem</code>と<code class="highlighter-rouge">SmallItem</code>の両方を継承したように見える。JavaScriptはオブジェクトが複数のプロトタイプを持つことを、実際にそうであろうと許していない、問題を解決するのは簡単ではない。例えば、<code class="highlighter-rouge">SmallItem</code>が、何らかの理由で、<code class="highlighter-rouge">inspect</code>メソッドも定義し、その<code class="highlighter-rouge">inspect</code>メソッドを新しいプロトタイプが使うとしたら？</p>
+
+<p>複数の親の型からオブジェクト型を引き出すことを多重継承という。ある言語はそれに怯えて完全に禁止し、他のものは、よく定義され実用的な手段で、それが動くように複雑な計画を定義している。JavaScriptでまともな多重継承を実装することは可能だ。実際には、いつも通り、これに対する複数のアプローチが存在する。しかしこれら全てはここで論じるには複雑すぎる。代わりに、多くの場合に十分であろう、ごく単純なアプローチを見せよう。</p>
+
+<hr />
+
+<p>mix-inは他のプロトタイプを混ぜ合わせることのできる特別な種類のプロトタイプだ。<code class="highlighter-rouge">SmallItem</code>はそのようなプロトタイプであるように見ることができる。その<code class="highlighter-rouge">kick</code>と<code class="highlighter-rouge">take</code>メソッドを他のプロトタイプにコピーすることで、小ささをこのプロトタイプに混ぜよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">mixInto</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="nx">mixIn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">forEachIn</span><span class="p">(</span><span class="nx">mixIn</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">object</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+  <span class="p">});</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">SmallDetailedItem</span> <span class="o">=</span> <span class="nx">clone</span><span class="p">(</span><span class="nx">DetailedItem</span><span class="p">);</span>
+<span class="nx">mixInto</span><span class="p">(</span><span class="nx">SmallDetailedItem</span><span class="p">,</span> <span class="nx">SmallItem</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">deadMouse</span> <span class="o">=</span> <span class="nx">SmallDetailedItem</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
+  <span class="s2">"Fred the mouse"</span><span class="p">,</span>
+  <span class="s2">"he is dead"</span><span class="p">);</span>
+<span class="nx">deadMouse</span><span class="p">.</span><span class="nx">inspect</span><span class="p">();</span>
+<span class="nx">deadMouse</span><span class="p">.</span><span class="nx">kick</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">forEachIn</code>はオブジェクト<strong>それ自体</strong>が持つプロパティだけに対して動き、<code class="highlighter-rouge">kick</code>と<code class="highlighter-rouge">take</code>だけがコピーされ、<code class="highlighter-rouge">SmallItem</code>が<code class="highlighter-rouge">Item</code>から継承したコンストラクターはコピーされないことを忘れないように。</p>
+
+<hr />
+
+<p>プロトタイプの混ぜ合わせはmix-inがコンストラクターを持つとき、またはそのメソッドのあるものが混ぜ合わされるプロトタイプのメソッドを’壊す’ときはより複雑になる。時折、’手動で混ぜ合わせる’ことで動く。それ自体のコンストラクターを持つ、<code class="highlighter-rouge">Monster</code>プロトタイプを持っていて、それを<code class="highlighter-rouge">DetailedItem</code>に混ぜたいとする。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">Monster</span> <span class="o">=</span> <span class="nx">Item</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">construct</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">dangerous</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">Item</span><span class="p">.</span><span class="nx">construct</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">name</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">dangerous</span> <span class="o">=</span> <span class="nx">dangerous</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="na">kick</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">dangerous</span><span class="p">)</span>
+      <span class="nx">print</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="s2">" bites your head off."</span><span class="p">);</span>
+    <span class="k">else</span>
+      <span class="nx">print</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="s2">" runs away, weeping."</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">DetailedMonster</span> <span class="o">=</span> <span class="nx">DetailedItem</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">construct</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">description</span><span class="p">,</span> <span class="nx">dangerous</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">DetailedItem</span><span class="p">.</span><span class="nx">construct</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">description</span><span class="p">);</span>
+    <span class="nx">Monster</span><span class="p">.</span><span class="nx">construct</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">dangerous</span><span class="p">);</span>
+  <span class="p">},</span>
+  <span class="na">kick</span><span class="p">:</span> <span class="nx">Monster</span><span class="p">.</span><span class="nx">kick</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">giantSloth</span> <span class="o">=</span> <span class="nx">DetailedMonster</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span>
+  <span class="s2">"the giant sloth"</span><span class="p">,</span>
+  <span class="s2">"it is quietly hanging from a tree, munching leaves"</span><span class="p">,</span>
+  <span class="kc">true</span><span class="p">);</span>
+<span class="nx">giantSloth</span><span class="p">.</span><span class="nx">kick</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>しかし、これは、<code class="highlighter-rouge">DetailedMonster</code>を作るにあたり<code class="highlighter-rouge">Item</code>コンストラクターの2回の呼び出しをもたらすことに注意しよう – 1回目は<code class="highlighter-rouge">DetailedItem</code>コンストラクター、もう1回は<code class="highlighter-rouge">Monster</code>コンストラクター。この場合はあまり害にはならないが、問題を引き起こすような状況もある。</p>
+
+<hr />
+
+<p>しかし、そのような複雑さは、あなたに継承の使用を思いとどまらせるようなものではない。多重継承は、ある状況では大いに有用であるが、多くの場合においては無視するのが安全だ。Javaのような言語で多重継承を禁止しているのはこの理由による。そしてもし、いくつかの点で、それが本当に必要になったとき、ウェブを検索し、研究し、あなたの抱える状況で動くアプローチを考えだそう。</p>
+
+<p>今考えているのは、JavaScriptはテキスト・アドベンチャーを組み立てるのにおそらくいい環境だろうということだ。プロトタイプの継承が我々にもたらした、オブジェクトの振る舞いを意のままに変更する能力は、これによく合致している。もし<code class="highlighter-rouge">hedgehog</code>のオブジェクトを持っていたら、その<code class="highlighter-rouge">kick</code>メソッドを変更するだけで、蹴られたら丸まるというユニークな癖をそれに持たせることができる。、</p>
+
+<p>残念ながら、テキスト・アドベンチャーはビニール製のレコードとともに去ってしまい、一度はとても人気があったものの、現在では少数の<a href="http://groups.google.com/group/rec.arts.int-fiction/topics">ファン</a>のみによってプレイされている。</p>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eloquent JavaScript(ja)</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Eloquent JavaScript(ja)
+            
+            </li>
+            
+            <li><a href="mailto:morinatsu@gmail.com">morinatsu@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/morinatsu"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">morinatsu</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/morinatsu"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">morinatsu</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Japanese translateion of &#39;Eloquent JavaScript&#39;</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
