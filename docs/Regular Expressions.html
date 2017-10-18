@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>10. 正規表現</title>
+  <meta name="description" content="Japanese translateion of &#39;Eloquent JavaScript&#39;">
+
+  <link rel="stylesheet" href="/eloquentJavaScript/assets/main.css">
+  <link rel="canonical" href="https://morinatsu.github.com/eloquentJavaScript/Regular%20Expressions.html">
+  <link rel="alternate" type="application/rss+xml" title="Eloquent JavaScript(ja)" href="/eloquentJavaScript/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/eloquentJavaScript/">Eloquent JavaScript(ja)</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Basic%20JavaScript.html">2. 基本のJavaScript</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Data%20structures.html">4. データ構造</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Error%20Handling.html">5. エラー・ハンドリング</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Functional%20Programming.html">6. 関数型プログラミング</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Functions.html">3. 関数</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Introduction.html">1. 導入</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Modularity.html">9. モジュール性</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Object-oriented%20Programming.html">8. オブジェクト指向プログラミング</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Regular%20Expressions.html">10. 正規表現</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Searching.html">7. 探索</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/about/">About</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/contents.html">Contents</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/">Eloquent JavaScript - Top</a>
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="正規表現">正規表現</h1>
+
+<p>今までの章のさまざまな場で、文字列の値の中からパターンを探さねばならなかった。<a href="/eloquentJavaScript/Data structures.html">4章</a>では日付の部分であるべき数字の正確な位置を書きだすことで文字列から日付を展開した。その後、<a href="/eloquentJavaScript/Functional Programming.html">6章</a>では文字列の中の決まった文字、例えばHTMLの出力でエスケープされるべき文字を見つけるとりわけ醜いコードの部品を見た。</p>
+
+<p>正規表現は文字列の中のパターンを記述する言語である。小さな形の、分割された言語として、JavaScript（および他の様々なプログラミング言語で、1つないしそれ以上の方法で）に組み込まれている。あまり読みやすい言語ではない – 大きな正規表現は全く読めないものになっていく。しかし、有益なツールであり、文字列処理のプログラムを本当に単純化できる。</p>
+
+<hr />
+
+<p>ちょうど文字列が引用符の間に書かれるように、正規表現のパターンはスラッシュ(<code class="highlighter-rouge">/</code>)の間に書かれる。これは正規表現の中のスラッシュはエスケープされなければならないということを意味する。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">slash</span> <span class="o">=</span> <span class="sr">/</span><span class="se">\/</span><span class="sr">/</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"AC/DC"</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="nx">slash</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">search</code>メソッドは<code class="highlighter-rouge">indexOf</code>に似ているが、しかし、こちらは文字列の代わりに正規表現を探す。正規表現で指定されたパターンは文字列ではできないいくつかのことができる。初めに、単一の文字より多くの要素にマッチさせることができる。<a href="/eloquentJavaScript/Functional Programming.html">6章</a>で、文書のマークアップを展開するときに、最初のアスタリスクか左中括弧を探す必要があった。今ならそれをこのように書くことができる。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">asteriskOrBrace</span> <span class="o">=</span> <span class="sr">/</span><span class="se">[\{\*]</span><span class="sr">/</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">story</span> <span class="o">=</span>
+  <span class="s2">"We noticed the *giant sloth*, hanging from a giant branch."</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">story</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="nx">asteriskOrBrace</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>正規表現の中の<code class="highlighter-rouge">[</code>と<code class="highlighter-rouge">]</code>文字は特別な意味を持つ。文字列の集合を納めることができ、’これらの文字の中のいずれか’という意味になる。英数字でない多くの文字列は正規表現の中で特別な意味を持ち、実際の文字としてそれらを参照するときに、常にそれらをバックスラッシュでエスケープするのは良いアイデアである。</p>
+
+<hr />
+
+<p>しばしば必要になる文字列のセットにはいくつかのショートカットがある。ピリオド(<code class="highlighter-rouge">.</code>)は’改行以外の任意の文字’の意味に使われ、エスケープされた’d’(<code class="highlighter-rouge">\d</code>)は’任意の数字’の意味、エスケープされた’w’(<code class="highlighter-rouge">\w</code>)は任意の英数字（ある理由によりアンダースコアを含む）にマッチし、エスケープされた’s’(<code class="highlighter-rouge">\s</code>)は任意の空白文字（タブ、改行、空白）にマッチする。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">digitSurroundedBySpace</span> <span class="o">=</span> <span class="sr">/</span><span class="se">\s\d\s</span><span class="sr">/</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"1a 2 3d"</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="nx">digitSurroundedBySpace</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>エスケープされた’d’、’w’、および’s’は反対の意味にするために大文字で置き換えることができる。例えば、<code class="highlighter-rouge">\S</code>は空白<strong>以外</strong>の任意の文字にマッチする。<code class="highlighter-rouge">[</code>と<code class="highlighter-rouge">]</code>を使うとき、<code class="highlighter-rouge">^</code>文字から始めることでパターンを反転することができる。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">notABC</span> <span class="o">=</span> <span class="sr">/</span><span class="se">[^</span><span class="sr">ABC</span><span class="se">]</span><span class="sr">/</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"ABCBACCBBADABC"</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="nx">notABC</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>見ての通り、パターンを表現するための、正規表現の文字の使い方は、A) とても短く、B) とても読みにくい。</p>
+
+<hr />
+
+<h3 id="演習-101"><a name="Ex10-1">[演習 10.1]</a></h3>
+
+<p><code class="highlighter-rouge">"XX/XX/XXXX"</code>の形式の日付にマッチする正規表現を書け。<code class="highlighter-rouge">X</code>の場所は数字である。文字列<code class="highlighter-rouge">"born 15/11/2003 (mother Spot): White Fang"</code>でそれをテストせよ。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">datePattern</span> <span class="o">=</span> <span class="sr">/</span><span class="se">\d\d\/\d\d\/\d\d\d\d</span><span class="sr">/</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"born 15/11/2003 (mother Spot): White Fang"</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="nx">datePattern</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>しばしば、確実に文字列の最初でパターンが始まること、または文字列の終わりでパターンが終わることが必要となる。このために、<code class="highlighter-rouge">^</code>と<code class="highlighter-rouge">$</code>という特別な文字がつかわれる。1つ目は文字列の最初にマッチし、2つ目は最後にマッチする。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="sr">/a+/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="s2">"blah"</span><span class="p">));</span>
+<span class="nx">show</span><span class="p">(</span><span class="sr">/^a+$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="s2">"blah"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>最初の正規表現は1つの<code class="highlighter-rouge">a</code>を含む任意の文字列にマッチし、2つ目はその文字列の全てが<code class="highlighter-rouge">a</code>であるときのみマッチする。</p>
+
+<p>正規表現はオブジェクトであり、メソッドを持つことに注意。これらの<code class="highlighter-rouge">test</code>メソッドは与えられた文字列が正規表現にマッチしたか否かの真偽値を返す。</p>
+
+<p><code class="highlighter-rouge">\b</code>のコードは’単語の境界’にマッチし、それは句読点、空白、文字列の最初と最後である。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="sr">/cat/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="s2">"concatenate"</span><span class="p">));</span>
+<span class="nx">show</span><span class="p">(</span><span class="sr">/</span><span class="se">\b</span><span class="sr">cat</span><span class="se">\b</span><span class="sr">/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="s2">"concatenate"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>パターンの部分は何回も繰り返すことができる。要素の後ろのアスタリスク(<code class="highlighter-rouge">*</code>)は、0回を含む任意の回数のそれの繰り返しを許す。プラス(<code class="highlighter-rouge">+</code>)も同様だが、しかし最低1回はパターンがなければならない。疑問符(<code class="highlighter-rouge">?</code>)は要素が’任意’であることを示し – それは0回または1回である。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">parenthesizedText</span> <span class="o">=</span> <span class="sr">/</span><span class="se">\(</span><span class="sr">.*</span><span class="se">\)</span><span class="sr">/</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"Its (the sloth's) claws were gigantic!"</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="nx">parenthesizedText</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>必要なら、中括弧で要素の繰り返し回数をより正確にすることができる。中括弧の間の数値(<code class="highlighter-rouge"><span class="p">{</span><span class="err">4</span><span class="p">}</span></code>)は繰り返しの回数を与える。それらがカンマで区切られた2つの数値(<code class="highlighter-rouge"><span class="p">{</span><span class="err">3,10</span><span class="p">}</span></code>)であれば1つめが最低の回数を、2つめが最大の回数を示す。同様に、<code class="highlighter-rouge"><span class="p">{</span><span class="err">2,</span><span class="p">}</span></code>は2回かそれ以上、<code class="highlighter-rouge"><span class="p">{</span><span class="err">,4</span><span class="p">}</span></code>は4回かそれ以下を意味する。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">datePattern</span> <span class="o">=</span> <span class="sr">/</span><span class="se">\d{1,2}\/\d\d?\/\d{4}</span><span class="sr">/</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"born 15/11/2003 (mother Spot): White Fang"</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="nx">datePattern</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">/\d{1,2}/</code>と<code class="highlighter-rouge">/\d\d?/</code>の部分はともに1桁または2桁の数字である。</p>
+
+<hr />
+
+<h3 id="演習-102"><a name="Ex10-2">[演習 10.2]</a></h3>
+
+<p>電子メールのアドレスにマッチするパターンを書け。単純には、<code class="highlighter-rouge">@</code>の前と後ろは英数字と<code class="highlighter-rouge">.</code>と<code class="highlighter-rouge">-</code>（ピリオドとダッシュ）であると仮定し、アドレスの最後の部分は最後のピリオドの後に国のコードがあって、英数字のみ含み、2文字ないし3文字でなければならないとする。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">mailAddress</span> <span class="o">=</span> <span class="sr">/</span><span class="se">\b[\w\.</span><span class="sr">-</span><span class="se">]</span><span class="sr">+@</span><span class="se">[\w\.</span><span class="sr">-</span><span class="se">]</span><span class="sr">+</span><span class="se">\.\w{2,3}\b</span><span class="sr">/</span><span class="p">;</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">mailAddress</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="s2">"kenny@test.net"</span><span class="p">));</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">mailAddress</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="s2">"I mailt kenny@tets.nets, but it didn wrok!"</span><span class="p">));</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">mailAddress</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="s2">"the_giant_sloth@gmail.com"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>パターンの最初と最後の<code class="highlighter-rouge">\b</code>は2つめの文字列が確実にマッチしないようにするためのものだ。</p>
+
+<hr />
+
+<p>正規表現の部分は括弧でグループ化することができる。これで<code class="highlighter-rouge">*</code>のようなものを1文字より多いパターンに使うことができる。例えば：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">cartoonCrying</span> <span class="o">=</span> <span class="sr">/boo</span><span class="se">(</span><span class="sr">hoo+</span><span class="se">)</span><span class="sr">+/i</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"Then, he exclaimed 'Boohoooohoohooo'"</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="nx">cartoonCrying</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>正規表現の最後の<code class="highlighter-rouge">i</code>はどこから来たものだろうか？閉じるスラッシュの後に、正規表現の’オプション’を追加できる。この<code class="highlighter-rouge">i</code>は大文字小文字を区別しないという意味で、パターン中の小文字のBを文字列中の大文字のBにマッチさせることができる。</p>
+
+<p>パイプ文字(<code class="highlighter-rouge">|</code>)はパターンを2つの要素のどちらかの選択とする。例えば：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">holyCow</span> <span class="o">=</span> <span class="sr">/</span><span class="se">(</span><span class="sr">sacred|holy</span><span class="se">)</span><span class="sr"> </span><span class="se">(</span><span class="sr">cow|bovine|bull|taurus</span><span class="se">)</span><span class="sr">/i</span><span class="p">;</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">holyCow</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="s2">"Sacred bovine!"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>時折、パターンを探すことは文字列から何かを抽出するためのただ1つめのステップでしかないことがある。以前の章では、その抽出を文字列の<code class="highlighter-rouge">indexOf</code>や<code class="highlighter-rouge">slice</code>メソッドを呼び出すことで行ってきた。今、我々は正規表現を知ったので、代わりに<code class="highlighter-rouge">match</code>メソッドを使うことができる。文字列が正規表現にマッチさせたとき、マッチに失敗したときは<code class="highlighter-rouge">null</code>が、成功したときはマッチした文字列の配列が結果となる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="s2">"No"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/Yes/</span><span class="p">));</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"... yes"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/yes/</span><span class="p">));</span>
+<span class="nx">show</span><span class="p">(</span><span class="s2">"Giant Ape"</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/giant </span><span class="se">(\w</span><span class="sr">+</span><span class="se">)</span><span class="sr">/i</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>返される配列の最初の要素は常にパターンにマッチした文字列の部分である。最後の例で見れるように、パターンの中に括弧で囲われた部分があるとき、そこにマッチした部分も配列に追加される。しばしば、これで部品の抽出がとても簡単になる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">parenthesized</span> <span class="o">=</span> <span class="nx">prompt</span><span class="p">(</span><span class="s2">"Tell me something"</span><span class="p">,</span> <span class="s2">""</span><span class="p">).</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">\((</span><span class="sr">.*</span><span class="se">)\)</span><span class="sr">/</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">parenthesized</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"You parenthesized '"</span><span class="p">,</span> <span class="nx">parenthesized</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">"'"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<h3 id="演習-103"><a name="Ex10-3">[演習 10.3]</a></h3>
+
+<p><a href="/eloquentJavaScriptData structures.html">4章</a>で書いた<code class="highlighter-rouge">extractDate</code>関数を書き直せ。文字列を与えられたとき、この関数は先に見た日付のフォーマットに従った部分を文字列から探す。もし日付のようなものが見つかったら、<code class="highlighter-rouge">Date</code>オブジェクトにその値を入れる。そうでなければ、例外を投げる。日または月が1桁だけであっても受け入れるようにすること。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">extractDate</span><span class="p">(</span><span class="nx">string</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">found</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/</span><span class="se">(\d\d?)\/(\d\d?)\/(\d{4})</span><span class="sr">/</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">found</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">"No date found in '"</span> <span class="o">+</span> <span class="nx">string</span> <span class="o">+</span> <span class="s2">"'."</span><span class="p">);</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nb">Number</span><span class="p">(</span><span class="nx">found</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">found</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+                  <span class="nb">Number</span><span class="p">(</span><span class="nx">found</span><span class="p">[</span><span class="mi">1</span><span class="p">]));</span>
+<span class="p">}</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">extractDate</span><span class="p">(</span><span class="s2">"born 5/2/2007 (mother Noog): Long-ear Johnson"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>このバージョンは以前のものよりやや長いが、実用性チェックを行う上での利点があり、無意味な入力の時は警告してくれる。これは正規表現で無ければとても難しい – 1桁ないし2桁の数字を見つけることと、ダッシュが正しい位置にあるか調べるのに多くの<code class="highlighter-rouge">indexOf</code>の呼び出しが必要となる。</p>
+
+<hr />
+
+<p><a href="/eloquentJavaScript/Functional Programming.html">6章</a>で見た、文字列の値の<code class="highlighter-rouge">replace</code>メソッドには1つめの引数に正規表現を与えることができる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">print</span><span class="p">(</span><span class="s2">"Borobudur"</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">ou</span><span class="se">]</span><span class="sr">/g</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>正規表現の後の<code class="highlighter-rouge">g</code>文字に注意。これは’グローバル’で、パターンにマッチした全ての部分が置き換わるという意味だ。この<code class="highlighter-rouge">g</code>を省略したら、最初の<code class="highlighter-rouge">"o"</code>しか置換されない。</p>
+
+<p>しばしば、置換した後の文字列の部分を保持しておくことが必要になる。例えば、人々の名前を含んだ大きな文字列があり、”姓, 名”のフォーマットで、行毎に名前1つあるとする。これらの名前の姓名を入れ替え、カンマを取り除き、単純な”名 姓”フォーマットにする。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">names</span> <span class="o">=</span> <span class="s2">"Picasso, Pablo\nGauguin, Paul\nVan Gogh, Vincent"</span><span class="p">;</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">names</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">([\w</span><span class="sr"> </span><span class="se">]</span><span class="sr">+</span><span class="se">)</span><span class="sr">, </span><span class="se">([\w</span><span class="sr"> </span><span class="se">]</span><span class="sr">+</span><span class="se">)</span><span class="sr">/g</span><span class="p">,</span> <span class="s2">"$2 $1"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>置換文字列の<code class="highlighter-rouge">$1</code>と<code class="highlighter-rouge">$2</code>はパターンの括弧で囲まれた部分への参照である。<code class="highlighter-rouge">$1</code>は1つめの括弧の組の部分にマッチした文字列に置き換わり、<code class="highlighter-rouge">$2</code>は2つめ、それから<code class="highlighter-rouge">$9</code>まで同様である。</p>
+
+<p>パターンの中に9つより多くの括弧の部分があるときは、これでは動かない。しかし、文字列の部品を置き換えるもう一つの方法があり、他のトリッキーな状況においても有益でありうる。文字列の代わりに関数の値を<code class="highlighter-rouge">replace</code>メソッドの2つめの引数として与えることができる。この関数はマッチする度に毎回呼び出され、マッチしたテキストが関数の結果で置き換わる。関数に与えられる引数はマッチした要素の配列で、<code class="highlighter-rouge">match</code>により返される配列と同様のものだ：最初の要素はマッチした全体、その後にパターンの括弧で囲まれた部分全てが来る。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">eatOne</span><span class="p">(</span><span class="nx">match</span><span class="p">,</span> <span class="nx">amount</span><span class="p">,</span> <span class="nx">unit</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">amount</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">amount</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">amount</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">unit</span> <span class="o">=</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">amount</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">unit</span> <span class="o">=</span> <span class="nx">unit</span> <span class="o">+</span> <span class="s2">"s"</span><span class="p">;</span>
+    <span class="nx">amount</span> <span class="o">=</span> <span class="s2">"no"</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">amount</span> <span class="o">+</span> <span class="s2">" "</span> <span class="o">+</span> <span class="nx">unit</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">stock</span> <span class="o">=</span> <span class="s2">"1 lemon, 2 cabbages, and 101 eggs"</span><span class="p">;</span>
+<span class="nx">stock</span> <span class="o">=</span> <span class="nx">stock</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">(\d</span><span class="sr">+</span><span class="se">)</span><span class="sr"> </span><span class="se">(\w</span><span class="sr">+</span><span class="se">)</span><span class="sr">/g</span><span class="p">,</span> <span class="nx">eatOne</span><span class="p">);</span>
+
+<span class="nx">print</span><span class="p">(</span><span class="nx">stock</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<hr />
+
+<h3 id="演習-104"><a name="Ex10-4">[演習 10.4]</a></h3>
+
+<p>最後のトリックは<a href="/eloquentJavaScript/Functional Programming.html">6章</a>のHTMLをエスケープする関数をより効率的にすることができる。それはこのようなものであった：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">escapeHTML</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">replacements</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">"&amp;"</span><span class="p">,</span> <span class="s2">"&amp;amp;"</span><span class="p">],</span> <span class="p">[</span><span class="s2">"\""</span><span class="p">,</span> <span class="s2">"&amp;quot;"</span><span class="p">],</span>
+                      <span class="p">[</span><span class="s2">"&lt;"</span><span class="p">,</span> <span class="s2">"&amp;lt;"</span><span class="p">],</span> <span class="p">[</span><span class="s2">"&gt;"</span><span class="p">,</span> <span class="s2">"&amp;gt;"</span><span class="p">]];</span>
+  <span class="nx">forEach</span><span class="p">(</span><span class="nx">replacements</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">replace</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">text</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">replace</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">replace</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+  <span class="p">});</span>
+  <span class="k">return</span> <span class="nx">text</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>同じことを行い、しかし<code class="highlighter-rouge">replaceを</code>1度しか呼び出さない、新しい<code class="highlighter-rouge">escapeHTML</code>関数を書け。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">escapeHTML</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">replacements</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"&lt;"</span><span class="p">:</span> <span class="s2">"&amp;lt;"</span><span class="p">,</span> <span class="s2">"&gt;"</span><span class="p">:</span> <span class="s2">"&amp;gt;"</span><span class="p">,</span>
+                      <span class="s2">"&amp;"</span><span class="p">:</span> <span class="s2">"&amp;amp;"</span><span class="p">,</span> <span class="s2">"\""</span><span class="p">:</span> <span class="s2">"&amp;quot;"</span><span class="p">};</span>
+  <span class="k">return</span> <span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">[</span><span class="sr">&lt;&gt;&amp;"</span><span class="se">]</span><span class="sr">/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">character</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">replacements</span><span class="p">[</span><span class="nx">character</span><span class="p">];</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="nx">print</span><span class="p">(</span><span class="nx">escapeHTML</span><span class="p">(</span><span class="s2">"The 'pre-formatted' tag is written \"&lt;pre&gt;\"."</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">replace</code>オブジェクトはそれぞれの文字とそのエスケープ済みのものを手っ取り早く結びつける手段である。このように使えば安全で（i.e.<code class="highlighter-rouge">Dictionary</code>オブジェクトは必要ない）、なぜなら、<code class="highlighter-rouge">/[&lt;&gt;&amp;"]/</code>式にマッチしたプロパティだけが使われるからである。</p>
+
+<hr />
+
+<p>コードを書いている内は知らなかった文字列に対してマッチするパターンが必要となる場合がある。掲示板用に（とても単純な考えで）わいせつな言葉のフィルターを書くとする。わいせつな言葉を含まないメッセージだけを許したい。掲示板の管理者が、彼または彼女が受け入れがたいと考える言葉のリストを指定する。</p>
+
+<p>テキストの一部を言葉のセットでチェックする、もっとも効率的な手段は正規表現を使うことだ。もし言葉のリストが配列であれば、このような正規表現を組むことができる。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">badWords</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"ape"</span><span class="p">,</span> <span class="s2">"monkey"</span><span class="p">,</span> <span class="s2">"simian"</span><span class="p">,</span> <span class="s2">"gorilla"</span><span class="p">,</span> <span class="s2">"evolution"</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">pattern</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="nx">badWords</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">"|"</span><span class="p">),</span> <span class="s2">"i"</span><span class="p">);</span>
+<span class="kd">function</span> <span class="nx">isAcceptable</span><span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="o">!</span><span class="nx">pattern</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">isAcceptable</span><span class="p">(</span><span class="s2">"Mmmm, grapes."</span><span class="p">));</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">isAcceptable</span><span class="p">(</span><span class="s2">"No more of that monkeybusiness, now."</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>言葉の周りに<code class="highlighter-rouge">\b</code>パターンを追加して、grapesが否認される側に分類されないようにすることもできた。それでは2つめのものも許容されてしまい、おそらくそれは正しくない。わいせつな言葉のフィルターを正しく作るのは難しい（そして通常はうるさすぎるくらいにするのが良いアイデアだ）。</p>
+
+<p><code class="highlighter-rouge">RegExp</code>コンストラクターへの1つめの引数はパターンの内容の文字列で、2つめは大文字小文字の無視や全体性の追加に使われる。パターンを保持する文字列を組み立てるときは、バックスラッシュに注意しなければならない。なぜなら、通常、バックスラッシュは文字列が解釈されるときに除去されるので、最終的には正規表現それ自体をエスケープしなければならないのである。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">digits</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s2">"\\d+"</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">digits</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="s2">"101"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>正規表現を知る上で最も重要なのは、それが存在し、それによって文字列を管理するコードの力がとても強力になるということだ。暗号みたいなものなので、たぶん最初の10回くらいはその詳細を見なければならないだろう。頑張れば、すぐにオカルト的なちんぷんかんぷんな言葉のような式を書けるようになるだろう。</p>
+
+<p><img src="/eloquentJavaScript/assets/img/xkcd_regular_expressions.png" alt="xkcd_regular_expressions" /></p>
+
+<p>(Comic by Randall Munroe.)</p>
+
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eloquent JavaScript(ja)</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Eloquent JavaScript(ja)
+            
+            </li>
+            
+            <li><a href="mailto:morinatsu@gmail.com">morinatsu@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/morinatsu"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">morinatsu</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/morinatsu"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">morinatsu</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Japanese translateion of &#39;Eloquent JavaScript&#39;</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
