@@ -16,9 +16,9 @@ Contents
    6. [関数型プログラミング]({{ "/Functional Programming.html" | prepend:site.baseurl }})
    7. [探索]({{ "/Searching.html" | prepend:site.baseurl }})
    8. [オブジェクト指向プログラミング]({{ "/Object-oriented Programming.html" | prepend:site.baseurl }})
-   9. [モジュール性]({{ "Modularity.html" | prepend:site.baseurl }})
-   10. [正規表現]({{ "Regular Expressions.html" | prepend:site.baseurl }})
-   11. Web programming A crash course
+   9. [モジュール性]({{ "/Modularity.html" | prepend:site.baseurl }})
+   10. [正規表現]({{ "/Regular Expressions.html" | prepend:site.baseurl }})
+   11. [Webプログラミング]({{ "/Web programming A crash course.html" | prepend:site.baseurl }})
    12. The Document-Object Model
    13. Browser Events
    14. HTTP requests
