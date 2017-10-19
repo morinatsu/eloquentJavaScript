@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>11. Webプログラミング</title>
+  <meta name="description" content="Japanese translateion of &#39;Eloquent JavaScript&#39;">
+
+  <link rel="stylesheet" href="/eloquentJavaScript/assets/main.css">
+  <link rel="canonical" href="https://morinatsu.github.com/eloquentJavaScript/Web%20programming%20A%20crash%20course.html">
+  <link rel="alternate" type="application/rss+xml" title="Eloquent JavaScript(ja)" href="/eloquentJavaScript/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/eloquentJavaScript/">Eloquent JavaScript(ja)</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Basic%20JavaScript.html">2. 基本のJavaScript</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Data%20structures.html">4. データ構造</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Error%20Handling.html">5. エラー・ハンドリング</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Functional%20Programming.html">6. 関数型プログラミング</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Functions.html">3. 関数</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Introduction.html">1. 導入</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Modularity.html">9. モジュール性</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Object-oriented%20Programming.html">8. オブジェクト指向プログラミング</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Regular%20Expressions.html">10. 正規表現</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Searching.html">7. 探索</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Web%20programming%20A%20crash%20course.html">11. Webプログラミング</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/about/">About</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/contents.html">Contents</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/">Eloquent JavaScript - Top</a>
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="webプログラミング-短期集中コース">Webプログラミング: 短期集中コース</h1>
+
+<p>あなたはおそらくこれをウェブブラウザで読んでいるだろうし、ワールドワイドウェブについてもちょっとは親しんでいるだろう。この章には、ウェブを動かすための様々な要素と、それらをJavaScriptに結びつける手段の、手早く、表面的な紹介が含まれる。この3章後ではもっと実用的な、JavaScriptでウェブページを点検し、変更するいくつかの手段を見せよう。</p>
+
+<hr />
+
+<p>インターネットは、基本的には、ただ世界中に広がったコンピューター・ネットワークである。コンピューター・ネットワークはコンピューター同士でのメッセージのやりとりを可能にする。ネットワークの下に横たわるテクニックは面白い課題だが、この本の課題では無い。知らなければならないのは、典型的な、サーバーと呼ばれる1台のコンピュータが他のコンピューターから話しかけられるのを待っているということだ。1度他のコンピューター、クライアント、がこのサーバーとコミュニケーションを開いたら、特定の言葉、プロトコルを使って交換すべきものを交換するだろう。</p>
+
+<p>インターネットは、<strong>多く</strong>の異なるプロトコルのメッセージを運ぶために使われる。チャットのためのプロトコル、ファイル共有のためのプロトコル、悪意をもったソフトウェアが、それをインストールされた間抜けなコンピュータを制御するために使われるプロトコル、その他。もっとも我々の興味を引くプロトコルはワールドワイドウェブに使われるものだ。それはHTTPと呼ばれ、Hyper Text Transfer Protocolを意味し、ウェブページとそれらに結びついたファイルを取り出すのに使われる。</p>
+
+<p>HTTPのコミュニケーションにおいて、サーバーはウェブページが格納されたコンピューターである。クライアントは、あなたが持っているもののように、サーバーにページを要求し、表示するコンピューターだ。このようなページの要求は’HTTPリクエスト’と呼ばれる。</p>
+
+<hr />
+
+<p>インターネットを通じてアクセスできるウェブページと他のファイルはURLによって識別され、これはUniveral Resource Locatorsの略である。URLはこのようなものだ。：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>http://acc6.its.brooklyn.cuny.edu/~phalsall/texts/taote-v3.html
+</code></pre>
+</div>
+
+<p>これは3つの部分により作られている。最初は、<code class="highlighter-rouge">http://</code>、このURLがHTTPプロトコルを使うことを示す。他にもFTP(File Transfer Protocol)といったようなプロトコルがあり、それらもURLを使う。次の部分、<code class="highlighter-rouge">acc6.its.brooklyn.cuny.edu</code>はこのページが見つかるであろうサーバーの名前だ。URLの最後の、<code class="highlighter-rouge">/~phalsal/texts/taote-v3.html</code>はこのサーバー上の個別のファイルの名前だ。</p>
+
+<p>長い間、ワールドワイドウェブはブラウザーを使ってアクセスされてきた。URLをタイプするかリンクをクリックされたら、ブラウザは妥当なHTTPリクエストを妥当なサーバーに送る。もし全てがうまくいったら、サーバーはブラウザにファイルを送り返すことで応答し、ブラウザは1つまたは他の手段でユーザーにそれを見せる。</p>
+
+<p>この例の場合、取り出されたファイルはHTMLドキュメントであり、ウェブページとして表示される。<a href="/eloquentJavaScript/Functional Programming.html">6章</a>でHTMLについて少々論じ、イメージファイルを参照できることを知った。<a href="/eloquentJavaScript/Modularity.html">9章</a>ではHTMLページは、JavaScriptコードのファイルをロードするために<code class="highlighter-rouge">&lt;script&gt;</code>タグを含むことを知った。HTML文書を見せるとき、ブラウザはサーバーからこれらの拡張ファイルを取り出し、文書に追加することができる。</p>
+
+<hr />
+
+<p>例えURLが1つのファイルを指していることになっていても、ウェブサーバーにはファイルを見つけてそれをクライアントに送るより複雑なことをすることが可能である。 – 1つには、このファイルを何らかの手段で処理できるし、あるいは結局ファイルは無くて、URLを与えられ、それに関する文書を何らかの方法で生成するプログラムだけがあるのかもしれない。</p>
+
+<p>サーバー上の文書を変形または生成するプログラムはウェブページを静的でないものにする人気のある手段だ。ファイルがただのファイルであればそれは常に同じものであるが、リクエストの度にそれを毎回組み立てるプログラムがあれば、例えば、その人がログインしているかどうか、または決まった設定を指定しているかどうかといったことで、それぞれの人に異なる見栄えを作ることができる。これでウェブページの内容の管理が簡単になる ― ウェブサイトに新しいものを追加する度に新しいHTMLファイルを追加するよりも。新しい文書は中央の記憶装置に追加され、プログラムはそれがどこに見つかるか、クライアントにどう見せるか知っているのだ。</p>
+
+<p>この種類のウェブプログラミングはサーバーサイドプログラミングと呼ばれる。これは文書がユーザーに送られる前に作用する。ある場合には、ページが送られた<strong>後</strong>、ユーザーがそれを見る前にプログラムを動かした方が実用的である。クライアントコンピューター上でプログラムが動くため、こちらはクライアントサイドプログラミングと呼ばれる。クライアントサイドウェブプログラミングのためにJavaScriptは発明された。</p>
+
+<hr />
+
+<p>クライアントサイドでプログラムを動かすには固有の問題がある。訪れているページの上でどんな種類のプログラムが動くかを本当に前もって知ることはできないだろう。それはあなたのコンピュータの情報を他に送るかもしれず、何かにダメージを与えるかもしれず、システムに侵入するかもしれず、ウェブをサーフィンすることはむしろ危険な行動になった。</p>
+
+<p>このジレンマを解決するため、ブラウザはJavaScriptが行えることを厳しく制限している。あなたのファイルを読んだり、そのウェブページに関係しない何物をも変更することはできない。このようにプログラミング環境を分離することはサンドボクシングと呼ばれる。プログラムが有益なことをするのに必要な場所を与え、かつ同時にそれらが何かを傷つけることを防ぐのは簡単なことでは無い。数ヶ月毎に、JavaScriptプログラマーは制限を回避する新しい方法を発見して何かを傷つけたりプライバシーを侵害したりする。ブラウザに責任を負っている人々は、このトリックを不可能にするため、それらのプログラムを変更し、すべては再び良くなる – 次の問題が発見されるまでは。</p>
+
+<hr />
+
+<p>最初に広く使われるようになったJavaScriptのトリックの1つは<code class="highlighter-rouge">window</code>オブジェクトの<code class="highlighter-rouge">open</code>メソッドだ。URLを引数として取り、新しいウインドウを開いてそのURLを見せる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">perry</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">"http://www.pbfcomics.com"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p><a href="/eloquentJavaScript/Functional Programming.html">6章</a>でポップアップブロックをオフにしていれば、この新しいウインドウがブロックされるチャンスがある。ポップアップブロッカーが存在すべき理由があるのだ。ウェブプログラマー、特に、広告に人々の注意を払わせようとする者達は、今のような貧弱な<code class="highlighter-rouge">window.open</code>メソッドを悪用し、多くの人々に激怒される。とは言いつつ、この本でも例のページを見せるのにそれを使っている。一般的なルールとしては、スクリプトはユーザーに確認することなしに新しいウインドウを開くべきではないということだ。</p>
+
+<p>注意して欲しいのは、<code class="highlighter-rouge">open</code>（<code class="highlighter-rouge">setTimeout</code>とその仲間）は<code class="highlighter-rouge">window</code>オブジェクトのメソッドであるため、<code class="highlighter-rouge">window.</code>の部分は切り離せないということだ。関数が’通常通り’に呼び出された場合、トップレベルのメソッドとして呼び出され、ウィンドウもそうなる。個人的には、<code class="highlighter-rouge">open</code>は少々一般的すぎるように思える。私は通常、<code class="highlighter-rouge">window.open</code>とタイプしており、それはウインドウが開かれるということを明確にするためだ。</p>
+
+<p><code class="highlighter-rouge">window.open</code>の戻り値は新しいウインドウである。これはそのウインドウでスクリプトが走っている間のグローバルなオブジェクトであり、<code class="highlighter-rouge">Object</code>のコンストラクタや<code class="highlighter-rouge">Math</code>オブジェクトのような、全ての標準的なものを含んでいる。しかしそれらを見ようとしても、多くのブラウザは（おそらく）そうさせないだろう…。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="nx">perry</span><span class="p">.</span><span class="nb">Math</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>これは先ほど述べたサンドボクシングの一部である。ブラウザで開かれたページは、例えばログインしたサイトのような、あなたにだけ意味のある情報を見せ、もし無作為のスクリプトが実行されてそれを読んだりできたとしたらそれはまずいことだ。このルールの例外は、同じドメインで開かれたページだ：<code class="highlighter-rouge">eloquentjavascript.net</code>のページでスクリプトが実行されているとき、開かれた同じドメインの他のページも、このページに望む全てのことができる。</p>
+
+<p>開かれたウインドウは<code class="highlighter-rouge">close</code>メソッドで閉じることができる。もしあなたが自分で既に閉じていなければ…</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">perry</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>他のサブ文書としては、フレーム（文書の中の文書）のようなものがあり、これもJavaScriptプログラムからはウインドウのように見え、それ自身のJavaScript環境を持つ。実際、コンソールとしてアクセスしている環境はこのページの小さな隠されたフレームとして存在し – この方法で、あなたがページ全体をうっかり壊してしまわないようにしている。</p>
+
+<hr />
+
+<p>全ての<code class="highlighter-rouge">window</code>オブジェクトは<code class="highlighter-rouge">document</code>プロパティを持ち、それは、そのウインドウに表示されている文書を表現するオブジェクトを含んでいる。このオブジェクトは、例えば、<code class="highlighter-rouge">location</code>プロパティ、文書のURLに関する情報を含んでいる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">document.location.href</code>に新しいURLをセットするとブラウザに他の文書がロードされる。<code class="highlighter-rouge">document</code>オブジェクトの他の利用としてはその<code class="highlighter-rouge">write</code>メソッドがある。このメソッドは、文字列の引数を与えられたとき、文書にHTMLとして書き出す。完全にロードされた文書に対して使われたとき、それを望んでいなくても、通常は与えられたHTMLで文書全体が置き換えられる。このアイデアは、文書がロードされている間にスクリプトの呼び出しを行い、そのスクリプトにより書き出されたHTMLを文書の<code class="highlighter-rouge">script</code>タグのあった場所に挿入するためにある。これはページに動的に要素を追加する単純な手段である。例えば、現在の時刻を表示するちょっとした文書をここに示す。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">print</span><span class="p">(</span><span class="nx">timeWriter</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">time</span> <span class="o">=</span> <span class="nx">viewHTML</span><span class="p">(</span><span class="nx">timeWriter</span><span class="p">);</span>
+<span class="nx">time</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p><a href="/The Document-Object Model.html">12章</a>では、より明瞭で融通の利く、文書を更新するためのテクニックを見せるが、しかし、しばしば、<code class="highlighter-rouge">document.write</code>は最も良く、最も単純な手段である。</p>
+
+<hr />
+
+<p>ウェブでのJavaScriptの利用としてもう一つ人気の高いのはフォームの処理だ。この場合の’フォーム’の役割を完全には分ってないだろうから、ここで手っ取り早く要約しよう。</p>
+
+<p>基本的なHTTPリクエストはファイルの単純なリクエストだ。このファイルが本当は受動的なファイルではなく、サーバー側のプログラムであるとき、リクエストでファイル名よりも有益な情報を含めるようにすることができる。この目的のため、HTTPリクエストには’パラメータ’を追加することができるようになっている。例を示そう。：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>http://www.google.com/search?q=aztec%20empire
+</code></pre>
+</div>
+
+<p>ファイル名（<code class="highlighter-rouge">/search</code>）の後に、URLは疑問符で続けられており、その後にパラメータが続いている。このリクエストはパラメータは1つ持っており、<code class="highlighter-rouge">q</code>（たぶん’query’だろう）と呼ばれていて、その値は<code class="highlighter-rouge">aztec empire</code>である。<code class="highlighter-rouge">%20</code>の部分は空白に一致する。空白、アンパサンド、疑問符のような、URL中にあってはならない値の文字コードである。これらは<code class="highlighter-rouge">%</code>とその文字コードの値[^1]で置換されることによりエスケープされ、それはサーバーが文字列や正規表現の中で、読みにくくなるにもかかわらず、バックスラッシュを使うのと同じ目的である。</p>
+
+<p>[^1] 文字の値はASCII標準によって決まり、0から127までの数値にアルファベットの文字と記号の集合が割り当てられている。この標準は<a href="/eloquentJavaScript/Basic JavaScript.html">2章</a>で触れたUnicode標準の先駆けである。</p>
+
+<p>JavaScriptはこれらのコードを文字列に追加し、あるいは取り除くために<code class="highlighter-rouge">encodeURIComponent</code>と<code class="highlighter-rouge">decodeURIComponent</code>関数を提供している。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">encoded</span> <span class="o">=</span> <span class="nb">encodeURIComponent</span><span class="p">(</span><span class="s2">"aztec empire"</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">encoded</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nb">decodeURIComponent</span><span class="p">(</span><span class="nx">encoded</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>リクエストに1つより多いパラメータが含まれるとき、それらはアンパサンドで分割される、このように…</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>http://www.google.com/search?q=aztec%20empire&amp;lang=nl
+</code></pre>
+</div>
+
+<hr />
+
+<p>フォームは、基本的には、ブラウザのユーザーにこのようなパラメータ付きのURLを作らせる簡単な手段だ。テキストのためのインプットボックスや、チェックされたか否かのチェックボックス、値のセットから選択するためのアレなど、いくつものフィールドを含む。通常は、’サブミット’ボタンと、ユーザーには見えない、情報を送る’アクション’のURLも含まれている。サブミットボタンがクリックされるか、エンターが押されるかしたら、フィールドに入力された情報は、このアクションのURLにパラメータとして追加され、ブラウザはこのURLをリクエストする。</p>
+
+<p>ここに単純なフォームを含むHTMLがある。：</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;form</span> <span class="na">name=</span><span class="s">"userinfo"</span> <span class="na">method=</span><span class="s">"get"</span> <span class="na">action=</span><span class="s">"info.html"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Please give us your information, so that we can send
+  you spam.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Name: <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"name"</span><span class="nt">/&gt;&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>E-Mail: <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">name=</span><span class="s">"email"</span><span class="nt">/&gt;&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Sex: <span class="nt">&lt;select</span> <span class="na">name=</span><span class="s">"sex"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;option&gt;</span>Male<span class="nt">&lt;/option&gt;</span>
+            <span class="nt">&lt;option&gt;</span>Female<span class="nt">&lt;/option&gt;</span>
+            <span class="nt">&lt;option&gt;</span>Other<span class="nt">&lt;/option&gt;</span>
+          <span class="nt">&lt;/select&gt;&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;&lt;input</span> <span class="na">name=</span><span class="s">"send"</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Send!"</span><span class="nt">/&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre>
+</div>
+
+<p>見て分るとおり、フォームの名前でJavaScriptからアクセスすることができる。フィールドの名前でそれらを格納するHTTPパラメータの名前が決まる。このフォームを送ることで、このようなURLが作られる。：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>http://planetspam.com/info.html?name=Ted&amp;email=ted@zork.com&amp;sex=Male
+</code></pre>
+</div>
+
+<p>他にもいくつかのタグやプロパティをフォームで使えるが、JavaScriptに集中できるよう、この本では単純なものに留めておこう。</p>
+
+<hr />
+
+<p>上記の例のフォームの<code class="highlighter-rouge">method="get"</code>プロパティはこのフォームが値を上で見たようなURLのパラメータにエンコードすることを示す。<code class="highlighter-rouge">post</code>という、パラメータを送る代わりのメソッドもある。<code class="highlighter-rouge">post</code>メソッドを含むHTTPリクエストは、URLに加えて、データのブロックを含む。<code class="highlighter-rouge">post</code>メソッドを使うフォームはURLの代わりにこのデータブロックにパラメータの値を入れる。</p>
+
+<p><code class="highlighter-rouge">get</code>メソッドで結果のURLが長くなりすぎるような大きなデータの塊を送るときに、<code class="highlighter-rouge">post</code>は通常、より便利である。しかしこの2つのメソッドの違いはただ利便性の問題のみではない。伝統的に、<code class="highlighter-rouge">get</code>リクエストはサーバーから文書を求めるためのリクエストであり、<code class="highlighter-rouge">post</code>はサーバー上で何かを変更するためのアクションを起こすリクエストである。例えば、インターネットのフォーラムの過去のメッセージのをリストを得るのは<code class="highlighter-rouge">get</code>リクエストで、新しいメッセージを追加するのは<code class="highlighter-rouge">post</code>リクエストである。この区別に紙面を割く理由がある – サーチエンジンで使われるような、ウェブを自動的に探索するプログラムは、一般的には<code class="highlighter-rouge">get</code>リクエストのみを使うだろう。もし<code class="highlighter-rouge">get</code>リクエストでサイトを更新できたら、それらの’クローラ’はあらゆる種類のダメージを与えることを行うかもしれない。</p>
+
+<hr />
+
+<p>ブラウザがフォームを含むページを表示しているとき、JavaScriptはフォームのフィールドに入力された値を監視したり変更したりできる。これが、サーバーに送られる前の値をチェックしたり、決まったフィールドを自動的に埋めたりといった、あらゆる種類のトリックを可能にする。</p>
+
+<p>上記で見たフォームを<code class="highlighter-rouge">example_getinfo.html</code>というファイルに入れた。開いてみよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">form</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">"example_getinfo.html"</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>サーバー名が含まれないURLは、相対URLと呼ばれる。相対URLはブラウザによって、現在の文書と同じサーバーのファイルを参照しているものと解釈される。スラッシュで始まらない限り、現在の文書のパス（またはディレクトリ）も引き継がれ、与えられたパスがそれに追加される。</p>
+
+<p>nameフィールドに空のものが残っておらず、e-mailフィールドが正しい電子メールアドレスのようなものを含むようになったときのみサブミットできるように、フォームに正当性チェックを追加しよう。明示的に’Send!’ボタンを押すまでフォームをサブミットされたくないから、そのtypeプロパティを<code class="highlighter-rouge">"submit"</code>から何の効果も無いただのボタンである<code class="highlighter-rouge">"button"</code>に変更しておこう。 – <a href="/eloquentJavaScript/Browser Events.html">13章</a>でこれを行うもっと良い方法を見せるが、今は、ネイティブなメソッドを使おう。</p>
+
+<hr />
+
+<p>新しく開いたウィンドウ（もし閉じてしまっていたら、まずそれを再度開こう）を働かせるには、このようにコンソールにそれを’attach’させよう。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">attach</span><span class="p">(</span><span class="nx">form</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>このようにした後は、コンソールで実行されたコードは与えられたウインドウで走る。正しいウインドウで動いていることは、文書の<code class="highlighter-rouge">location</code>と<code class="highlighter-rouge">title</code>プロパティで確認できる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">print</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">title</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>新しい環境に入ったため、<code class="highlighter-rouge">form</code>のような、今まで定義した変数はもう存在していない。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="nx">form</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>最初の環境に戻るには、<code class="highlighter-rouge">detach</code>関数（引数無し）を使う。しかし、まずは、フォームに正当性システムを追加しなければならない。</p>
+
+<hr />
+
+<p>文書の中の全てのHTMLタグはJavaScriptオブジェクトと関連づけられる。これらのオブジェクトは文書のほとんど全ての外観を監視し操作するのに使える。この章ではフォームとフォームフィールドのオブジェクトを扱うが、<a href="/eloquentJavaScript/The Document-Object Model.html">12章</a>ではこれらのオブジェクトの詳細について語る。</p>
+
+<p><code class="highlighter-rouge">document</code>オブジェクトは<code class="highlighter-rouge">forms</code>という名のプロパティを持ち、文書の全てのフォームへの名前によるリンクを含む。我々のフォームは<code class="highlighter-rouge">name="userinfo"</code>というプロパティを持っているので、<code class="highlighter-rouge">userinfo</code>プロパティの下に見つかる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">userForm</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">forms</span><span class="p">.</span><span class="nx">userinfo</span><span class="p">;</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">userForm</span><span class="p">.</span><span class="nx">method</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">userForm</span><span class="p">.</span><span class="nx">action</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>この場合、HTMLの<code class="highlighter-rouge">from</code>タグで与えられる<code class="highlighter-rouge">mthod</code>と<code class="highlighter-rouge">action</code>プロパティはJavaScriptオブジェクトのプロパティとしても表現される。このような場合はしばしばあるが、常にでは無い：いくつかのHTMLプロパティはJavaScriptでは違うスペルであり、他は全く存在していない。<a href="/eloquentJavaScript/The Document-Object Model.html">12章</a>で全てのプロパティを得る手段を見せよう。</p>
+
+<p><code class="highlighter-rouge">form</code>タグのオブジェクトは<code class="highlighter-rouge">elements</code>プロパティを持ち、それはformのフィールドに含むオブジェクトを名前で参照する。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">nameField</span> <span class="o">=</span> <span class="nx">userForm</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+<span class="nx">nameField</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="s2">"Eugène"</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<p>テキストインプットオブジェクトは<code class="highlighter-rouge">value</code>プロパティを持ち、それはその内容を読んだり変更したりするのに使われる。上記のコードの実行後、フォームウインドウを見れば、埋められた名前を見ることができるだろう。</p>
+
+<hr />
+
+<h3 id="演習-111"><a name="Ex11-1">[演習 11.1]</a></h3>
+
+<p>フォームフィールドの値を読めるようになれば、<code class="highlighter-rouge">validInfo</code>関数を書くことができるようになる。引数としてフォームオブジェクトを取り、真偽値の値を返す：<code class="highlighter-rouge">name</code>フィールドに空のものが無く、<code class="highlighter-rouge">email</code>フィールドに電子メールアドレスのようなものが含まれていれば<code class="highlighter-rouge">true</code>、そうでなければ<code class="highlighter-rouge">false</code>となる。この関数を書け。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">validInfo</span><span class="p">(</span><span class="nx">form</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">form</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">value</span> <span class="o">!=</span> <span class="s2">""</span> <span class="o">&amp;&amp;</span>
+    <span class="sr">/^.+@.+</span><span class="se">\.\w{2,3}</span><span class="sr">$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">form</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">email</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">show</span><span class="p">(</span><span class="nx">validInfo</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">forms</span><span class="p">.</span><span class="nx">userinfo</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>電子メールアドレスのチェックには正規表現を使うことを考えたよね？</p>
+
+<hr />
+
+<p>やるべきことのうち、残っているのは、人が’Send!’ボタンをクリックしたときの挙動だ。あっという間で、何もすることは無い。<code class="highlighter-rouge">onclick</code>プロパティを設定するだけだ。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">userForm</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">send</span><span class="p">.</span><span class="nx">onclick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s2">"Click."</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>ちょうど<code class="highlighter-rouge">setInterval</code>や<code class="highlighter-rouge">setTimeout</code>に与えられたアクション（<a href="/eloquentJavaScript/Object-oriented Programming.html">8章</a>のように、<code class="highlighter-rouge">onclick</code>（または同様の）プロパティに、関数やJavaScriptコードの文字列を値として格納できる。この場合、警告ウインドウを開く関数を与える。クリックしてみよう。</p>
+
+<hr />
+
+<h3 id="演習-112"><a name="Ex11-2">[演習 11.2]</a></h3>
+
+<p>ボタンの<code class="highlighter-rouge">onclick</code>プロパティに新しい値 ― フォームをチェックする関数を与えてフォームのバリデーターを完成させよ。正しければサブミットし、またはそうでなければ警告のメッセージをポップアップする。formオブジェクトが、パラメータを持たず、フォームをサブミットする、<code class="highlighter-rouge">submit</code>メソッドを持っていることを知っていると役立つだろう。</p>
+
+<p>[解答を見る]</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">userForm</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">send</span><span class="p">.</span><span class="nx">onclick</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">validInfo</span><span class="p">(</span><span class="nx">userForm</span><span class="p">))</span>
+    <span class="nx">userForm</span><span class="p">.</span><span class="nx">submit</span><span class="p">();</span>
+  <span class="k">else</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">"Give us a name and a valid e-mail address!"</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>フォームのインプットだけでなく、ボタンやリンクのような’選択可能なもの’に関するもう一つのトリックとして、<code class="highlighter-rouge">focus</code>メソッドがある。ユーザーがページに入ったとき、決まったフィールドからタイプを始めたいだろうことが確実に分っているとき、彼にクリックや他の手段で選択させるのではなく、スクリプトでカーソルをそこに移動させることができる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">userForm</span><span class="p">.</span><span class="nx">elements</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>フォームが他のウインドウにあるため、何かが選択されたかは明らかでなく、使われているブラウザに依存する。あるページはそのフィールドが完全に埋まったように見えるとき、自動的にカーソルを次のフィールドに移動させる – 例えば、郵便番号をタイプするときだ。これはやり過ぎてはいけない – これはページをユーザーの期待しないように振る舞わせる。もし手動でカーソルを移動しようとタブを押したり、最後の文字をミスタイプして削除したいと思っていたとしたら、このような手品めいたカーソル移動はとても邪魔だ。</p>
+
+<hr />
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">detach</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>バリデーターをテストしよう。正しい情報を入力してボタンをクリックしたとき、フォームはサブミットされるだろう。もしコンソールがまだ接続されていたら、ページがリロードされてJavaScript環境が新しいものに置き換わるため、デタッチされる。</p>
+
+<p>もしフォームウインドウをまだ閉じていなければ、これで閉じよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">form</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<hr />
+
+<p>上記は簡単なように見えるだろうが、私は保証しよう、クライアントサイド・ウェブ・プログラミングは公園の散歩ではないと。それは、時には、とても痛い体験となる。なぜか？なぜなら、クライアント・コンピュータ上で実行されることを想定されたプログラムは、一般的に、全ての有名なブラウザで動かねばならないからだ。これらのブラウザのそれぞれがちょっとずつ異なるように動く。悪いことには、これらそれぞれが固有の問題のセットを抱えている。プログラムが、数百万ドルの会社によって作られているからというだけで、バグと無縁であると想定しないこと。我々、ウェブ・プログラマーにとって、プログラムを厳格にテストすることが、間違いを防止することで、それを動かす道を見つけることだ。</p>
+
+<p>「私は見つけた問題やバグをブラウザの作成者にただ報告するだけにしよう、そうすれば直ちに彼らがそれを確かに解決してくれるだろう。」そう考える者もいるかもしれない。これらの人々は大きく落胆することになる。InternetExplorerの過去のバージョンの多くは、未だウェブ・サーファーの70%に使われている（そして全てのウェブ・ディベロッパーからけなされがちな）ブラウザであるが、5年以上前から知られているバグが未だに残っている。重大なバグさえも。</p>
+
+<p>しかしガッカリしないように。極端に強迫的な種類の考え方の持ち主にとっては、このような問題はすばらしいチャレンジの提供である。そして時間の浪費を好まぬ我々のために、注意深く、そしてブラウザの機能の暗い隅を回避して、一般的にあなたが多すぎるトラブルの中に飛び込まないよう守ってくれる。</p>
+
+<hr />
+
+<p>バグはおいても、ブラウザ間の、設計によるインターフェースの違いは面白いチャレンジを作る。現在の状況はこのように見える：一方で、全ての’小さい’ブラウザがある：Firefox、Safari、Operaが最も重要なものだが、他にももっとある。これらのブラウザは全て、このようなものの標準インターフェースを定義することにより、ウェブの混乱をより少なくしようとしている組織であるW3Cにより、開発された、または開発中の標準に忠実であるために合理的に努力している。もう一方で、MicrosoftのブラウザであるInternetExplorerがあり、これらの標準がまだ存在しなかったころの、一時は優位に立っていて、他の人々が従っている標準に合わせるための努力を行っていない。</p>
+
+<p>ある領域、HTML文書の内容をJavaScriptからアプローチできるようにする方法（<a href="/eloquentJavaScript/The Document-Object Model.html">12章</a>）のようなところでは、標準はInternetExplorerが発明した方法をもとにしていて、全てのブラウザで多かれ少なかれ同じように動く。他の領域では、イベント（マウスクリック、キー押下など）のハンドリング（<a href="/eloquentJavaScript/Browser Events.html">13章</a>）のようなところでは、InternetExplorerは他のブラウザと激しく異なる。</p>
+
+<p>長い間、部分的には、平均的なJavaScript開発者の無知により、そして部分的にはブラウザの非互換性という事実により、InternetExplorerのバージョン4、5と古いバージョンのNetscapeのようなブラウザがまだ一般的であった時はもっと酷く、ユーザーが動かしているブラウザを判定して、そのような相違点を扱うのが普通のやり方だった。そして、それぞれのブラウザ向けに代替の解決を行うためにコードが散乱した – もしInternetExplorerならこうする、Netscapeならああする、考慮していない、他のブラウザであれば、それがベストであることを望むだけ。いかに恐ろしく、混乱した、そして長いプログラムであるかが想像できるだろう。</p>
+
+<p>多くのサイトもまた、ブラウザで開かれたときに’サポートされてません’と、ロードすることをただ拒まれる。これはいくつかのマイナーなブラウザに、そのプライドを飲み込み、ただそのようなページをロードできるようにするために、InternetExplorerであるかのように見せかけさせた。<code class="highlighter-rouge">navigator</code>オブジェクトのプロパティは、ページを読み込んだブラウザについての情報を含むが、しかしこの情報にウソがあるため、とても信頼できるものではない。あなたのブラウザが表示するものを見てみよう。[^2]：</p>
+
+<p>[^2] あるブラウザは<code class="highlighter-rouge">navigator</code>オブジェクトのプロパティを隠しているようで、この場合は何もプリントされない。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">forEachIn</span><span class="p">(</span><span class="nx">navigator</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="s2">" = "</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<p>より良いアプローチは試してみてることと、ブラウザの違いからプログラムを’隔離する’ことだ。もし必要なら、例えば、送信ボタンの<code class="highlighter-rouge">onclick</code>プロパティを設定してクリックをハンドルするような、イベントについて、もっと探し出したいなら、<code class="highlighter-rouge">event</code>というInternetExplorerのトップレベルのオブジェクトを見なければならない、しかし他のブラウザでは最初の引数はイベントハンドリングの関数の受け渡しに使わなければならない。これと、イベントに関する違いの数々をハンドリングするための、イベントと物を結びつける、全ての配管の面倒を見てイベントハンドリング関数それ自体を全てのブラウザで同じ物にするヘルパー関数を書けるだろう。<a href="/eloquentJavaScript/Browser Events.html">13章</a>でそのような関数を書こう。</p>
+
+<p>注： ブラウザのごまかしについての以降の章での言及は2007年初頭での状況に基づいていて、あるポイントについてはもう正しくないかもしれない。</p>
+
+<hr />
+
+<p>これらの章はブラウザのインターフェースの課題についての表面的な紹介のようなものだけを与える。それらはこの本の主題ではなく、そしてこの薄い本自体に書くには複雑すぎる。これらのインターフェースの基本を理解したら（そしてHTMLについて理解したら）、オンラインの個々の情報を探すのは難しくないだろう。<a href="http://www.mozilla.org/docs/dom/domref/dom_shortTOC.html">Firefox</a>と<a href="http://msdn2.microsoft.com/library/yek4tbz0.aspx">InternetExplorer</a>のインターフェースの文書が手始めには良い。</p>
+
+<p>次の章の情報は’前世代の’ブラウザのごまかしを扱わない。InternetExplorer 6、Firefox 1.5、Opera 9、Safari 3、またはそれらのブラウザのそれ以降のバージョンを扱う。その多くはおそらく現代的だがKonquerorのようなよく分らないブラウザもあり、これは広範囲にはチェックされていない。幸運にも、これらの前世代のブラウザはほとんど死滅していて、もう余り使われることはない。</p>
+
+<p>しかしながら、JavaScriptのないウェブユーザーのグループがまだ存在する。このグループの大部分は正規のグラフィカルなブラウザを使うが、セキュリティ上の理由からJavaScriptをオフにしている人々だ。それからテキストのブラウザを使っている人々もいるし、目の見えない人々のためのブラウザもある。’真面目な’サイトで働くなら、プレーンなHTMLシステムで動くものから始めて、それからJavaScriptで本質的でないトリックと利便性を追加するのが良いアイデアだ。</p>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eloquent JavaScript(ja)</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Eloquent JavaScript(ja)
+            
+            </li>
+            
+            <li><a href="mailto:morinatsu@gmail.com">morinatsu@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/morinatsu"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">morinatsu</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/morinatsu"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">morinatsu</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Japanese translateion of &#39;Eloquent JavaScript&#39;</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
