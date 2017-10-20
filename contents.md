@@ -2,6 +2,7 @@
 layout: default
 title: Contents
 ---
+
 Eloquent JavaScript
 ===================
 
@@ -26,15 +27,6 @@ Contents
 Appendix
 --------
 
-.. toctree::
-   :maxdepth: 2
-
-   More (obscure) control structures
-   Binary Heaps
-
-
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   A1. [より多くの制御構造]({{ "/More (obscure) control structures.html" | prepend:site.baseurl }})
+   A2. [バイナリー・ヒープ]({{ "/Binary Heaps.html" | prepend:site.baseurl }})
 
