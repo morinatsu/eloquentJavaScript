@@ -21,7 +21,7 @@ Contents
    11. [Webプログラミング]({{ "/Web programming A crash course.html" | prepend:site.baseurl }})
    12. [ドキュメント－オブジェクト・モデル]({{ "/The Document-Object Model.html" | prepend:site.baseurl }})
    13. [ブラウザ・イベント]({{ "/Browser Events.html" | prepend:site.baseurl }})
-   14. HTTP requests
+   14. [HTTPリクエスト]({{ "/HTTP requests.html" | prepend:site.baseurl }})
 
 Appendix
 --------
