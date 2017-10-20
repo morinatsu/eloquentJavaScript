@@ -27,6 +27,6 @@ Contents
 Appendix
 --------
 
-   A1. [より多くの制御構造]({{ "/More (obscure) control structures.html" | prepend:site.baseurl }})
-   A2. [バイナリー・ヒープ]({{ "/Binary Heaps.html" | prepend:site.baseurl }})
+   1. [より多くの制御構造]({{ "/More (obscure) control structures.html" | prepend:site.baseurl }})
+   2. [バイナリー・ヒープ]({{ "/Binary Heaps.html" | prepend:site.baseurl }})
 
