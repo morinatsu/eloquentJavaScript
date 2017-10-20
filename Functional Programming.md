@@ -156,7 +156,7 @@ function sum(numbers) {
 
 * * *
 
-### <a name="Ex6-1">[演習 6.1]
+### <a name="Ex6-1">[演習 6.1]</a>
 
 数値の配列を引数として取り、その中に出てくるゼロの数を返す`countZeroes`関数を書け。`reduce`を使うこと。
 
@@ -428,7 +428,7 @@ print("Found ", paragraphs.length, " paragraphs.");
 
 * * *
 
-### <a name="Ex6-2">[演習 6.2]
+### <a name="Ex6-2">[演習 6.2]</a>
 
 引数として段落の文字列を与えられたら、これが見出しであるか判定し、見出しであれば`'%'`文字を消すとともに数を数え、それから、段落の中のテキストを含む`content`、およびこの段落が何でラップされるべきか、通常の段落であれば`"p"`、1つの`'%'`の見出しであれば`"h1"`、`x`個の`'%'`文字の見出しであれば`"hX"`を含む`type`と2つのプロパティを持つオブジェクトを返す`processParagraph`関数を書け。
 
@@ -473,7 +473,7 @@ var paragraphs = map(processParagraph,
 
 * * *
 
-### <a name="Ex6-3">[演習 6.3]
+### <a name="Ex6-3">[演習 6.3]</a>
 
 与えられた段落の文字列を、段落の断片の配列として返す`splitParagraph`関数を作れ。断片を表現する良い方法を考えよう。
 
@@ -643,7 +643,7 @@ function htmlDoc(title, bodyContent) {
 
 * * *
 
-### <a name="Ex6-4">[演習 6.4]
+### <a name="Ex6-4">[演習 6.4]</a>
 
 もし必要なら例のHTML文書を見返して、画像ファイルの場所を与えられたときにHTMLびimg要素を作る`image`関数を書け。
 
@@ -744,7 +744,7 @@ viewHTML(renderHTML(doc));
 
 * * *
 
-### <a name="Ex6-5">[演習 6.5]
+### <a name="Ex6-5">[演習 6.5]</a>
 
 段落オブジェクト（脚注が既に取り除かれている）を取り、正しいHTML要素（段落か見出しかは、paragraphオブジェクトの`type`プロパティによって判断）を作る`renderFragment`関数を書き、それを使って`renderParagraph`の別の実装を行え。
 

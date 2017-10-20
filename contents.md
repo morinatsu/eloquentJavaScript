@@ -19,8 +19,8 @@ Contents
    9. [モジュール性]({{ "/Modularity.html" | prepend:site.baseurl }})
    10. [正規表現]({{ "/Regular Expressions.html" | prepend:site.baseurl }})
    11. [Webプログラミング]({{ "/Web programming A crash course.html" | prepend:site.baseurl }})
-   12. The Document-Object Model
-   13. Browser Events
+   12. [ドキュメント－オブジェクト・モデル]({{ "/The Document-Object Model.html" | prepend:site.baseurl }})
+   13. [ブラウザ・イベント]({{ "/Browser Events.html" | prepend:site.baseurl }})
    14. HTTP requests
 
 Appendix

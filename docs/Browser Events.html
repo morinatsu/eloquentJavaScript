@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>13. ブラウザ・イベント</title>
+  <meta name="description" content="Japanese translateion of &#39;Eloquent JavaScript&#39;">
+
+  <link rel="stylesheet" href="/eloquentJavaScript/assets/main.css">
+  <link rel="canonical" href="https://morinatsu.github.com/eloquentJavaScript/Browser%20Events.html">
+  <link rel="alternate" type="application/rss+xml" title="Eloquent JavaScript(ja)" href="/eloquentJavaScript/feed.xml">
+  
+  
+</head>
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+    
+    
+    <a class="site-title" href="/eloquentJavaScript/">Eloquent JavaScript(ja)</a>
+  
+    
+      <nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+              <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+              <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+            
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Basic%20JavaScript.html">2. 基本のJavaScript</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Browser%20Events.html">13. ブラウザ・イベント</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Data%20structures.html">4. データ構造</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Error%20Handling.html">5. エラー・ハンドリング</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Functional%20Programming.html">6. 関数型プログラミング</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Functions.html">3. 関数</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Introduction.html">1. 導入</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Modularity.html">9. モジュール性</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Object-oriented%20Programming.html">8. オブジェクト指向プログラミング</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Regular%20Expressions.html">10. 正規表現</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Searching.html">7. 探索</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/The%20Document-Object%20Model.html">12. ドキュメント－オブジェクト・モデル</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/Web%20programming%20A%20crash%20course.html">11. Webプログラミング</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/about/">About</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/contents.html">Contents</a>
+            
+          
+            
+            
+            <a class="page-link" href="/eloquentJavaScript/">Eloquent JavaScript - Top</a>
+            
+          
+            
+            
+          
+            
+            
+          
+        </div>
+      </nav>
+    
+  </div>
+</header>
+
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <h1 id="ブラウザイベント">ブラウザ・イベント</h1>
+
+<p>面白い機能をウェブページに追加するには、ただ、文書を監視し更新するだけでは一般的には十分ではない。ユーザーが行ったことを検知し、それに応答することも必要だ。このために、イベント・ハンドラというものを使う。キーが押されたというイベント、マウスがクリックされたというイベント、マウスの動きも一連のイベントと見ることができる。11章で、ボタンに、それが押された時のためのonclickプロパティを与えた。これは単純なイベント・ハンドラだ。</p>
+
+<p>このブラウザ・イベントの働きかたは、基本的には、とても単純だ。個々のイベント・タイプと個々のDOMノードに対してハンドラを登録することが可能だ。イベントが起こったら、そのイベントに対するハンドラが、もしあれば、呼び出される。キー押下のような、いくつかのイベントには、ただイベントが起こったと分るだけでは不十分なので、どのキーが押されたかも知ることができる。そのような情報を格納するため、全てのイベントeventオブジェクトを作り、ハンドラはそれを見る。</p>
+
+<p>いつイベントが起こるかにかかわらず、同時に2つのハンドラが実行されることはないことを理解することは重要だ。もし他のJavaScriptコードがまだ実行中であれば、ブラウザは次のハンドラを呼ぶ前にその終了を待つ。これはsetTimeoutのような、他の手段で起動されたコードでも維持される。プログラマのジャーゴンでは、ブラウザのJavaScriptはシングル・スレッドであり、同時に2つの’スレッド’が実行されることは無い。多くの場合において、これは良いことだ。同時に複数のことが起こるときには、いとも簡単におかしな結果になるものだ。</p>
+
+<p>イベントがあって、それがハンドルされないときは、’泡のように’DOMツリーを浮かび上がっていく。これは、もしクリックがあったとき、例えばそれが段落中のリンクであれば、リンクに結びつけられたハンドラが最初に呼ばれることを意味する。そのようなハンドラが無いか、これらのハンドラがそのイベントの終了を示さないときは、リンクの親である段落のハンドラが試される。その後は、document.bodyのハンドラの番が回ってくる。最後に、イベントを扱うJavaScriptのハンドラが無くなったら、ブラウザがそれを扱う。リンクをクリックしたとき、これはそのリンクをたどるということを意味する。</p>
+
+<p>見ての通り、イベントは簡単だ。それについて難しいところは、ブラウザで、サポートしている機能の大小があったり、この機能を異なるインターフェースでサポートしていることだ。普通は、最も互換性の少ないブラウザはInternetExplorerで、多くのブラウザが従っている標準を無視している。その次に、Opera、ページを去るときに発火するonunloadのような有益なイベントのいくつかを正しくサポートしておらず、またあるキーボードイベントについての混乱した情報を与える。</p>
+
+<p>イベントに関するアクションで取っておきたいものが4つある。</p>
+
+<ul>
+  <li>イベント・ハンドラを登録する。</li>
+  <li>eventオブジェクトを取得する。</li>
+  <li>このオブジェクトから情報を展開する。</li>
+  <li>イベントがハンドルされたという合図を送る。</li>
+</ul>
+
+<p>これらのうち、全てのメジャーなブラウザで共通のものは1つも無い。</p>
+
+<p>イベント・ハンドリングの練習台として、1つのボタンと1つのテキスト・フィールドを持つ文書を開こう。この章の続きの間、このウインドウは開いたままに（接続したままに）しておくこと。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">attach</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">"example_events.html"</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>最初のアクション、ハンドラの登録は、要素のonclick（またはonkeypress、とか）プロパティを設定することで行われる。これは実際ブラウザに渡って動くが、重要な不都合もある – 1つのイベントには1つのハンドラしか接続できない。多くの時間、これで十分だが、そうでない場合もあって、特にプログラムが他のプログラム（これもまたハンドラを追加しているかもしれない）と一緒に動かなければならない時には、これが邪魔になる。</p>
+
+<p>InternetExplorerでは、ボタンのクリックのハンドラはこのように追加する。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">$</span><span class="p">(</span><span class="s2">"button"</span><span class="p">).</span><span class="nx">attachEvent</span><span class="p">(</span><span class="s2">"onclick"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span><span class="nx">print</span><span class="p">(</span><span class="s2">"Click!"</span><span class="p">);});</span>
+</code></pre>
+</div>
+
+<p>他のブラウザでは、このようになる。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">$</span><span class="p">(</span><span class="s2">"button"</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span><span class="nx">print</span><span class="p">(</span><span class="s2">"Click!"</span><span class="p">);},</span>
+                             <span class="kc">false</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>“on”は2番めでは消されていることに注意。addEventListenerの3つめの引数、false、はこのイベントを通常のようにDOMツリーの上に’浮かび上がらせない’ようにすることを示す。代わりにTrueが与えられると、このハンドラの優先度がその下の他のハンドラより高くなるが、InternetExplorerがこれをサポートしていないため、これが有益なことはまれだ。</p>
+
+<h3 id="演習-131"><a name="Ex13-1">[演習 13.1]</a></h3>
+
+<p>これら2つのモデルの非互換性をラップするregisterEventHandlerという関数を書け。3つの引数を取る：1つめはハンドラが接続するDOMノード、2つめは”クリック”や”キー押下”のようなイベントの型、3つめはハンドラの関数とする。</p>
+
+<p>呼び出されたメソッドの識別には、メソッドそれ自体を見る – もしDOMノードがattachEventというメソッドを持っていれば、これが正しいメソッドだと仮定できる。直接InternetExplorerかをチェックするよりこちらの方が望ましいことに注意しよう。もしInternetExplorerのモデルを使った新しいブラウザが登場しても、またはInternetExplorerが標準のモデルに突然スイッチしても、このコードはまだ動く。どちらも好ましくないのはもちろんだが、傷つきにくい、賢い方法でやろう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">registerEventHandler</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">handler</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">node</span><span class="p">.</span><span class="nx">addEventListener</span> <span class="o">==</span> <span class="s2">"function"</span><span class="p">)</span>
+    <span class="nx">node</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">handler</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+  <span class="k">else</span>
+    <span class="nx">node</span><span class="p">.</span><span class="nx">attachEvent</span><span class="p">(</span><span class="s2">"on"</span> <span class="o">+</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">handler</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">registerEventHandler</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">"button"</span><span class="p">),</span> <span class="s2">"click"</span><span class="p">,</span>
+                     <span class="kd">function</span><span class="p">(){</span><span class="nx">print</span><span class="p">(</span><span class="s2">"Click (2)"</span><span class="p">);});</span>
+</code></pre>
+</div>
+
+<p>名前が長くて面倒でも悩まないように。後で、このラッパーをさらにラップする、拡張のラッパーを追加する。その時に短い名前を付けよう。</p>
+
+<p>このチェックを1回だけにすることも可能で、ブラウザによって異なる関数をregisterEventHandlrerを定義すればいい。これはより効果的だが、ちょっとおかしい。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span> <span class="o">==</span> <span class="s2">"function"</span><span class="p">)</span>
+  <span class="kd">var</span> <span class="nx">registerEventHandler</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">handler</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">node</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">handler</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+  <span class="p">};</span>
+<span class="k">else</span>
+  <span class="kd">var</span> <span class="nx">registerEventHandler</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">handler</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">node</span><span class="p">.</span><span class="nx">attachEvent</span><span class="p">(</span><span class="s2">"on"</span> <span class="o">+</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">handler</span><span class="p">);</span>
+  <span class="p">};</span>
+</code></pre>
+</div>
+
+<p>イベントを取り除くのは追加とよく似ているが、このときはメソッドdetachEventとremoveEventListenerが使われる。ハンドラを取り除くには、それに繋げた関数にアクセスする必要があることに注意しよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">unregisterEventHandler</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">handler</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">node</span><span class="p">.</span><span class="nx">removeEventListener</span> <span class="o">==</span> <span class="s2">"function"</span><span class="p">)</span>
+    <span class="nx">node</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">handler</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+  <span class="k">else</span>
+    <span class="nx">node</span><span class="p">.</span><span class="nx">detachEvent</span><span class="p">(</span><span class="s2">"on"</span> <span class="o">+</span> <span class="nx">event</span><span class="p">,</span> <span class="nx">handler</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>技術的な限界のために、イベント・ハンドラで作られた例外は、コンソールで捕まえられない。すなわち、これらはブラウザでハンドルされ、’エラー・コンソール’のようなところに隠されたり、またはポップアップ・メッセージを起こすということだ。イベント・ハンドラを書き、それが動いていないように見えるときは、それが起こしたエラーの種類のために静かに異常終了しているのかもしれない。</p>
+
+<p>多くのブラウザではハンドラへの引数としてeventオブジェクトを渡す。InternetExplorerはそれをeventというトップレベルの変数に格納する。JavaScriptコードを見るときに、<code class="highlighter-rouge">event || window.event</code>のようなものをしばしば見るだろう。ローカルな変数のeventか、もしそれがundefinedであれば、同じ名前を付けることによってトップレベルの変数になる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">showEvent</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">show</span><span class="p">(</span><span class="nx">event</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">registerEventHandler</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">"textfield"</span><span class="p">),</span> <span class="s2">"keypress"</span><span class="p">,</span> <span class="nx">showEvent</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>フィールドに何文字かタイプして、オブジェクトを見たら、それを閉めよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">unregisterEventHandler</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">"textfield"</span><span class="p">),</span> <span class="s2">"keypress"</span><span class="p">,</span> <span class="nx">showEvent</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>ユーザーがマウスをクリックしたとき、3つのイベントが生成される。最初はmousedown、マウスのボタンが押された瞬間に。それから、mouseup、その指がボタンから離れた瞬間に。最後に、click、何かがクリックされたことを示す。これが素早く2回起こったときは、dblclick（ダブル・クリック）イベントも生成される。mousedownとmouseupイベントが時間を経て発生する – マウスボタンがしばらく押されっぱなしにされる、こともあるので注意しよう。</p>
+
+<p>イベント・ハンドラに接続したとき、例えば、ボタンなら、それがクリックされたことさえ分れば良い。その一方で、ハンドラが子があるノードに結びついて、クリックが子から’伝播して’来たときは、どの子がクリックされたか知りたいと思うだろう。そのために、eventオブジェクトはtargetというプロパティ、またはsrcElement、ブラウザによっては…を持つ。</p>
+
+<p>もう一つ面白い情報の部分はクリックが起こった正確な座標だ。マウスに関連するeventオブジェクトはclientXとclientYというプロパティを持ち、それがマウスのx座標とy座標をスクリーンのピクセルで持つ。文書はスクロール可能なので、マウスが文書のどの部分にあるかはこれらの座標からは分らないブラウザによっては、pageXとpageYプロパティをこの目的のために提供しているが、そうでないものも（ご想像通り）ある。幸運にも、文書がスクロールしたピクセルの数についての情報はdocument.body.scrollLeftとdocument.body.scrollTopから分かる。</p>
+
+<p>このハンドラは、文書全体に結びついて、全てのマウス・クリックを拾って、それについての情報を表示する。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">reportClick</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">event</span> <span class="o">=</span> <span class="nx">event</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span> <span class="o">||</span> <span class="nx">event</span><span class="p">.</span><span class="nx">srcElement</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">pageX</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">pageX</span><span class="p">,</span> <span class="nx">pageY</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">pageY</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">pageX</span> <span class="o">==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">pageX</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientX</span> <span class="o">+</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">scrollLeft</span><span class="p">;</span>
+    <span class="nx">pageY</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientY</span> <span class="o">+</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">scrollTop</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"Mouse clicked at "</span><span class="p">,</span> <span class="nx">pageX</span><span class="p">,</span> <span class="s2">", "</span><span class="p">,</span> <span class="nx">pageY</span><span class="p">,</span>
+        <span class="s2">". Inside element:"</span><span class="p">);</span>
+  <span class="nx">show</span><span class="p">(</span><span class="nx">target</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">registerEventHandler</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="s2">"click"</span><span class="p">,</span> <span class="nx">reportClick</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>これを取り除こう。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">unregisterEventHandler</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="s2">"click"</span><span class="p">,</span> <span class="nx">reportClick</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>明らかに、全ての単純なイベントハンドラ毎に、これら全てをチェックし、手を回すことはやりたくないだろう。しばらくの間、いくつかの非互換性になれた後で、’ノーマライズされた’eventオブジェクトとブラウザ間で同様に動く関数を書こう。</p>
+
+<p>どのマウスボタンが押されたのか知るのも可能で、eventオブジェクトのbuttonプロパティを使えばいい。残念ながら、これはとても当てにならない – あるブラウザはマウスには1つしかボタンが無いかのように装っており、他はクリックを右クリックとして報告するところを、コントロールキーが押された、とか言ってくる。</p>
+
+<p>クリックから離れれば、マウスの動きも面白いかもしれない。DOMノードのmousemoveイベントはそのようその上でマウスが動いている間発火される。mouseoverとmouseoutというものもあり、これらはそのノードにマウスが入ったときと放れた時だけ発火する。この最後の型のイベントでは、target（またはsrcElement）プロパティはイベントが発火したノードを指し、relatedTarget（またはtoElement、fromElement）プロパティはマウスがやってきた(mouseoverの場合)あるいは出ていった(mouseoutの場合)ノードを指す。</p>
+
+<p>mouseoverとmouseoutは、それらが子ノードを持つ要素に登録されたときトリッキーになり得る。子ノードで発火したイベントは、親要素に伝播するので、マウスが子ノードの1つに入ったら親のmouseoverイベントも見るだろう。targetとrelatedTargetプロパティはそのようなイベントを見つけ（無視）するのに使うことができる。</p>
+
+<p>ユーザーが押した全てのキーは、3つのイベントを生成する：keydownとkeyup、keypress。一般的には、最初の2つをどのキーが押されたか本当に知りたい場合、例えば矢印キーが押されたときに何かしたい時に使う。keypressは、他方、タイプされた文字に興味があるときに使われる。この理由は、keyupとkeydownのイベントにはしばしば文字の情報が含まれないことがあり、そしてInternetExplorerが矢印キーのような特殊キーのイベントを生成しないことである。</p>
+
+<p>どのキーが押されたか判別するのはそれ自体が全くのチャレンジになり得る。keydownとkeyupのイベントでは、eventオブジェクトはkeyCodeプロパティを持ち、これには数字が入っている。多くの場合、これらのコードはブラウザに依存しない方法でキーを識別するのに使える。キーに結びつけられたコードを見つけるのは単純な実験でできる。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">printKeyCode</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">event</span> <span class="o">=</span> <span class="nx">event</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"Key "</span><span class="p">,</span> <span class="nx">event</span><span class="p">.</span><span class="nx">keyCode</span><span class="p">,</span> <span class="s2">" was pressed."</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">registerEventHandler</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">"textfield"</span><span class="p">),</span> <span class="s2">"keydown"</span><span class="p">,</span> <span class="nx">printKeyCode</span><span class="p">);</span>
+<span class="nx">unregisterEventHandler</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">"textfield"</span><span class="p">),</span> <span class="s2">"keydown"</span><span class="p">,</span> <span class="nx">printKeyCode</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>多くのブラウザにおいて、単一のキーコードがキーボードの単一の物理的なキーに結びついている。Operaブラウザでは、しかしながら、シフトキーが押されているか否かで異なるキーコードが生成される。悪いことには、これらのシフトが押された時のコードには他のキーで使われているものと同じであるものもある – シフト-9、プログラムでは、多くのキーボードでは括弧をタイプするときに使うが、下矢印と同じコードになり、かつその識別は困難である。これはプログラムをサボタージュするよう脅かし、シフトが押された時のキー・イベントを無視するというのが通常の解決になる。</p>
+
+<p>キーやマウスのイベントにおいて、シフト、コントロール、altキーが押されているか判別するには、eventオブジェクトのshiftKey、ctrlKey、altKeyプロパティを見る。</p>
+
+<p>keypressイベントでは、タイプされた文字を知ることができる。eventオブジェクトはcharCodeプロパティを持ち、これは、もしラッキーなら、タイプされた文字のUnicode数値を持ち、String.fromCharCodeで1文字の文字列に変換できる。残念ながら、あるブラウザはこのプロパティを定義していない、あるいは0として定義していて、代わりに文字コードをkeyCodeプロパティに格納している。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">printCharacter</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">event</span> <span class="o">=</span> <span class="nx">event</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">charCode</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">charCode</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">charCode</span> <span class="o">==</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">charCode</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="nx">charCode</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">keyCode</span><span class="p">;</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"Character '"</span><span class="p">,</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="nx">charCode</span><span class="p">),</span> <span class="s2">"'"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">registerEventHandler</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">"textfield"</span><span class="p">),</span> <span class="s2">"keypress"</span><span class="p">,</span> <span class="nx">printCharacter</span><span class="p">);</span>
+<span class="nx">unregisterEventHandler</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">"textfield"</span><span class="p">),</span> <span class="s2">"keypress"</span><span class="p">,</span> <span class="nx">printCharacter</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>イベント・ハンドラはイベントのハンドリングを’停止’することができる。これには2つの方法がある。ハンドラが定義されている親ノードへイベントが伝播するのを防止することもできるし、そのようなイベントに結びついた標準的なアクションをブラウザが取るのを防止することもできる。ブラウザは常にこれに従わないことに注意しよう – 決まった’ホットキー’を押したときのデフォルトの振る舞いを抑止すると、多くのブラウザでは、これらのキーの通常の効果の実行も実際には維持されなくなる。</p>
+
+<p>多くのブラウザで、イベントの伝播の停止はeventオブジェクトのstopPropagationメソッドで、デフォルトの振る舞いの帽子はpreventDefaultメソッドで行われる。InternetExplorerでは、これらはそれぞれ、そのオブジェクトのcancelBubbleプロパティが真に、そしてreturnValueプロパティを偽に設定することで行われる。</p>
+
+<p>そして非互換の長いリストについてはこの章で論じる。これはとうとうイベントを正常化する関数を書くことができ、より面白い話題に移れるということを意味する。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">normaliseEvent</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">event</span><span class="p">.</span><span class="nx">stopPropagation</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">event</span><span class="p">.</span><span class="nx">stopPropagation</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">cancelBubble</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;};</span>
+    <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">returnValue</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;};</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">event</span><span class="p">.</span><span class="nx">stop</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">event</span><span class="p">.</span><span class="nx">stop</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">stopPropagation</span><span class="p">();</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+    <span class="p">};</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">srcElement</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">)</span>
+    <span class="nx">event</span><span class="p">.</span><span class="nx">target</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">srcElement</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">((</span><span class="nx">event</span><span class="p">.</span><span class="nx">toElement</span> <span class="o">||</span> <span class="nx">event</span><span class="p">.</span><span class="nx">fromElement</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">event</span><span class="p">.</span><span class="nx">relatedTarget</span><span class="p">)</span>
+    <span class="nx">event</span><span class="p">.</span><span class="nx">relatedTarget</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">toElement</span> <span class="o">||</span> <span class="nx">event</span><span class="p">.</span><span class="nx">fromElement</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">clientX</span> <span class="o">!=</span> <span class="kc">undefined</span> <span class="o">&amp;&amp;</span> <span class="nx">event</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">event</span><span class="p">.</span><span class="nx">pageX</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientX</span> <span class="o">+</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">scrollLeft</span><span class="p">;</span>
+    <span class="nx">event</span><span class="p">.</span><span class="nx">pageY</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientY</span> <span class="o">+</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">scrollTop</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">type</span> <span class="o">==</span> <span class="s2">"keypress"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">charCode</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">event</span><span class="p">.</span><span class="nx">charCode</span> <span class="o">==</span> <span class="kc">undefined</span><span class="p">)</span>
+      <span class="nx">event</span><span class="p">.</span><span class="nx">character</span> <span class="o">=</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">keyCode</span><span class="p">);</span>
+    <span class="k">else</span>
+      <span class="nx">event</span><span class="p">.</span><span class="nx">character</span> <span class="o">=</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">charCode</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="nx">event</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>stopメソッドが追加された。これはイベントの伝播とデフォルトのアクションの両方をキャンセルする。あるブラウザは既にこれを提供していて、その場合は、それをそのまま残している。</p>
+
+<p>次はregisterEventHandlerとunregisterEventHandlerの便利なラッパーを書ける。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">addHandler</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">handler</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">function</span> <span class="nx">wrapHandler</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">handler</span><span class="p">(</span><span class="nx">normaliseEvent</span><span class="p">(</span><span class="nx">event</span> <span class="o">||</span> <span class="nb">window</span><span class="p">.</span><span class="nx">event</span><span class="p">));</span>
+  <span class="p">}</span>
+  <span class="nx">registerEventHandler</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">wrapHandler</span><span class="p">);</span>
+  <span class="k">return</span> <span class="p">{</span><span class="na">node</span><span class="p">:</span> <span class="nx">node</span><span class="p">,</span> <span class="na">type</span><span class="p">:</span> <span class="nx">type</span><span class="p">,</span> <span class="na">handler</span><span class="p">:</span> <span class="nx">wrapHandler</span><span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">removeHandler</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">unregisterEventHandler</span><span class="p">(</span><span class="nx">object</span><span class="p">.</span><span class="nx">node</span><span class="p">,</span> <span class="nx">object</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span> <span class="nx">object</span><span class="p">.</span><span class="nx">handler</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">blockQ</span> <span class="o">=</span> <span class="nx">addHandler</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">"textfield"</span><span class="p">),</span> <span class="s2">"keypress"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">character</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"q"</span><span class="p">)</span>
+    <span class="nx">event</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<p>新しいaddHandler関数は、eventオブジェクトの正常化の面倒を見る新しい関数に、与えられたハンドラ関数をラップする。この個別のハンドラを取り除きたいときにはremoveHandlerに与えることでオブジェクトを戻す。’q’をテキスト・フィールドにタイプしてみよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">removeHandler</span><span class="p">(</span><span class="nx">blockQ</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>addHandlerと前章のdom関数を身に付け、文書操作のよりチャレンジングな事柄への準備ができた。練習として、倉庫番として知られるゲームを実装してみよう。これは古典とも言うべきものだが、あなたはこれまで知らなかったかもしれない。ルールはこうだ：壁によって作られたマス目があって、空いてるスペースだったり、1つかそれ以上の’出口’がある。このマス目に、木箱や石がいくつもあって、プレイヤーが動かせるのは小さい男だけ。男は水平と垂直の方向が空いていれば移動することができ、周りの岩を押して、その背後が空であれば運ぶことができる。ゲームのゴールは与えられた数の岩を出口まで運ぶことである。</p>
+
+<p>8章の飼育器のように、倉庫番のレベルもテキストで表現できる。example_events.htmlウインドウの、変数sokobanLevelsはlevelオブジェクトの配列を含み、それぞれのlevelはfieldプロパティを持ち、これにそのレベルのテキスト表現とbouldersプロパティを入れ、bouldersプロパティはそのレベルで追い出さねばならない岩の数を示す。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">show</span><span class="p">(</span><span class="nx">sokobanLevels</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">sokobanLevels</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">boulders</span><span class="p">);</span>
+<span class="nx">forEach</span><span class="p">(</span><span class="nx">sokobanLevels</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">field</span><span class="p">,</span> <span class="nx">print</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>このようなレベルで、#文字は壁、スペースは空の場所、0文字は岩があるところ、@はプレイヤーの開始位置、*は出口である。</p>
+
+<p>しかし、ゲームをプレイするとき、このテキスト表現の見かけは変えたくない。代わりに、文書にテーブルを入れよう。小さなスタイルシート（もし中身を見たければ、sokoban.cssがそれだ）でテーブルのセルに正方形のサイズを設定し、例を文書に追加した。テーブルのそれぞれのセルは背景画像を得て、その四角のタイプ（空、壁、出口）を表現する。プレイヤーと岩の場所を見せるには、画像をこのテーブルのセルに追加し、違う妥当なセルに動かす。</p>
+
+<p>このテーブルをデータの主な表現として使うこともできた – 与えられた資格に壁があるかどうか見たいときは、ただ、テーブルの正しいセルの背景を見て、プレイヤーを探すには、正しいsrcプロパティを持つimgノードを探す。場合によっては、このアプローチが実用的だが、このプログラムではマス目のデータ構造を分離して持つことを選び、それはその方が素直だからである。</p>
+
+<p>このデータ構造はオブジェクトの2次元のマス目で、プレイング・フィールドの四角の表現である。それぞれのオブジェクトはその場所の背景の種類と岩やプレイヤーがいるかどうかを示す。それは文書の表示のためのテーブルのセルへの参照も含み、画像を動かしたり、このテーブルセルを出し入れするのを簡単にする。</p>
+
+<p>2種類のオブジェクトが与えられる – 1つはプレイング・フィールドのマス目を格納し、1つはマス目上の個々のセルを表現する。もし、ふさわしい時にゲームを次のレベルに勧めたいと思ったり、散らかった現在のレベルをリセットしたい時のために、’コントローラ’のオブジェクトも必要で、フィールド・オブジェクトをふさわしい時に作ったり取り除いたりする。利便性のために、8章の最後で要点を示したプロトタイプのアプローチを使い、オブジェクト型をプロトタイプとし、new演算子よりcreateメソッドを新しいオブジェクトを作るのに使おう。</p>
+
+<p>ゲームフィールドの四角を表現するオブジェクトから始めよう。セルに設定された背景を正しく応答し、ふさわしい画像を追加する。img/sokobanには、他の古いゲームに基づいた画像のセットが入っていて、ゲームを視覚化するのに使える。手始めに、Squareプロトタイプはこのようになった。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">Square</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">construct</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">character</span><span class="p">,</span> <span class="nx">tableCell</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">background</span> <span class="o">=</span> <span class="s2">"empty"</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">character</span> <span class="o">==</span> <span class="s2">"#"</span><span class="p">)</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">background</span> <span class="o">=</span> <span class="s2">"wall"</span><span class="p">;</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">character</span> <span class="o">==</span> <span class="s2">"*"</span><span class="p">)</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">background</span> <span class="o">=</span> <span class="s2">"exit"</span><span class="p">;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">tableCell</span> <span class="o">=</span> <span class="nx">tableCell</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">tableCell</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">background</span><span class="p">;</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">content</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">character</span> <span class="o">==</span> <span class="s2">"0"</span><span class="p">)</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">content</span> <span class="o">=</span> <span class="s2">"boulder"</span><span class="p">;</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">character</span> <span class="o">==</span> <span class="s2">"@"</span><span class="p">)</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">content</span> <span class="o">=</span> <span class="s2">"player"</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">content</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">image</span> <span class="o">=</span> <span class="nx">dom</span><span class="p">(</span><span class="s2">"IMG"</span><span class="p">,</span> <span class="p">{</span><span class="na">src</span><span class="p">:</span> <span class="s2">"img/sokoban/"</span> <span class="o">+</span>
+                                   <span class="k">this</span><span class="p">.</span><span class="nx">content</span> <span class="o">+</span> <span class="s2">".gif"</span><span class="p">});</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">tableCell</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">image</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+
+  <span class="na">hasPlayer</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">content</span> <span class="o">==</span> <span class="s2">"player"</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="na">hasBoulder</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">content</span> <span class="o">==</span> <span class="s2">"boulder"</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="na">isEmpty</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">content</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">background</span> <span class="o">==</span> <span class="s2">"empty"</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="na">isExit</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">background</span> <span class="o">==</span> <span class="s2">"exit"</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">testSquare</span> <span class="o">=</span> <span class="nx">Square</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s2">"@"</span><span class="p">,</span> <span class="nx">dom</span><span class="p">(</span><span class="s2">"TD"</span><span class="p">));</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">testSquare</span><span class="p">.</span><span class="nx">hasPlayer</span><span class="p">());</span>
+</code></pre>
+</div>
+
+<p>コンストラクタのcharacter引数はレベルの青写真を文字に変形して実際のSquareオブジェクトに入れるのに使う。セルの背景を設定するには、スタイルシートの（sokoban.cssで定義された）classを使い、それらはtd要素のclassNameプロパティに割り当てられている。</p>
+
+<p>hasPlayerとisEmptyのようなメソッドは、この型のオブジェクトを使うコードをオブジェクトの内部から分離する手段だ。この場合には厳密には必要なものでは無いが、他のコードは良いものになるだろう。</p>
+
+<h3 id="演習-132"><a name="Ex13-2">[演習 13.2]</a></h3>
+
+<p>moveContentとclearContentメソッドをSquareプロトタイプに追加せよ。1つめはもう一つのSquareオブジェクトを引数とし、引数のsquareのcontentプロパティを更新し、このcontentに結びついたimgノードを移動することで、このsquareの中身を移動する。これは岩とプレイヤーを周囲のマスに移動するのに使う。四角は現在空でないことを仮定して良い。clearContentはsquareからcontentをどこにも移動せずに取り除く。空のマスのcontentプロパティはnullでないことに注意。</p>
+
+<p>12章で定義されたremoveElement関数はこの章でも利用可能で、ノードの削除に便利だ。画像はテーブルのセルの子ノードのみであり、this.tableCsll.lastChildで到達できると仮定して良い。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">Square</span><span class="p">.</span><span class="nx">moveContent</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">target</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">target</span><span class="p">.</span><span class="nx">content</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">content</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">content</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="nx">target</span><span class="p">.</span><span class="nx">tableCell</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tableCell</span><span class="p">.</span><span class="nx">lastChild</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="nx">Square</span><span class="p">.</span><span class="nx">clearContent</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">content</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="nx">removeElement</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tableCell</span><span class="p">.</span><span class="nx">lastChild</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>次のオブジェクト型はSokobanFieldという。そのコンストラクタはsokobanLevels配列を与えられ、DOMノードとSquareオブジェクトのマス目の両方を組み立てて返す。このオブジェクトはプレイヤーと周りの岩の動きの詳細も扱い、moveメソッドはプレイヤーが移動したい方向を示す引数を与えられる。</p>
+
+<p>個々のsquareの識別し、方向を示すために、8章のPointオブジェクトを再び使おう。覚えているかもしれないが、これはaddメソッドを持っている。</p>
+
+<p>fieldプロトタイプの基礎はこのようになる。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">SokobanField</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">construct</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">level</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">tbody</span> <span class="o">=</span> <span class="nx">dom</span><span class="p">(</span><span class="s2">"TBODY"</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">squares</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">bouldersToGo</span> <span class="o">=</span> <span class="nx">level</span><span class="p">.</span><span class="nx">boulders</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">y</span> <span class="o">&lt;</span> <span class="nx">level</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">y</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nx">level</span><span class="p">.</span><span class="nx">field</span><span class="p">[</span><span class="nx">y</span><span class="p">];</span>
+      <span class="kd">var</span> <span class="nx">tableRow</span> <span class="o">=</span> <span class="nx">dom</span><span class="p">(</span><span class="s2">"TR"</span><span class="p">);</span>
+      <span class="kd">var</span> <span class="nx">squareRow</span> <span class="o">=</span> <span class="p">[];</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">x</span> <span class="o">&lt;</span> <span class="nx">line</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">x</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">tableCell</span> <span class="o">=</span> <span class="nx">dom</span><span class="p">(</span><span class="s2">"TD"</span><span class="p">);</span>
+        <span class="nx">tableRow</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">tableCell</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">square</span> <span class="o">=</span> <span class="nx">Square</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">line</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span><span class="nx">x</span><span class="p">),</span> <span class="nx">tableCell</span><span class="p">);</span>
+        <span class="nx">squareRow</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">square</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">square</span><span class="p">.</span><span class="nx">hasPlayer</span><span class="p">())</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">playerPos</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="nx">tbody</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">tableRow</span><span class="p">);</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">squares</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">squareRow</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">table</span> <span class="o">=</span> <span class="nx">dom</span><span class="p">(</span><span class="s2">"TABLE"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"class"</span><span class="p">:</span> <span class="s2">"sokoban"</span><span class="p">},</span> <span class="nx">tbody</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">score</span> <span class="o">=</span> <span class="nx">dom</span><span class="p">(</span><span class="s2">"DIV"</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="s2">"..."</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">updateScore</span><span class="p">();</span>
+  <span class="p">},</span>
+
+  <span class="na">getSquare</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">position</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">squares</span><span class="p">[</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span><span class="p">][</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span><span class="p">];</span>
+  <span class="p">},</span>
+  <span class="na">updateScore</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">score</span><span class="p">.</span><span class="nx">firstChild</span><span class="p">.</span><span class="nx">nodeValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">bouldersToGo</span> <span class="o">+</span>
+                                      <span class="s2">" boulders to go."</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="na">won</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">bouldersToGo</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">testField</span> <span class="o">=</span> <span class="nx">SokobanField</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">sokobanLevels</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="nx">show</span><span class="p">(</span><span class="nx">testField</span><span class="p">.</span><span class="nx">getSquare</span><span class="p">(</span><span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">)).</span><span class="nx">content</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>コンストラクタはレベルの線と文字に立ち寄って、squaresプロパティにSquareオブジェクトを格納する。プレイヤーがいるsquareに遭ったら、この位置をplayerPosに保存しておき、後で楽にプレイヤーのいるsquareを探せるようにする。getSquareはフィールドの特定のx、y位置に結びついたSquareオブジェクトを探すのに使う。フィールドの端を勘定に入れないことに注意 – 退屈なコードを書くのを避けるため、フィールドは適切に壁に隔てられ、そこから抜け出すのは不可能であると仮定しておこう。。</p>
+
+<p>tableノードを作るdomの中の”class”という語は文字列として引用される。これは、classがJavaScriptの’予約語’であるため、変数名やプロパティ名として使えないために必要だ。</p>
+
+<p>レベルをクリアするために片付けるべき岩の数（そのレベルの岩の数の合計より少ないかもしれない）がboulderToGoである。岩が出口に運ばれたら、これから1を引いて、ゲームがもうクリアされたかをチェックする。プレイヤーに既にやっつけた数を見せるため、この数を何らかの方法で表示する。この目的のため、テキストのdiv要素を使う。divノードは固有のマークアップのないコンテナである。得点のテキストはupdateScoreメソッドで更新できる。wonメソッドはコントローラ・オブジェクトによりゲームが終了したか、プレイヤーが次のレベルに勧めるかのの判定に使われる。</p>
+
+<p>もし実際にプレイング・フィールドと得点を見空ければ、何ら可能方法で文書にこれらを挿入しなければならない。このためにplaceメソッドがある。ゲームが終わった時にフィールドを簡単に取り除くためにremoveメソッドも追加しよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">SokobanField</span><span class="p">.</span><span class="nx">place</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">where</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">where</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">score</span><span class="p">);</span>
+  <span class="nx">where</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">table</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="nx">SokobanField</span><span class="p">.</span><span class="nx">remove</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">removeElement</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">score</span><span class="p">);</span>
+  <span class="nx">removeElement</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">table</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">testField</span><span class="p">.</span><span class="nx">place</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>もし全部うまくいっていたら、Sokobanフィールドを今見ているはずだ。</p>
+
+<h3 id="演習-133"><a name="Ex13-3">[演習 13.3]</a></h3>
+
+<p>しかし、このフィールドはまだ上手く動かない。moveメソッドを追加せよ。動きを指示するPointオブジェクト（例えば、-1,0なら左に動く）を引数に取り、ゲームの要素の動きを正しい方法で扱う。</p>
+
+<p>正しい方法とはこうだ：playerPosプロパティはプレイヤーが動こうとしている場所を判別する。もしそこに岩があれば、この岩の背後を見る。そこが出口であれば、岩は取り除かれて得点が更新される。そこが空のスペースであれば、そこに岩が動く。次に、プレイヤーを動かしてみる。もし、プレイヤーが動こうとしているsquareが空でなければ、移動は無視される。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">SokobanField</span><span class="p">.</span><span class="nx">move</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">direction</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">playerSquare</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getSquare</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">playerPos</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">targetPos</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">playerPos</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">direction</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">targetSquare</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getSquare</span><span class="p">(</span><span class="nx">targetPos</span><span class="p">);</span>
+
+  <span class="c1">// Possibly pushing a boulder</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">targetSquare</span><span class="p">.</span><span class="nx">hasBoulder</span><span class="p">())</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">pushTarget</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getSquare</span><span class="p">(</span><span class="nx">targetPos</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">direction</span><span class="p">));</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">pushTarget</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+      <span class="nx">targetSquare</span><span class="p">.</span><span class="nx">moveContent</span><span class="p">(</span><span class="nx">pushTarget</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">pushTarget</span><span class="p">.</span><span class="nx">isExit</span><span class="p">())</span> <span class="p">{</span>
+      <span class="nx">targetSquare</span><span class="p">.</span><span class="nx">moveContent</span><span class="p">(</span><span class="nx">pushTarget</span><span class="p">);</span>
+      <span class="nx">pushTarget</span><span class="p">.</span><span class="nx">clearContent</span><span class="p">();</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">bouldersToGo</span><span class="o">--</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">updateScore</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="c1">// Moving the player</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">targetSquare</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">())</span> <span class="p">{</span>
+    <span class="nx">playerSquare</span><span class="p">.</span><span class="nx">moveContent</span><span class="p">(</span><span class="nx">targetSquare</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">playerPos</span> <span class="o">=</span> <span class="nx">targetPos</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>最初に岩を扱うことで、moveのコードはプレイヤーが普通に動く場合でも岩を押している時でも同様に動く。岩の背後のsquareをdirectionをplayerPosに2回加えることで見つけていることに注意。左に2マス進む場合でテストしよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">testField</span><span class="p">.</span><span class="nx">move</span><span class="p">(</span><span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+<span class="nx">testField</span><span class="p">.</span><span class="nx">move</span><span class="p">(</span><span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+</code></pre>
+</div>
+
+<p>もしこれが動けば、もう取り出せない場所に岩を動かしたので、このフィールドを放棄しよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">testField</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
+</code></pre>
+</div>
+
+<p>全ての’ゲーム・ロジック’は今のように扱われ、プレイ可能にするためにコントローラが必要だ。コントローラはSokobanGameという型のオブジェクトで、下記のように応答する。</p>
+
+<ul>
+  <li>ゲーム・フィールドが位置すべき場所の準備</li>
+  <li>SokobanFieldオブジェクトの組み立てと削除</li>
+  <li>キー・イベントを捕まえて、正しい引数で現在のフィールドのmoveメソッドの呼び出し</li>
+  <li>現在のレベル数の保持と、そのレベルがクリアされたら次のレベルに移動</li>
+  <li>現在のレベルまたはゲーム全体（0レベルに戻る）をリセットするボタンの追加</li>
+</ul>
+
+<p>再び、未完成のプロトタイプから始めよう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">SokobanGame</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">construct</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">place</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">level</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">field</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+    <span class="kd">var</span> <span class="nx">newGame</span> <span class="o">=</span> <span class="nx">dom</span><span class="p">(</span><span class="s2">"BUTTON"</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="s2">"New game"</span><span class="p">);</span>
+    <span class="nx">addHandler</span><span class="p">(</span><span class="nx">newGame</span><span class="p">,</span> <span class="s2">"click"</span><span class="p">,</span> <span class="nx">method</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s2">"newGame"</span><span class="p">));</span>
+    <span class="kd">var</span> <span class="nx">reset</span> <span class="o">=</span> <span class="nx">dom</span><span class="p">(</span><span class="s2">"BUTTON"</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="s2">"Reset level"</span><span class="p">);</span>
+    <span class="nx">addHandler</span><span class="p">(</span><span class="nx">reset</span><span class="p">,</span> <span class="s2">"click"</span><span class="p">,</span> <span class="nx">method</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s2">"reset"</span><span class="p">));</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">container</span> <span class="o">=</span> <span class="nx">dom</span><span class="p">(</span><span class="s2">"DIV"</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span>
+                         <span class="nx">dom</span><span class="p">(</span><span class="s2">"H1"</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="s2">"Sokoban"</span><span class="p">),</span>
+                         <span class="nx">dom</span><span class="p">(</span><span class="s2">"DIV"</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">newGame</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="nx">reset</span><span class="p">));</span>
+    <span class="nx">place</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">);</span>
+
+    <span class="nx">addHandler</span><span class="p">(</span><span class="nb">document</span><span class="p">,</span> <span class="s2">"keydown"</span><span class="p">,</span> <span class="nx">method</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s2">"keyDown"</span><span class="p">));</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">newGame</span><span class="p">();</span>
+  <span class="p">},</span>
+
+  <span class="na">newGame</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">level</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span>
+  <span class="p">},</span>
+  <span class="na">reset</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">field</span><span class="p">)</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">field</span> <span class="o">=</span> <span class="nx">SokobanField</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">sokobanLevels</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">level</span><span class="p">]);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">place</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">);</span>
+  <span class="p">},</span>
+
+  <span class="na">keyDown</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// To be filled in</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>コンストラクタはフィールドとともに2つのボタンとタイトルを保持するdivエレメントを組み立てる。このオブジェクトのイベントにメソッドを結びつけているメソッドがどのように使われているかに注意。</p>
+
+<p>文書にSokobanゲームを入れるにはこのようにする。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">sokoban</span> <span class="o">=</span> <span class="nx">SokobanGame</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<h3 id="演習-134"><a name="Ex13-4">[演習 13.4]</a></h3>
+
+<p>今残っているのはキー・イベントのハンドラを埋めることだ。プロトタイプのkeyDownメソッドを矢印キーの押下の検知に入れ替えて、もしそれが見つかったら、プレイヤーを正しい方向に動かそう。下記の辞書がおそらく手っ取り早い。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">arrowKeyCodes</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Dictionary</span><span class="p">({</span>
+  <span class="mi">37</span><span class="p">:</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="c1">// left</span>
+  <span class="mi">38</span><span class="p">:</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="c1">// up</span>
+  <span class="mi">39</span><span class="p">:</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>  <span class="c1">// right</span>
+  <span class="mi">40</span><span class="p">:</span> <span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1">// down</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<p>矢印キーのハンドルの後、this.field.won()をチェックしてこの動きでクリアか判定しよう。もしプレイヤーがクリアしていたら、メッセージを表示するアラートを使い、次のレベルに移動する。もし、次のレベルがもう無ければ（sokobanLevels.lengthでチェック）、代わりにゲームを再スタートしよう。</p>
+
+<p>キー押下をハンドルしたらイベントを止めておくのが、おそらく賢明で、そうしなければ上矢印や下矢印を押した時にウインドウがスクロールして、ゲームの邪魔になるだろう。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">SokobanGame</span><span class="p">.</span><span class="nx">keyDown</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">arrowKeyCodes</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">keyCode</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nx">event</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">move</span><span class="p">(</span><span class="nx">arrowKeyCodes</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">keyCode</span><span class="p">));</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">field</span><span class="p">.</span><span class="nx">won</span><span class="p">())</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">level</span> <span class="o">&lt;</span> <span class="nx">sokobanLevels</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="s2">"Excellent! Going to the next level."</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">level</span><span class="o">++</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span>
+      <span class="p">}</span>
+      <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="s2">"You win! Game over."</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">newGame</span><span class="p">();</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>キーをこのように捕まえることに注意しなければならない – イベントを監視するために文書にハンドラを追加したりイベントを停止するのはあまりよくない – 文書に他の要素がある時には。例えば、文書の上のテキスト・フィールドにカーソルを移動してみよう。 – これは動かず、Sokobanゲームの小男だけが動くだろう。もし本物のサイトで、このようなゲームがあれば、それ自身のフレームかウインドウに入れて、そのウインドウ自身のイベントだけを掴むようにするのが、おそらくベストだ。</p>
+
+<h3 id="演習-135"><a name="Ex13-5">[演習 13.5]</a></h3>
+
+<p>出口まで運ばれた時、岩はむしろ突然に消える。Square.clearContentメソッドを変更して、取り除かれた岩が’落ちる’アニメーションを表示してみよう。先に岩が一瞬小さくなり、それから消える。例えば、通常の半分の大きさであれば、style.width = “50%”と同様にstyle.heightを使って、その画像を表示できる。</p>
+
+<p>アニメーションのタイミングを操るのにはsetIntervalを使える。終わった後はメソッドを確実にクリアしなければならないことに注意。もしこれがそうしないと、ページが閉じられるまで、コンピュータの処理時間が浪費され続ける。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">Square</span><span class="p">.</span><span class="nx">clearContent</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">self</span><span class="p">.</span><span class="nx">content</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">image</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">tableCell</span><span class="p">.</span><span class="nx">lastChild</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">size</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+
+  <span class="kd">var</span> <span class="nx">animate</span> <span class="o">=</span> <span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">size</span> <span class="o">-=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="nx">image</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">size</span> <span class="o">+</span> <span class="s2">"%"</span><span class="p">;</span>
+    <span class="nx">image</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">size</span> <span class="o">+</span> <span class="s2">"%"</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">size</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">clearInterval</span><span class="p">(</span><span class="nx">animate</span><span class="p">);</span>
+      <span class="nx">removeElement</span><span class="p">(</span><span class="nx">image</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="mi">70</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<p>今、もし無駄遣いできる時間があれば、全てのレベルをクリアしてみよう。</p>
+
+<p>便利な他のイベント型にはfocusとblurがある。フォームのinputのようなこれは要素が’フォーカス’を得た時に発火する。フォーカスは、明らかに、要素にフォーカスした時に起こり、例えば、それをクリックした時だ。blurはJavaScript語では’フォーカスを失う’ということで、その要素からフォーカスが放れた時に発火する。</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">addHandler</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">"textfield"</span><span class="p">),</span> <span class="s2">"focus"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s2">"yellow"</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="nx">addHandler</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">"textfield"</span><span class="p">),</span> <span class="s2">"blur"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s2">""</span><span class="p">;</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<p>フォームのinputに関するもう一つのイベントにはchangeがある。これはinputの内容が変更された時に発火する… text inputのような例外のinputもあり、その場合は要素がフォーカスを失うまで発火されない。、</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">addHandler</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">"textfield"</span><span class="p">),</span> <span class="s2">"change"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">print</span><span class="p">(</span><span class="s2">"Content of text field changed to '"</span><span class="p">,</span>
+        <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="s2">"'."</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<p>打ちたいだけタイプできて、inputの外をクリックしたり、タブを押したり、他の方法でフォーカスを失った時だけイベントが発火する。</p>
+
+<p>フォームにはsubmitイベントもあり、それがサブミットされた時に発火する。その場所が取れるまでサブミットを抑止するために止めることができる。これで前章で見たフォームのバリデーションより良い方法が採れる。submitのハンドラを登録し、フォームの内容が正しくないうちは、それを止めるのである。その方法では、ユーザーがJavaScriptを有効にしなかったときに、即時のバリデーションだけ行われずに、フォームはまだ動くだろう。</p>
+
+<p>windowオブジェクトは文書が完全にロードされた時に発火するloadイベントを持ち、もしスクリプトが何らかの種類の初期化のために、完全に表示されるまで待つことを必要としているときに有益だ。例えば、この本の現在の章ページの演習の解答を隠すスクリプト。まだロードされていないうちは演習を見ることができない。unloadイベントもあって、文書からユーザーが離れた時に発火するが、全てのブラウザで正しくサポートされているものではない。</p>
+
+<p>多くの場合、文書のレイアウトはブラウザに任せるのがベストであるが、JavaScriptの部品で作られた文書のノードだけが正確なサイズを設定できるという効果もある。これをやるなら、ウインドウのresizeイベントを監視し、ウインドウがリサイズされる度に確実にその要素のサイズを再計算すること。</p>
+
+<p>最後に、イベントハンドラについてあなたが知らないだろうことを言わなければならない。InternetExplorerブラウザ（これを書いた時点では、最も多数のウェブ・サーファーに使用されているブラウザである）には、値が正常にクリアされないというバグがある：使われなくなっても、PCのメモリに残ったままになる。これはメモリ・リークとして知られていて、そして、一旦メモリがリークしすぎると、コンピューターは深刻に遅くなる。</p>
+
+<p>このリークはいつ起こるのか？InternetExplorerのガベージ・コレクタの不具合による。このシステムは使わなくなった値を再利用する目的のもので、DOMノードが、そのプロパティの中の1つか、あるいはより間接的な手段で、正常なJavaScriptオブジェクトを参照していて、一方、そのオブジェクトからもDOMノードが参照し返されているとき、両方のオブジェクトが回収されないのだ。これはDOMノードとJavaScriptオブジェクトが異なるシステムで回収されるということによる – DOMノードを掃除するシステムはJavaScriptオブジェクトから参照されているノードを消さないようにするし、反対に通常のJavaScript値の回収もそのようになっている。</p>
+
+<p>上記の説明のように、問題はイベント・ハンドラに関するものに留まらない。このコードは、例えば、ほんの少し回収不能なメモリを作る。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">jsObject</span> <span class="o">=</span> <span class="p">{</span><span class="na">link</span><span class="p">:</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">};</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">linkBack</span> <span class="o">=</span> <span class="nx">jsObject</span><span class="p">;</span>
+</code></pre>
+</div>
+
+<p>InetnetExplorerのようなブラウザは別のページに移動しても、ここに表示したdocument.bodyをまだ保持している。このバグの理由はイベント・ハンドラにしばしば結びついて、ハンドラの登録時に非常に簡単に循環したリンクを作る。DOMノードはそのハンドラへの参照を持っていて、ハンドラは、多くの場合、DOMノードを参照を持っている。この参照が故意によって作られなかった時でも、JavaScriptのスコーピング・ルールは暗黙に追加する傾向がある。この関数を考えよう。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">addAlerter</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">addHandler</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">"Alert! ALERT!"</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>addHandler関数によって作られた関数はelement変数を’見る’ことができる。それが使われないことは、問題にならない – ただ見ることができるからで、それへの参照がもたれる。この関数を同じ要素のイベントハンドラとして登録することで、循環を作ることができる。</p>
+
+<p>この問題を扱う手段が3つある。1つめのアプローチは、とても人気のある者で、それを無視するということだ。多くのスクリプトは少ししかリークしない、長い間、多くのページを扱って、初めて問題が注意を要するものになる。加えて、問題がとても微妙なのであれば、誰がその責任をあなたに問うだろうか？このアプローチを与えられたプログラマーはしばしばマイクロソフトのそのショボいプログラミングをひどく非難し、問題は彼らの失敗にはないという状態なので、それを自分たちで直そうとはしない。</p>
+
+<p>そのような理由には全く価値がない、もちろん。しかし半分のユーザーがあなたの作ったウェブページで問題にあったら、それが実際的な問題であることを否定するのは難しい。これが’真面目な’サイトで働く人々が、通常はいかなるメモリもリークしないように試みる理由である。これが2つめのアプローチをもたらした：骨惜しみせず、DOMオブジェクトと正規のオブジェクトの間の循環が作られないように確実な仕事をするということだ。これは、例えば、上記のハンドラをこのように書き換えるという意味だ。：</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">addAlerter</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">addHandler</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">"Alert! ALERT!"</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">element</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>今element変数はDOMノードを指しておらず、ハンドラはメモリリークしない。このアプローチは実行可能だが、プログラマに本当に注意を払うことを要求する。</p>
+
+<p>3つめの解決法、最後に、リークするような構造を作ることをあまり気にしない、しかし、それができる時には確実に掃除する。これは、必要でなくなったらイベント・ハンドラの登録を外し、onunloadイベントに、ページがアンロードされたら必要でなくなったハンドラの登録を外す処理を登録するということだ。addHandler関数のように、イベント登録システムを拡張することは可能で、これを自動化する。このアプローチを取った時は、イベント・ハンドラだけがメモリ・リークを起こしうるソースであるとは考えないこと – DOMノードオブジェクトにプロパティを追加すれば同じような問題が引き起こされるかもしれない。</p>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Eloquent JavaScript(ja)</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>
+            
+              Eloquent JavaScript(ja)
+            
+            </li>
+            
+            <li><a href="mailto:morinatsu@gmail.com">morinatsu@gmail.com</a></li>
+            
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/morinatsu"><span class="icon icon--github"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">morinatsu</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/morinatsu"><span class="icon icon--twitter"><svg viewBox="0 0 16 16" width="16px" height="16px"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">morinatsu</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Japanese translateion of &#39;Eloquent JavaScript&#39;</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
