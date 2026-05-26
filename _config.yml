@@ -40,8 +40,13 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+header_pages:
+  - contents.md
+  - about.md
+
 exclude:
   - Gemfile
   - Gemfile.lock
   - build.bat
   - serve.bat
+  - vendor/
