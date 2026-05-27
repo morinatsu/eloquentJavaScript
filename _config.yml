@@ -29,6 +29,26 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
+header_pages:
+  - Introduction.md
+  - Basic JavaScript.md
+  - Functions.md
+  - Data structures.md
+  - Error Handling.md
+  - Functional Programming.md
+  - Searching.md
+  - Object-oriented Programming.md
+  - Modularity.md
+  - Regular Expressions.md
+  - Web programming A crash course.md
+  - The Document-Object Model.md
+  - Browser Events.md
+  - HTTP requests.md
+  - More (obscure) control structures.md
+  - Binary Heaps.md
+  - contents.md
+  - about.md
+
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
